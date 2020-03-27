@@ -24,7 +24,7 @@ jobs:
         run: heroku container:release -a ${{ secrets.PRODUCTION_APP_NAME }} web
 
       - name: Build assets
-        run: heroku run -a ${{ secrets.PRODUCTION_APP_NAME }} rm -rf build/assets && webpack -p
+        run: heroku run -a ${{ secrets.PRODUCTION_APP_NAME }} yarn run build-assets
 
       - name: Migrate the database
         run: heroku run -a ${{ secrets.PRODUCTION_APP_NAME }} sequelize db:migrate

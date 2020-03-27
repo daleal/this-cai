@@ -8,7 +8,7 @@
     "dev": "nodemon index.js",
     "lint": "eslint ./src index.js",
     "lint-fix": "eslint --fix ./src index.js",
-    "build-assets": "yarn run clean-assets && NODE_ENV=production webpack -p",
+    "build-assets": "yarn run clean-assets && webpack -p",
     "clean-assets": "rm -rf build/assets",
     "heroku-postbuild": "yarn run build-assets && sequelize db:migrate"
   },
