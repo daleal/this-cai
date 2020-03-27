@@ -63,6 +63,8 @@ docker-compose run web <command>
 
 Where `<command>` corresponds to the command you want to run inside the container (for example, in the **Development** section we migrated the database running `docker-compose run web sequelize db:migrate`, which is commanding the container to run `sequelize db:migrate`).
 
+Note that commands that would normally run as `./node_modules/.bin/<command>` now will just need to be called with `docker-compose run web <command>`. This is due to the binaries folder of the node modules being in the `PATH` of the container image.
+
 ### Database Commands
 
 To use the `sequelize` CLI, you just need to run:
@@ -72,8 +74,6 @@ docker-compose run web sequelize <command>
 ```
 
 Where `<command>` corresponds to the command you want `sequelize` to run (for example, in the **Development** section we migrated the database running `docker-compose run web sequelize db:migrate`).
-
-Note that commands that would normally run as `./node_modules/.bin/<command>` now will just need to be called with `docker-compose run web <command>`. This is due to the binaries folder of the node modules being in the `PATH` of the container image.
 
 ## Heroku Deployment
 
