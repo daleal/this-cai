@@ -1,4 +1,4 @@
-FROM node:12.16-stretch
+FROM node:12.16-alpine
 
 # Set up base directory
 WORKDIR /usr/src/app
