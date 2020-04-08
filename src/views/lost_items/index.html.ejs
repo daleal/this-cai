@@ -1,0 +1,6 @@
+<% lostItems.forEach((lostItem) => { %>
+  <p>
+    <%= lostItem.description %><br>
+    <%= lostItem.taken ? 'taken' : 'not taken' %>
+  </p>
+<% }); %>
