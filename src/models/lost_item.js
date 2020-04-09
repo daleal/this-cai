@@ -1,11 +1,12 @@
 'use strict';
+
 module.exports = (sequelize, DataTypes) => {
-  const LostItem = sequelize.define('LostItem', {
+  const lostItem = sequelize.define('lostItem', {
     description: DataTypes.TEXT,
-    taken: DataTypes.BOOLEAN
+    taken: DataTypes.BOOLEAN,
   }, { underscored: true });
-  LostItem.associate = function(models) {
-    // associations can be defined here
-  };
-  return LostItem;
+  // lostItem.associate = function(models) {
+  //   // associations can be defined here
+  // };
+  return lostItem;
 };

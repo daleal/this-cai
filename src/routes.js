@@ -8,6 +8,6 @@ const router = new KoaRouter();
 
 router.use('/', index.routes());
 router.use('/hello', hello.routes());
-router.use('/lost_items', lostItems.routes());
+router.use('/lost-items', lostItems.routes());
 
 module.exports = router;
