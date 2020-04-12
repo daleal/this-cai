@@ -1,0 +1,16 @@
+<form method="post">
+  <input type="hidden" name="_method" value="patch">
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="name" value= "<%= inventoryItem.name%>" ><br><br>
+
+  <label for="description">Description:</label>
+  <input type="text" id="description" name="description" value= "<%= inventoryItem.description%>"><br><br>
+
+  <label for="maxStock">Max Stock:</label>
+  <input type="number" id="maxStock" name="maxStock" value= "<%= inventoryItem.maxStock%>"><br><br>
+
+  <label for="currentStock">Current Stock:</label>
+  <input type="number" id="currentStock" name="currentStock" value= "<%= inventoryItem.currentStock%>"><br><br>
+
+  <input type="submit" value="Submit">
+</form>
