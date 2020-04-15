@@ -1,0 +1,15 @@
+<% events.forEach((item) => { %>
+ <p>
+   <%= item.name %><br>
+   <%= item.dateAndTime %><br>
+   <%= item.location %><br>
+   <%= item.category %>
+   <a href= "<%= "/events/" + item.id + "/show"%>"> Show </a>
+ </p>
+ <%= deletePath(item)%>
+   <form action="<%= deletePath(item) %>" method="POST">
+      <input type="hidden" name="_method" value="delete" />
+      <input type="submit" value="Delete" />
+    </form>
+<% }); %>
+ <a href=" <%= "/events/new"%>"   > New </a>
