@@ -2,11 +2,11 @@ const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
 
-function validateStock(max,current){
-  if (max < 0 || current < 0 || max < current  ){
-    throw new Error("Invalid stock values")
+function validateStock(max, current) {
+  if (max < 0 || current < 0 || max < current) {
+    throw new Error('Invalid stock values');
   }
-};
+}
 router.get('inventory_items.index', '/', async (ctx) => {
   const inventoryItems = await ctx.orm.inventoryItem.findAll();
   await ctx.render('inventory_items/index', {
@@ -28,7 +28,7 @@ router.get('inventory_items.new', '/new', async (ctx) => {
 router.post('inventory_items.create', '/new', async (ctx) => {
   const inventoryItem = ctx.orm.inventoryItem.build(ctx.request.body);
   try {
-    validateStock(ctx.request.body.maxStock,ctx.request.body.currentStock);
+    validateStock(ctx.request.body.maxStock, ctx.request.body.currentStock);
     await inventoryItem.save({ fields: ['name', 'description', 'maxStock', 'currentStock'] });
     ctx.redirect('/inventory-items');
   } catch (validationError) {

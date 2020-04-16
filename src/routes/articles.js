@@ -43,10 +43,10 @@ router.patch('articles.update', '/:id/edit', async (ctx) => {
 
   try {
     const {
-      title, content
+      title, content,
     } = ctx.request.body;
     await article.update({
-      title, content
+      title, content,
     });
     ctx.redirect('/articles');
   } catch (validationError) {
