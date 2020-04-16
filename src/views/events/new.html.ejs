@@ -1,0 +1,27 @@
+<!-- <div>
+  <% if (locals.errors) { %>
+    <div class="errors">
+      You need to fix the following errors:
+      <ul>
+        <% errors.forEach(error => { %>
+          <li><%= error.message %></li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %> -->
+
+<form method="post">
+  <label for="name">Nombre:</label>
+  <input type="text" id="name" name="name"><br><br>
+
+  <label for="dateAndTime">Fecha y hora:</label>
+  <input type="datetime-local" id="dateAndTime" name="dateAndTime"><br><br>
+
+  <label for="location">Ubicación:</label>
+  <input type="text" id="location" name="location"><br><br>
+
+  <label for="category">Categoría:</label>
+  <input type="text" id="category" name="category"><br><br>
+
+  <input type="submit" value="Submit">
+</form>
