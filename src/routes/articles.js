@@ -1,3 +1,5 @@
+"use strict";
+
 const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
@@ -24,9 +26,9 @@ router.post('articles.create', '/new', async (ctx) => {
   const article = ctx.orm.article.build(ctx.request.body);
   try {
     await article.save({ fields: ['title', 'content'] });
-    ctx.redirect('/articles');
+    ctx.redirect(ctx.router.url('articles.index'));
   } catch (validationError) {
-    await ctx.render('articles.new', {
+    await ctx.render('articles/new', {
       article,
       errors: validationError.errors,
     });
@@ -48,9 +50,9 @@ router.patch('articles.update', '/:id/edit', async (ctx) => {
     await article.update({
       title, content,
     });
-    ctx.redirect('/articles');
+    ctx.redirect(ctx.router.url('articles.index'));
   } catch (validationError) {
-    await ctx.render('articles.edit', {
+    await ctx.render('articles/edit', {
       article,
       errors: validationError.errors,
     });
@@ -60,7 +62,7 @@ router.patch('articles.update', '/:id/edit', async (ctx) => {
 router.del('articles.destroy', '/:id/destroy', async (ctx) => {
   const article = await ctx.orm.article.findByPk(ctx.params.id);
   await article.destroy();
-  ctx.redirect('/articles');
+  ctx.redirect(ctx.router.url('articles.index'));
 });
 
 
