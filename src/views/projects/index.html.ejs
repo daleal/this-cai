@@ -1,0 +1,13 @@
+<% projects.forEach((project) => { %>
+  <p>
+    <%= project.name %><br>
+    <%= project.description %><br>
+    <%= project.contactInfo%><br>
+    <a href= "<%= showPath(project) %>">Show</a>
+  </p>
+  <form action="<%= deletePath(project) %>" method="POST">
+    <input type="hidden" name="_method" value="delete" />
+    <input type="submit" value="Delete" />
+  </form>
+<% }); %>
+<a href="<%= newPath() %>">New</a>

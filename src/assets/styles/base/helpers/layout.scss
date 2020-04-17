@@ -1,0 +1,11 @@
+$displays: 'block' 'flex' 'inline' 'inline-block' 'inline-flex';
+
+.is-relative {
+  position: relative !important;
+}
+
+@each $display in $displays {
+  .is-#{$display} {
+    display: #{$display} !important;
+  }
+}

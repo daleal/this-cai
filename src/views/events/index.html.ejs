@@ -1,0 +1,14 @@
+<% events.forEach((event) => { %>
+  <p>
+    <%= event.name %><br>
+    <%= event.dateAndTime %><br>
+    <%= event.location %><br>
+    <%= event.category %>
+    <a href= "<%= showPath(event) %>">Show</a>
+  </p>
+  <form action="<%= deletePath(event) %>" method="POST">
+    <input type="hidden" name="_method" value="delete" />
+    <input type="submit" value="Delete" />
+  </form>
+<% }); %>
+<a href="<%= newPath() %>">New</a>

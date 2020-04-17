@@ -1,0 +1,34 @@
+.flash-message {
+  // Defaults to info
+  color: $white;
+  border-radius: 4px;
+  padding: 1.25rem 2.5rem 1.25rem 1.5rem;
+  margin: 0.25rem 0;
+  position: relative;
+  // Links get decorated with an underline
+  a:not(.button):not(.dropdown-item) {
+    text-decoration: underline;
+  }
+
+  // Modifiers
+  &.is-info {
+    background-color: $info;
+  }
+  &.is-success {
+    background-color: $success;
+  }
+  &.is-warning {
+    background-color: $warning;
+    color: $dark;
+  }
+  &.is-danger {
+    background-color: $danger;
+  }
+
+  // Delete button
+  & > .delete {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+  }
+}

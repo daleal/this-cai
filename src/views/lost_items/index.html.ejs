@@ -1,0 +1,12 @@
+<% lostItems.forEach((lostItem) => { %>
+  <p>
+    <%= lostItem.description %><br>
+    <%= lostItem.taken ? 'taken' : 'not taken' %>
+    <a href= "<%= showPath(lostItem) %>">Show</a>
+  </p>
+  <form action="<%= deletePath(lostItem) %>" method="POST">
+    <input type="hidden" name="_method" value="delete" />
+    <input type="submit" value="Delete" />
+  </form>
+<% }); %>
+<a href="<%= newPath() %>">New</a>
