@@ -4,7 +4,12 @@ const router = new KoaRouter();
 
 router.get('lost_items.index', '/', async (ctx) => {
   const lostItems = await ctx.orm.lostItem.findAll();
-  await ctx.render('lost_items/index', { lostItems });
+  await ctx.render('lost_items/index', {
+    lostItems,
+    showPath: (item) => ctx.router.url('lost_items.show', { id: item.id }),
+    newPath: () => ctx.router.url('lost_items.new'),
+    deletePath: (item) => ctx.router.url('lost_items.destroy', { id: item.id }),
+  });
 });
 
 router.get('lost_items.show', '/:id/show', async (ctx) => {
@@ -21,8 +26,15 @@ router.post('lost_items.create', '/new', async (ctx) => {
     description: ctx.request.body.description,
     taken: false,
   });
-  await lostItem.save();
-  ctx.redirect('/lost-items');
+  try {
+    await lostItem.save({ fields: ['description', 'taken'] });
+    ctx.redirect(ctx.router.url('lost_items.index'));
+  } catch (validationError) {
+    await ctx.render('lost_items/new', {
+      lostItem,
+      errors: validationError.errors,
+    });
+  }
 });
 
 router.get('lost_items.edit', '/:id/edit', async (ctx) => {
@@ -32,15 +44,22 @@ router.get('lost_items.edit', '/:id/edit', async (ctx) => {
 
 router.patch('lost_items.update', '/:id/edit', async (ctx) => {
   const lostItem = await ctx.orm.lostItem.findByPk(ctx.params.id);
-  lostItem.description = ctx.request.body.description;
-  await lostItem.save({ fields: ['description'] });
-  ctx.redirect('/lost-items');
+  try {
+    const { description } = ctx.request.body;
+    await lostItem.update({ description });
+    ctx.redirect(ctx.router.url('lost_items.index'));
+  } catch (validationError) {
+    await ctx.render('lost_items/edit', {
+      lostItem,
+      errors: validationError.errors,
+    });
+  }
 });
 
 router.delete('lost_items.destroy', '/:id/destroy', async (ctx) => {
   const lostItem = await ctx.orm.lostItem.findByPk(ctx.params.id);
   await lostItem.destroy();
-  ctx.redirect('/lost-items');
+  ctx.redirect(ctx.router.url('lost_items.index'));
 });
 
 module.exports = router;

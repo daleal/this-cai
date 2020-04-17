@@ -6,10 +6,11 @@ router.get('inventory_items.index', '/', async (ctx) => {
   const inventoryItems = await ctx.orm.inventoryItem.findAll();
   await ctx.render('inventory_items/index', {
     inventoryItems,
+    showPath: (item) => ctx.router.url('inventory_items.show', { id: item.id }),
+    newPath: () => ctx.router.url('inventory_items.new'),
     deletePath: (item) => ctx.router.url('inventory_items.destroy', { id: item.id }),
   });
 });
-
 
 router.get('inventory_items.show', '/:id/show', async (ctx) => {
   const inventoryItem = await ctx.orm.inventoryItem.findByPk(ctx.params.id);
@@ -24,9 +25,9 @@ router.post('inventory_items.create', '/new', async (ctx) => {
   const inventoryItem = ctx.orm.inventoryItem.build(ctx.request.body);
   try {
     await inventoryItem.save({ fields: ['name', 'description', 'maxStock', 'currentStock'] });
-    ctx.redirect('/inventory-items');
+    ctx.redirect(ctx.router.url('inventory_items.index'));
   } catch (validationError) {
-    await ctx.render('inventory_items.new', {
+    await ctx.render('inventory_items/new', {
       inventoryItem,
       errors: validationError.errors,
     });
@@ -48,9 +49,9 @@ router.patch('inventory_items.update', '/:id/edit', async (ctx) => {
     await inventoryItem.update({
       name, description, maxStock, currentStock,
     });
-    ctx.redirect('/inventory-items');
+    ctx.redirect(ctx.router.url('inventory_items.index'));
   } catch (validationError) {
-    await ctx.render('inventory_items.edit', {
+    await ctx.render('inventory_items/edit', {
       inventoryItem,
       errors: validationError.errors,
     });
@@ -60,7 +61,7 @@ router.patch('inventory_items.update', '/:id/edit', async (ctx) => {
 router.del('inventory_items.destroy', '/:id/destroy', async (ctx) => {
   const inventoryItem = await ctx.orm.inventoryItem.findByPk(ctx.params.id);
   await inventoryItem.destroy();
-  ctx.redirect('/inventory-items');
+  ctx.redirect(ctx.router.url('inventory_items.index'));
 });
 
 
