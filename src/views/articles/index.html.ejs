@@ -3,11 +3,11 @@
    <h2><%= article.title %><br></h2>
    <%= article.content %><br>
 
-   <a href= "<%= "/articles/" + article.id + "/show"%>"> Show </a>
+   <a href= "<%= showPath(article) %>"> Show </a>
  </p>
    <form action="<%= deletePath(article) %>" method="POST">
       <input type="hidden" name="_method" value="delete" />
       <input type="submit" value="Delete" />
     </form>
 <% }); %>
- <a href=" <%= "/articles/new"%>"   > New </a>
+ <a href=" <%= newPath() %>"   > New </a>

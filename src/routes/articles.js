@@ -9,6 +9,8 @@ router.get('articles.index', '/', async (ctx) => {
   await ctx.render('articles/index', {
     articles,
     deletePath: (article) => ctx.router.url('articles.destroy', { id: article.id }),
+    newPath: (article) => ctx.router.url('articles.new'),
+    showPath: (article) => ctx.router.url('article.show', {id: article.id}),
   });
 });
 
