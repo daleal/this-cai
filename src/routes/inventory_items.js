@@ -28,8 +28,8 @@ router.post('inventory_items.create', '/new', async (ctx) => {
     await inventoryItem.save({ fields: ['name', 'description', 'maxStock', 'currentStock'] });
     ctx.redirect(ctx.router.url('inventory_items.index'));
   } catch (validationErrors) {
-    const arrayMessages = validationErrors.map((error) => error.message );
-    ctx.state.flashMessage.danger = 'Error: ' + arrayMessages.join(', ');
+    const arrayMessages = validationErrors.map((error) => error.message);
+    ctx.state.flashMessage.danger = `Error: ${arrayMessages.join(', ')}`;
     await ctx.render('inventory_items/new', {
       inventoryItem,
     });
@@ -54,8 +54,8 @@ router.patch('inventory_items.update', '/:id/edit', async (ctx) => {
     });
     ctx.redirect(ctx.router.url('inventory_items.index'));
   } catch (validationErrors) {
-    const arrayMessages = validationErrors.map((error) => error.message );
-    ctx.state.flashMessage.danger = 'Error: ' + arrayMessages.join(', ');
+    const arrayMessages = validationErrors.map((error) => error.message);
+    ctx.state.flashMessage.danger = `Error: ${arrayMessages.join(', ')}`;
     await ctx.render('inventory_items/edit', {
       inventoryItem,
     });
