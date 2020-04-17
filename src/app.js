@@ -10,6 +10,7 @@ const override = require('koa-override-method');
 const assets = require('./assets');
 const mailer = require('./mailers');
 const routes = require('./routes');
+const helpers = require('./helpers');
 const orm = require('./models');
 
 // App constructor
@@ -26,6 +27,9 @@ app.keys = [
 
 // expose ORM through context's prototype
 app.context.orm = orm;
+
+// expose helpers through context's prototype
+app.context.helpers = helpers;
 
 /**
  * Middlewares
