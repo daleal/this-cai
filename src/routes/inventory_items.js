@@ -2,11 +2,6 @@ const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
 
-function validateStock(max, current) {
-  if (max < 0 || current < 0 || max < current) {
-    throw new Error('Invalid stock values');
-  }
-}
 router.get('inventory_items.index', '/', async (ctx) => {
   const inventoryItems = await ctx.orm.inventoryItem.findAll();
   await ctx.render('inventory_items/index', {
@@ -29,13 +24,14 @@ router.get('inventory_items.new', '/new', async (ctx) => {
 router.post('inventory_items.create', '/new', async (ctx) => {
   const inventoryItem = ctx.orm.inventoryItem.build(ctx.request.body);
   try {
-    validateStock(ctx.request.body.maxStock, ctx.request.body.currentStock);
+    ctx.helpers.inventoryItems.validate(ctx.request.body);
     await inventoryItem.save({ fields: ['name', 'description', 'maxStock', 'currentStock'] });
     ctx.redirect(ctx.router.url('inventory_items.index'));
-  } catch (validationError) {
+  } catch (validationErrors) {
+    const arrayMessages = validationErrors.map((error) => error.message );
+    ctx.state.flashMessage.danger = 'Error: ' + arrayMessages.join(', ');
     await ctx.render('inventory_items/new', {
       inventoryItem,
-      errors: validationError,
     });
   }
 });
@@ -49,6 +45,7 @@ router.patch('inventory_items.update', '/:id/edit', async (ctx) => {
   const inventoryItem = await ctx.orm.inventoryItem.findByPk(ctx.params.id);
 
   try {
+    ctx.helpers.inventoryItems.validate(ctx.request.body);
     const {
       name, description, maxStock, currentStock,
     } = ctx.request.body;
@@ -56,10 +53,11 @@ router.patch('inventory_items.update', '/:id/edit', async (ctx) => {
       name, description, maxStock, currentStock,
     });
     ctx.redirect(ctx.router.url('inventory_items.index'));
-  } catch (validationError) {
+  } catch (validationErrors) {
+    const arrayMessages = validationErrors.map((error) => error.message );
+    ctx.state.flashMessage.danger = 'Error: ' + arrayMessages.join(', ');
     await ctx.render('inventory_items/edit', {
       inventoryItem,
-      errors: validationError.errors,
     });
   }
 });
