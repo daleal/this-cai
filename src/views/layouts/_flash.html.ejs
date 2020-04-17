@@ -1,0 +1,10 @@
+<!-- Flash Messages -->
+<% Object.entries(flashMessage.messages).forEach(([type, message]) => { %>
+  <% if (message) { %>
+    <% // Don't render empty messages %>
+    <div class="flash-message is-<%= type %>">
+      <!-- <button class="delete"></button> -->
+      <%= message %>
+    </div>
+  <% } %>
+<% }); %>
