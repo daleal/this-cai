@@ -8,8 +8,12 @@ module.exports = (sequelize, DataTypes) => {
     phoneNumber: DataTypes.STRING,
     role: DataTypes.STRING,
   }, { underscored: true });
-  // user.associate = function(models) {
-  //   // associations can be defined here
-  // };
+  user.associate = function(models) {
+    user.belongsToMany(models.organization, { through: 'organization_members' });
+    user.hasMany(models.lostItem);
+    user.belongsToMany(models.inventoryItem, { through: 'user_inventory_items' });
+    user.hasMany(models.message);
+    user.belongsToMany(models.event, { through: 'event_users' });
+  };
   return user;
 };

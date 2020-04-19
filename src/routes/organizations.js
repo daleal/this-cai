@@ -3,7 +3,7 @@ const KoaRouter = require('koa-router');
 const router = new KoaRouter();
 
 router.get('organizations.index', '/', async (ctx) => {
-  const organizations = await ctx.orm.organizations.findAll();
+  const organizations = await ctx.orm.organization.findAll();
   await ctx.render('organizations/index', {
     organizations,
     showPath: (organization) => ctx.router.url('organizations.show', { id: organization.id }),

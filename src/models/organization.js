@@ -5,8 +5,9 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     description: DataTypes.TEXT,
   }, { underscored: true });
-  // organization.associate = function(models) {
-  //   // associations can be defined here
-  // };
+  organization.associate = function(models) {
+    organization.hasMany(models.project);
+    organization.belongsToMany(models.user, { through: 'organization_members' });
+  };
   return organization;
 };
