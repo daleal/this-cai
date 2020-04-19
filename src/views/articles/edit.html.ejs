@@ -1,0 +1,10 @@
+<form method="post">
+  <input type="hidden" name="_method" value="patch">
+  <label for="name">Title:</label>
+  <input type="text" id="title" name="title" value= "<%= article.title%>" ><br><br>
+
+  <label for="content">Content:</label>
+  <input type="text" id="content" name="content" value= "<%= article.content%>"><br><br>
+
+  <input type="submit" value="Submit">
+</form>

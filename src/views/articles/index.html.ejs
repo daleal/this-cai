@@ -1,0 +1,13 @@
+<% articles.forEach((article) => { %>
+ <p>
+   <h2><%= article.title %><br></h2>
+   <%= article.content %><br>
+
+   <a href= "<%= showPath(article) %>"> Show </a>
+ </p>
+   <form action="<%= deletePath(article) %>" method="POST">
+      <input type="hidden" name="_method" value="delete" />
+      <input type="submit" value="Delete" />
+    </form>
+<% }); %>
+ <a href=" <%= newPath() %>"   > New </a>

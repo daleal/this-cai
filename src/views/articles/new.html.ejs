@@ -1,0 +1,22 @@
+<!-- <div>
+  <% if (locals.errors) { %>
+    <div class="errors">
+      You need to fix the following errors:
+      <ul>
+        <% errors.forEach(error => { %>
+          <li><%= error.message %></li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %> -->
+
+  <form method="post">
+    <label for="name">Title:</label>
+    <input type="text" id="title" name="title"><br><br>
+
+    <label for="content">Content:</label>
+    <input type="text" id="content" name="content"><br><br>
+
+
+    <input type="submit" value="Submit">
+  </form>

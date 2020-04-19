@@ -1,15 +1,3 @@
-<!-- <div>
-  <% if (locals.errors) { %>
-    <div class="errors">
-      You need to fix the following errors:
-      <ul>
-        <% errors.forEach(error => { %>
-          <li><%= error.message %></li>
-        <% }); %>
-      </ul>
-    </div>
-  <% } %> -->
-
 <form method="post">
   <label for="name">Name:</label>
   <input type="text" id="name" name="name"><br><br>
@@ -18,10 +6,10 @@
   <input type="text" id="description" name="description"><br><br>
 
   <label for="maxStock">Max Stock:</label>
-  <input type="number" id="maxStock" name="maxStock"><br><br>
+  <input type="number" id="maxStock" name="maxStock" required><br><br>
 
   <label for="currentStock">Current Stock:</label>
-  <input type="number" id="currentStock" name="currentStock"><br><br>
+  <input type="number" id="currentStock" name="currentStock" required><br><br>
 
   <input type="submit" value="Submit">
 </form>
