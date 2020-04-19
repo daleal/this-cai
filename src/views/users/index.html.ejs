@@ -1,0 +1,15 @@
+<% users.forEach((user) => { %>
+  <p>
+    <%= user.email %><br>
+    <%= user.firstName %><br>
+    <%= user.lastName %><br>
+    <%= user.phoneNumber %><br>
+    <%= user.role %>
+    <a href= "<%= showPath(user) %>">Show</a>
+  </p>
+  <form action="<%= deletePath(user) %>" method="POST">
+    <input type="hidden" name="_method" value="delete" />
+    <input type="submit" value="Delete" />
+  </form>
+<% }); %>
+<a href="<%= newPath() %>">New</a>
