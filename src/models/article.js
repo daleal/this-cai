@@ -1,3 +1,4 @@
+'use strict';
 
 module.exports = (sequelize, DataTypes) => {
   const article = sequelize.define('article', {
