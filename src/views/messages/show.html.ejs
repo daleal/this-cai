@@ -1,8 +1,16 @@
 <div class="content">
-  <h2><%= user.firstName %> <%= user.lastName %></h2>
-  <p>
-    <%= message.content %> <br>
-    <%= message.email %><br>
-    <%= message.createdAt %>
-  </p>
+  <% if (!user) {  // Generic message with no origin user %>
+    <h2><%= message.email %> [no user]</h2>
+    <p>
+      <%= message.content %><br>
+      <%= message.createdAt %>
+    </p>
+  <% } else { %>
+    <h2>User: <%= user.firstName %> <%= user.lastName %></h2>
+    <p>
+      <%= message.content %><br>
+      <%= user.email %><br>
+      <%= message.createdAt %>
+    </p>
+  <% } %>
 </div>
