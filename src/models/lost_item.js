@@ -5,8 +5,6 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.TEXT,
     taken: DataTypes.BOOLEAN,
   }, { underscored: true });
-  // lostItem.associate = function(models) {
-  //   // associations can be defined here
-  // };
+
   return lostItem;
 };

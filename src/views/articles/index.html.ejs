@@ -1,14 +1,13 @@
 <% articles.forEach((article) => { %>
- <p>
-   <h2><%= article.title %><br></h2>
-   <%= article.content %><br>
-
-   <a href= "<%= showPath(article) %>"> Show </a>
-   <a href= "<%= editPath(article) %>"> Edit </a>
- </p>
-   <form action="<%= deletePath(article) %>" method="POST">
-      <input type="hidden" name="_method" value="delete" />
-      <input type="submit" value="Delete" />
-    </form>
+  <p>
+    <h2><%= article.title %></h2>
+    <%= article.content %><br>
+    <a href="<%= showPath(article) %>">Show</a>
+    <a href="<%= editPath(article) %>">Edit</a>
+  </p>
+  <form action="<%= deletePath(article) %>" method="post">
+    <input type="hidden" name="_method" value="delete">
+    <input type="submit" value="Delete">
+  </form>
 <% }); %>
- <a href=" <%= newPath() %>"   > New </a>
+<a href="<%= newPath() %>">New</a>

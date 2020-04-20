@@ -5,7 +5,7 @@ module.exports = {
   validate: (requestBody) => {
     const errors = [];
     if (requestBody.name === '') {
-      errors.push(new Error('Debes Incluir un nombre para el objeto perdido'));
+      errors.push(new Error('Debes incluir un nombre para el objeto perdido'));
     }
     if (requestBody.description === '') {
       errors.push(new Error('Descripción inválida'));

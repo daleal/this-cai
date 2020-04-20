@@ -6,8 +6,10 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.TEXT,
     contactInfo: DataTypes.TEXT,
   }, { underscored: true });
+
   project.associate = function(models) {
     project.hasMany(models.event);
   };
+
   return project;
 };

@@ -6,9 +6,9 @@ router.get('users.index', '/', async (ctx) => {
   const users = await ctx.orm.user.findAll();
   await ctx.render('users/index', {
     users,
+    newPath: () => ctx.router.url('users.new'),
     showPath: (user) => ctx.router.url('users.show', { id: user.id }),
     editPath: (user) => ctx.router.url('users.edit', { id: user.id }),
-    newPath: () => ctx.router.url('users.new'),
     deletePath: (user) => ctx.router.url('users.destroy', { id: user.id }),
   });
 });
@@ -23,15 +23,14 @@ router.get('users.new', '/new', async (ctx) => {
 });
 
 router.post('users.create', '/new', async (ctx) => {
-  const user = ctx.orm.user.build({
-    email: ctx.request.body.email,
-    firstName: ctx.request.body.firstName,
-    lastName: ctx.request.body.lastName,
-    phoneNumber: ctx.request.body.phoneNumber,
-    role: ctx.request.body.role,
-  });
   try {
     ctx.helpers.users.validate(ctx.request.body);
+    const {
+      email, firstName, lastName, phoneNumber, role,
+    } = ctx.request.body;
+    const user = ctx.orm.user.build({
+      email, firstName, lastName, phoneNumber, role,
+    });
     await user.save({
       fields: ['email', 'firstName', 'lastName', 'phoneNumber', 'role'],
     });
@@ -39,9 +38,7 @@ router.post('users.create', '/new', async (ctx) => {
   } catch (validationErrors) {
     const arrayMessages = validationErrors.map((error) => error.message);
     ctx.state.flashMessage.danger = `Error: ${arrayMessages.join(', ')}`;
-    await ctx.render('users/new', {
-      user,
-    });
+    await ctx.render('users/new');
   }
 });
 
@@ -64,9 +61,7 @@ router.patch('users.update', '/:id/edit', async (ctx) => {
   } catch (validationErrors) {
     const arrayMessages = validationErrors.map((error) => error.message);
     ctx.state.flashMessage.danger = `Error: ${arrayMessages.join(', ')}`;
-    await ctx.render('users/edit', {
-      user,
-    });
+    await ctx.render('users/edit', { user });
   }
 });
 

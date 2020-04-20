@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     phoneNumber: DataTypes.STRING,
     role: DataTypes.STRING,
   }, { underscored: true });
+
   user.associate = function(models) {
     user.belongsToMany(models.organization, { through: 'organization_members' });
     user.belongsToMany(models.event, { through: 'event_users' });
@@ -15,5 +16,6 @@ module.exports = (sequelize, DataTypes) => {
     user.hasMany(models.lostItem);
     user.hasMany(models.message);
   };
+
   return user;
 };

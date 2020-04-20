@@ -1,16 +1,15 @@
 <% events.forEach((event) => { %>
   <p>
     <%= event.name %><br>
-    <%= event.dateAndTime%><br>
+    <%= event.dateAndTime %><br>
     <%= event.location %><br>
     <%= event.category %>
-    <a href= "<%= showPath(event) %>">Show</a>
-    <a href= "<%= editPath(event) %>"> Edit</a>
-
+    <a href="<%= showPath(event) %>">Show</a>
+    <a href="<%= editPath(event) %>">Edit</a>
   </p>
-  <form action="<%= deletePath(event) %>" method="POST">
-    <input type="hidden" name="_method" value="delete" />
-    <input type="submit" value="Delete" />
+  <form action="<%= deletePath(event) %>" method="post">
+    <input type="hidden" name="_method" value="delete">
+    <input type="submit" value="Delete">
   </form>
 <% }); %>
 <a href="<%= newPath() %>">New</a>

@@ -2,12 +2,12 @@
   <p>
     <%= organization.name %><br>
     <%= organization.description %>
-    <a href= "<%= showPath(organization) %>">Show</a>
-    <a href= "<%= editPath(organization) %>">Edit</a>
+    <a href="<%= showPath(organization) %>">Show</a>
+    <a href="<%= editPath(organization) %>">Edit</a>
   </p>
-  <form action="<%= deletePath(organization) %>" method="POST">
-    <input type="hidden" name="_method" value="delete" />
-    <input type="submit" value="Delete" />
+  <form action="<%= deletePath(organization) %>" method="post">
+    <input type="hidden" name="_method" value="delete">
+    <input type="submit" value="Delete">
   </form>
 <% }); %>
 <a href="<%= newPath() %>">New</a>

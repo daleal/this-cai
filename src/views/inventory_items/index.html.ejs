@@ -4,11 +4,11 @@
     <%= item.description %><br>
     <%= item.maxStock %><br>
     <%= item.currentStock %>
-    <a href= "<%= showPath(item) %>">Show</a>
+    <a href="<%= showPath(item) %>">Show</a>
   </p>
-  <form action="<%= deletePath(item) %>" method="POST">
-    <input type="hidden" name="_method" value="delete" />
-    <input type="submit" value="Delete" />
+  <form action="<%= deletePath(item) %>" method="post">
+    <input type="hidden" name="_method" value="delete">
+    <input type="submit" value="Delete">
   </form>
 <% }); %>
 <a href="<%= newPath() %>">New</a>
