@@ -1,15 +1,14 @@
-<form method="post">
-  <label for="name">Nombre:</label>
-  <input type="text" id="name" name="name" required><br><br>
+<div class="content">
+  <h1>Nuevo Evento</h1>
+  <form method="post">
+    <input type="text" id="name" name="name" placeholder="Nombre" required><br><br>
 
-  <label for="dateAndTime">Fecha y hora:</label>
-  <input type="datetime-local" id="dateAndTime" name="dateAndTime" required><br><br>
+    <input type="text" id="location" name="location" placeholder="Ubicación" required><br><br>
 
-  <label for="location">Ubicación:</label>
-  <input type="text" id="location" name="location" required><br><br>
+    <input type="datetime-local" id="dateAndTime" name="dateAndTime" placeholder="Fecha y hora" required><br><br>
 
-  <label for="category">Categoría:</label>
-  <input type="text" id="category" name="category" required><br><br>
+    <input type="text" id="category" name="category" placeholder="Categoría" required><br><br>
 
-  <input type="submit" value="Submit">
-</form>
+    <input type="submit" value="Submit">
+  </form>
+</div>

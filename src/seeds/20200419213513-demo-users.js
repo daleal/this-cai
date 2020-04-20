@@ -2,6 +2,7 @@
 
 module.exports = {
   up: (queryInterface) => queryInterface.bulkInsert('users', [{
+    id: 1,
     email: 'fharellano@uc.cl',
     first_name: 'Felipe',
     last_name: 'Arellano',
@@ -10,6 +11,7 @@ module.exports = {
     created_at: new Date(),
     updated_at: new Date(),
   }, {
+    id: 2,
     email: 'ebrzovic@uc.cl',
     first_name: 'Esteban',
     last_name: 'Brzovic',
@@ -18,6 +20,7 @@ module.exports = {
     created_at: new Date(),
     updated_at: new Date(),
   }, {
+    id: 3,
     email: 'jeschuwirth@uc.cl',
     first_name: 'Juan',
     last_name: 'Schuwirth',
@@ -26,6 +29,7 @@ module.exports = {
     created_at: new Date(),
     updated_at: new Date(),
   }, {
+    id: 4,
     email: 'dlleal@uc.cl',
     first_name: 'Daniel',
     last_name: 'Leal',
@@ -34,6 +38,7 @@ module.exports = {
     created_at: new Date(),
     updated_at: new Date(),
   }, {
+    id: 5,
     email: 'jtescobar1@uc.cl',
     first_name: 'Jose',
     last_name: 'Escobar',

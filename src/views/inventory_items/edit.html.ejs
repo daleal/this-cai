@@ -1,16 +1,18 @@
-<form method="post">
-  <input type="hidden" name="_method" value="patch">
-  <label for="name">Name:</label>
-  <input type="text" id="name" name="name" value= "<%= inventoryItem.name%>" required ><br><br>
+<div class="content">
+  <h1>Editar Item de Inventario</h1>
+  <form method="post">
+    <input type="hidden" name="_method" value="patch">
 
-  <label for="description">Description:</label>
-  <input type="text" id="description" name="description" value= "<%= inventoryItem.description%>" required><br><br>
+    <input type="text" id="name" name="name" placeholder="Nombre" value="<%= inventoryItem.name %>" required><br><br>
 
-  <label for="maxStock">Max Stock:</label>
-  <input type="number" id="maxStock" name="maxStock" value= "<%= inventoryItem.maxStock%>" required><br><br>
+    <input type="number" id="maxStock" name="maxStock" placeholder="Unidades existentes" value="<%= inventoryItem.maxStock %>" required><br><br>
 
-  <label for="currentStock">Current Stock:</label>
-  <input type="number" id="currentStock" name="currentStock" value= "<%= inventoryItem.currentStock%>" required><br><br>
+    <input type="number" id="currentStock" name="currentStock" placeholder="Disponible" value="<%= inventoryItem.currentStock %>" required><br><br>
 
-  <input type="submit" value="Submit">
-</form>
+    <textarea type="text" id="description" name="description" placeholder="Descripción" required>
+      <%= inventoryItem.description %>
+    </textarea><br><br>
+
+    <input type="submit" value="Submit">
+  </form>
+</div>

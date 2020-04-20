@@ -1,14 +1,25 @@
-<% projects.forEach((project) => { %>
+<div class="content">
+  <h1>Proyectos</h1>
+
   <p>
-    <%= project.name %><br>
-    <%= project.description %><br>
-    <%= project.contactInfo%><br>
-    <a href= "<%= showPath(project) %>">Show</a>
-    <a href= "<%= editPath(project) %>">Edit</a>
+    <a href="<%= newPath() %>">New</a>
   </p>
-  <form action="<%= deletePath(project) %>" method="POST">
-    <input type="hidden" name="_method" value="delete" />
-    <input type="submit" value="Delete" />
-  </form>
-<% }); %>
-<a href="<%= newPath() %>">New</a>
+
+  <% projects.forEach((project) => { %>
+    <h2><%= project.name %></h2>
+    <p>
+      <%= project.description %><br>
+      Contacto: <%= project.contactInfo %>
+    </p>
+    <p>
+      <a href="<%= showPath(project) %>">Show</a>
+      <a href="<%= editPath(project) %>">Edit</a>
+    </p>
+    <p>
+      <form action="<%= deletePath(project) %>" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <input type="submit" value="Delete">
+      </form>
+    </p>
+  <% }); %>
+</div>

@@ -1,14 +1,25 @@
-<% messages.forEach((message) => { %>
+<div class="content">
+  <h1>Mensajes</h1>
+
   <p>
-    <%= message.content %><br>
-    <%= message.email %><br>
-    <%= message.createdAt%><br>
-    <a href= "<%= showPath(message) %>">Show</a>
-    <a href= "<%= editPath(message) %>">Edit</a>
+    <a href="<%= newPath() %>">New</a>
   </p>
-  <form action="<%= deletePath(message) %>" method="POST">
-    <input type="hidden" name="_method" value="delete" />
-    <input type="submit" value="Delete" />
-  </form>
-<% }); %>
-<a href="<%= newPath() %>">New</a>
+
+  <% messages.forEach((message) => { %>
+    <h3><%= message.email %></h2>
+    <p>
+      <%= message.content %><br>
+      <%= message.createdAt %>
+    </p>
+    <p>
+      <a href="<%= showPath(message) %>">Show</a>
+      <a href="<%= editPath(message) %>">Edit</a>
+    </p>
+    <p>
+      <form action="<%= deletePath(message) %>" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <input type="submit" value="Delete">
+      </form>
+    </p>
+  <% }); %>
+</div>

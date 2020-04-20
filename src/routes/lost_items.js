@@ -6,10 +6,9 @@ router.get('lost_items.index', '/', async (ctx) => {
   const lostItems = await ctx.orm.lostItem.findAll();
   await ctx.render('lost_items/index', {
     lostItems,
+    newPath: () => ctx.router.url('lost_items.new'),
     showPath: (item) => ctx.router.url('lost_items.show', { id: item.id }),
     editPath: (item) => ctx.router.url('lost_items.edit', { id: item.id }),
-
-    newPath: () => ctx.router.url('lost_items.new'),
     deletePath: (item) => ctx.router.url('lost_items.destroy', { id: item.id }),
   });
 });
@@ -24,17 +23,14 @@ router.get('lost_items.new', '/new', async (ctx) => {
 });
 
 router.post('lost_items.create', '/new', async (ctx) => {
-  const lostItem = ctx.orm.lostItem.build({
-    description: ctx.request.body.description,
-    taken: false,
-  });
   try {
+    const { description } = ctx.request.body;
+    const lostItem = ctx.orm.lostItem.build({ description, taken: false });
     await lostItem.save({ fields: ['description', 'taken'] });
     ctx.redirect(ctx.router.url('lost_items.index'));
-  } catch (validationErrors) {
-    await ctx.render('lost_items/new', {
-      lostItem,
-    });
+  } catch (validationError) {
+    ctx.state.flashMessage.danger = validationError.message;
+    await ctx.render('lost_items/new');
   }
 });
 
@@ -49,10 +45,9 @@ router.patch('lost_items.update', '/:id/edit', async (ctx) => {
     const { description } = ctx.request.body;
     await lostItem.update({ description });
     ctx.redirect(ctx.router.url('lost_items.index'));
-  } catch (validationErrors) {
-    await ctx.render('lost_items/edit', {
-      lostItem,
-    });
+  } catch (validationError) {
+    ctx.state.flashMessage.danger = validationError.message;
+    await ctx.render('lost_items/edit', { lostItem });
   }
 });
 

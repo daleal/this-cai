@@ -6,9 +6,9 @@ router.get('organizations.index', '/', async (ctx) => {
   const organizations = await ctx.orm.organization.findAll();
   await ctx.render('organizations/index', {
     organizations,
+    newPath: () => ctx.router.url('organizations.new'),
     showPath: (organization) => ctx.router.url('organizations.show', { id: organization.id }),
     editPath: (organization) => ctx.router.url('organizations.edit', { id: organization.id }),
-    newPath: () => ctx.router.url('organizations.new'),
     deletePath: (organization) => ctx.router.url('organizations.destroy', { id: organization.id }),
   });
 });
@@ -23,19 +23,14 @@ router.get('organizations.new', '/new', async (ctx) => {
 });
 
 router.post('organizations.create', '/new', async (ctx) => {
-  const organization = ctx.orm.organization.build({
-    name: ctx.request.body.name,
-    description: ctx.request.body.description,
-  });
   try {
+    const { name, description } = ctx.request.body;
+    const organization = ctx.orm.organization.build({ name, description });
     await organization.save({ fields: ['name', 'description'] });
     ctx.redirect(ctx.router.url('organizations.index'));
-  } catch (validationErrors) {
-    const arrayMessages = validationErrors.map((error) => error.message);
-    ctx.state.flashMessage.danger = `Error: ${arrayMessages.join(', ')}`;
-    await ctx.render('organizations/new', {
-      organization,
-    });
+  } catch (validationError) {
+    ctx.state.flashMessage.danger = validationError.message;
+    await ctx.render('organizations/new');
   }
 });
 
@@ -50,12 +45,9 @@ router.patch('organizations.update', '/:id/edit', async (ctx) => {
     const { name, description } = ctx.request.body;
     await organization.update({ name, description });
     ctx.redirect(ctx.router.url('organizations.index'));
-  } catch (validationErrors) {
-    const arrayMessages = validationErrors.map((error) => error.message);
-    ctx.state.flashMessage.danger = `Error: ${arrayMessages.join(', ')}`;
-    await ctx.render('organizations/edit', {
-      organization,
-    });
+  } catch (validationError) {
+    ctx.state.flashMessage.danger = validationError.message;
+    await ctx.render('organizations/edit', { organization });
   }
 });
 

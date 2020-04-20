@@ -1,8 +1,10 @@
 // Font
-$font-family: 'Baloo Paaji 2', cursive;
+$font-family: 'Cantarell', sans-serif;
 
 // Colors
 $white: rgb(255, 255, 255);
+$almost-white: rgb(240, 240, 240);
+$not-quite-white: rgb(225, 225, 225);
 $black: rgb(10, 10, 10);
 $light: rgb(250, 243, 241);
 $dark: rgb(45, 52, 64);
@@ -15,3 +17,6 @@ $danger: rgb(255, 56, 96);
 
 // Sizes
 $desktop-container-width: 1344px;  // Standard desktop max width
+
+// Misc
+$transition-speed: 400ms;

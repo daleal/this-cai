@@ -1,4 +1,6 @@
-<p>
-  <%= lostItem.description %><br>
-  <%= lostItem.taken ? 'taken' : 'not taken' %>
-</p>
+<div class="content">
+  <h2><%= lostItem.taken ? 'Recuperado' : 'No recuperado' %></h2>
+  <p>
+    <%= lostItem.description %><br>
+  </p>
+</div>

@@ -4,6 +4,7 @@ module.exports = {
   up: (queryInterface) => {
     const itemsData = [
       {
+        id: 1,
         name: 'Sweater',
         description: 'para estudiantes con frio',
         max_stock: 5,
@@ -11,20 +12,23 @@ module.exports = {
         created_at: new Date(),
         updated_at: new Date(),
       }, {
+        id: 2,
         name: 'Pelota tenis de mesa',
         description: 'para jugar tenis de mesa',
         max_stock: 7,
-        current_stock: 7,
+        current_stock: 6,
         created_at: new Date(),
         updated_at: new Date(),
       }, {
+        id: 3,
         name: 'Paleta tenis de mesa',
         description: 'para jugar tenis de mesa',
         max_stock: 14,
-        current_stock: 14,
+        current_stock: 13,
         created_at: new Date(),
         updated_at: new Date(),
       }, {
+        id: 4,
         name: 'Calculadora',
         description: 'Para pruebas y trabajos',
         max_stock: 12,
@@ -32,6 +36,7 @@ module.exports = {
         created_at: new Date(),
         updated_at: new Date(),
       }, {
+        id: 5,
         name: 'Bata de laboratorio y Gafas',
         description: 'Para el laboratorio de quimica entre otros',
         max_stock: 15,

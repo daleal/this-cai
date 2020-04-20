@@ -6,9 +6,9 @@ router.get('projects.index', '/', async (ctx) => {
   const projects = await ctx.orm.project.findAll();
   await ctx.render('projects/index', {
     projects,
+    newPath: () => ctx.router.url('projects.new'),
     showPath: (project) => ctx.router.url('projects.show', { id: project.id }),
     editPath: (project) => ctx.router.url('projects.edit', { id: project.id }),
-    newPath: () => ctx.router.url('projects.new'),
     deletePath: (project) => ctx.router.url('projects.destroy', { id: project.id }),
   });
 });
@@ -23,14 +23,14 @@ router.get('projects.new', '/new', async (ctx) => {
 });
 
 router.post('projects.create', '/new', async (ctx) => {
-  const project = ctx.orm.project.build(ctx.request.body);
   try {
+    const { name, description, contactInfo } = ctx.request.body;
+    const project = ctx.orm.project.build({ name, description, contactInfo });
     await project.save({ fields: ['name', 'description', 'contactInfo'] });
     ctx.redirect(ctx.router.url('projects.index'));
-  } catch (validationErrors) {
-    await ctx.render('projects/new', {
-      project,
-    });
+  } catch (validationError) {
+    ctx.state.flashMessage.danger = validationError.message;
+    await ctx.render('projects/new');
   }
 });
 
@@ -41,7 +41,6 @@ router.get('projects.edit', '/:id/edit', async (ctx) => {
 
 router.patch('projects.update', '/:id/edit', async (ctx) => {
   const project = await ctx.orm.project.findByPk(ctx.params.id);
-
   try {
     const {
       name, description, contactInfo,
@@ -50,10 +49,9 @@ router.patch('projects.update', '/:id/edit', async (ctx) => {
       name, description, contactInfo,
     });
     ctx.redirect(ctx.router.url('projects.index'));
-  } catch (validationErrors) {
-    await ctx.render('projects/edit', {
-      project,
-    });
+  } catch (validationError) {
+    ctx.state.flashMessage.danger = validationError.message;
+    await ctx.render('projects/edit', { project });
   }
 });
 
@@ -62,6 +60,5 @@ router.del('projects.destroy', '/:id/destroy', async (ctx) => {
   await project.destroy();
   ctx.redirect(ctx.router.url('projects.index'));
 });
-
 
 module.exports = router;

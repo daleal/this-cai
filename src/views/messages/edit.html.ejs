@@ -1,10 +1,13 @@
-<form method="post">
-  <input type="hidden" name="_method" value="patch">
-  <label for="content">contenido:</label>
-  <input type="text" id="content" name="content" value= "<%= message.content%>" required><br><br>
+<div class="content">
+  <h1>Editar Mensaje</h1>
+  <form method="post">
+    <input type="hidden" name="_method" value="patch">
 
-  <label for="email">Correo:</label>
-  <input type="text" id="email" name="email" value= "<%= message.email%>" required><br><br>
+    <input type="text" id="email" name="email" placeholder="Email" value="<%= message.email %>" required><br><br>
 
-  <input type="submit" value="Submit">
-</form>
+    <textarea type="text" id="content" name="content" placeholder="Mensaje" required>
+      <%= message.content %>
+    </textarea><br><br>
+
+    <input type="submit" value="Submit">
+  </form>

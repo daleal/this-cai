@@ -1,4 +1,8 @@
-<h2><%= inventoryItem.name %></h2>
-<p>
-  <%= inventoryItem.description %>
-</p>
+<div class="content">
+  <h2><%= inventoryItem.name %></h2>
+  <p>
+    <%= inventoryItem.description %><br>
+    Unidades existentes: <%= inventoryItem.maxStock %><br>
+    Disponible: <%= inventoryItem.currentStock %>
+  </p>
+</div>

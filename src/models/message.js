@@ -5,8 +5,6 @@ module.exports = (sequelize, DataTypes) => {
     content: DataTypes.TEXT,
     email: DataTypes.STRING,
   }, { underscored: true });
-  // message.associate = function (models) {
-    // associations can be defined here
-  // };
+
   return message;
 };
