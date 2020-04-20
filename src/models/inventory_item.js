@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     currentStock: DataTypes.INTEGER,
   }, { underscored: true });
   inventoryItem.associate = function (models) {
-    inventoryItem.belongsToMany(models.user, { through: 'user_inventory_items' });
+    inventoryItem.hasMany(models.reservation);
   };
   return inventoryItem;
 };

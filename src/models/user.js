@@ -10,10 +10,10 @@ module.exports = (sequelize, DataTypes) => {
   }, { underscored: true });
   user.associate = function(models) {
     user.belongsToMany(models.organization, { through: 'organization_members' });
-    user.hasMany(models.lostItem);
-    user.belongsToMany(models.inventoryItem, { through: 'user_inventory_items' });
-    user.hasMany(models.message);
     user.belongsToMany(models.event, { through: 'event_users' });
+    user.hasMany(models.reservation);
+    user.hasMany(models.lostItem);
+    user.hasMany(models.message);
   };
   return user;
 };
