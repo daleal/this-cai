@@ -7,6 +7,7 @@ router.get('users.index', '/', async (ctx) => {
   await ctx.render('users/index', {
     users,
     showPath: (user) => ctx.router.url('users.show', { id: user.id }),
+    editPath: (user) => ctx.router.url('users.edit', { id: user.id }),
     newPath: () => ctx.router.url('users.new'),
     deletePath: (user) => ctx.router.url('users.destroy', { id: user.id }),
   });
@@ -30,14 +31,16 @@ router.post('users.create', '/new', async (ctx) => {
     role: ctx.request.body.role,
   });
   try {
+    ctx.helpers.users.validate(ctx.request.body);
     await user.save({
       fields: ['email', 'firstName', 'lastName', 'phoneNumber', 'role'],
     });
     ctx.redirect(ctx.router.url('users.index'));
-  } catch (validationError) {
+  } catch (validationErrors) {
+    const arrayMessages = validationErrors.map((error) => error.message);
+    ctx.state.flashMessage.danger = `Error: ${arrayMessages.join(', ')}`;
     await ctx.render('users/new', {
       user,
-      errors: validationError.errors,
     });
   }
 });
@@ -50,6 +53,7 @@ router.get('users.edit', '/:id/edit', async (ctx) => {
 router.patch('users.update', '/:id/edit', async (ctx) => {
   const user = await ctx.orm.user.findByPk(ctx.params.id);
   try {
+    ctx.helpers.users.validate(ctx.request.body);
     const {
       email, firstName, lastName, phoneNumber, role,
     } = ctx.request.body;
@@ -57,10 +61,11 @@ router.patch('users.update', '/:id/edit', async (ctx) => {
       email, firstName, lastName, phoneNumber, role,
     });
     ctx.redirect(ctx.router.url('users.index'));
-  } catch (validationError) {
+  } catch (validationErrors) {
+    const arrayMessages = validationErrors.map((error) => error.message);
+    ctx.state.flashMessage.danger = `Error: ${arrayMessages.join(', ')}`;
     await ctx.render('users/edit', {
       user,
-      errors: validationError.errors,
     });
   }
 });

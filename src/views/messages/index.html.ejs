@@ -4,6 +4,7 @@
     <%= message.email %><br>
     <%= message.createdAt%><br>
     <a href= "<%= showPath(message) %>">Show</a>
+    <a href= "<%= editPath(message) %>">Edit</a>
   </p>
   <form action="<%= deletePath(message) %>" method="POST">
     <input type="hidden" name="_method" value="delete" />

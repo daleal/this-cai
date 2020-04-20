@@ -4,6 +4,7 @@
    <%= article.content %><br>
 
    <a href= "<%= showPath(article) %>"> Show </a>
+   <a href= "<%= editPath(article) %>"> Edit </a>
  </p>
    <form action="<%= deletePath(article) %>" method="POST">
       <input type="hidden" name="_method" value="delete" />

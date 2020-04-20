@@ -1,10 +1,10 @@
 <form method="post">
   <input type="hidden" name="_method" value="patch">
   <label for="content">contenido:</label>
-  <input type="text" id="content" name="content" value= "<%= message.content%>" ><br><br>
+  <input type="text" id="content" name="content" value= "<%= message.content%>" required><br><br>
 
   <label for="email">Correo:</label>
-  <input type="text" id="email" name="email" value= "<%= massage.email%>"><br><br>
+  <input type="text" id="email" name="email" value= "<%= message.email%>" required><br><br>
 
   <input type="submit" value="Submit">
 </form>

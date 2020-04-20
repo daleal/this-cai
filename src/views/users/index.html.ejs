@@ -6,6 +6,7 @@
     <%= user.phoneNumber %><br>
     <%= user.role %>
     <a href= "<%= showPath(user) %>">Show</a>
+    <a href= "<%= editPath(user) %>">Edit</a>
   </p>
   <form action="<%= deletePath(user) %>" method="POST">
     <input type="hidden" name="_method" value="delete" />

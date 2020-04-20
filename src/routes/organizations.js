@@ -7,6 +7,7 @@ router.get('organizations.index', '/', async (ctx) => {
   await ctx.render('organizations/index', {
     organizations,
     showPath: (organization) => ctx.router.url('organizations.show', { id: organization.id }),
+    editPath: (organization) => ctx.router.url('organizations.edit', { id: organization.id }),
     newPath: () => ctx.router.url('organizations.new'),
     deletePath: (organization) => ctx.router.url('organizations.destroy', { id: organization.id }),
   });
@@ -29,10 +30,11 @@ router.post('organizations.create', '/new', async (ctx) => {
   try {
     await organization.save({ fields: ['name', 'description'] });
     ctx.redirect(ctx.router.url('organizations.index'));
-  } catch (validationError) {
+  } catch (validationErrors) {
+    const arrayMessages = validationErrors.map((error) => error.message);
+    ctx.state.flashMessage.danger = `Error: ${arrayMessages.join(', ')}`;
     await ctx.render('organizations/new', {
       organization,
-      errors: validationError.errors,
     });
   }
 });
@@ -48,10 +50,11 @@ router.patch('organizations.update', '/:id/edit', async (ctx) => {
     const { name, description } = ctx.request.body;
     await organization.update({ name, description });
     ctx.redirect(ctx.router.url('organizations.index'));
-  } catch (validationError) {
+  } catch (validationErrors) {
+    const arrayMessages = validationErrors.map((error) => error.message);
+    ctx.state.flashMessage.danger = `Error: ${arrayMessages.join(', ')}`;
     await ctx.render('organizations/edit', {
       organization,
-      errors: validationError.errors,
     });
   }
 });

@@ -1,24 +1,12 @@
-<!-- <div>
-<% if (locals.errors) { %>
-  <div class="errors">
-    You need to fix the following errors:
-    <ul>
-      <% errors.forEach(error => { %>
-        <li><%= error.message %></li>
-      <% }); %>
-    </ul>
-  </div>
-<% } %> -->
-
 <form method="post">
   <label for="name">Name:</label>
-  <input type="text" id="name" name="name"><br><br>
+  <input type="text" id="name" name="name" required><br><br>
 
   <label for="description">Description:</label>
-  <input type="text" id="description" name="description"><br><br>
+  <input type="text" id="description" name="description" required><br><br>
 
   <label for="contactInfo">contact Info:</label>
-  <input type="text" id="contactInfo" name="contactInfo"><br><br>
+  <input type="text" id="contactInfo" name="contactInfo" required><br><br>
 
   <input type="submit" value="Submit">
 </form>

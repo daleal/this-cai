@@ -1,4 +1,3 @@
-'use strict';
 
 const KoaRouter = require('koa-router');
 
@@ -10,7 +9,8 @@ router.get('articles.index', '/', async (ctx) => {
     articles,
     deletePath: (article) => ctx.router.url('articles.destroy', { id: article.id }),
     newPath: () => ctx.router.url('articles.new'),
-    showPath: (article) => ctx.router.url('article.show', { id: article.id }),
+    showPath: (article) => ctx.router.url('articles.show', { id: article.id }),
+    editPath: (article) => ctx.router.url('articles.edit', { id: article.id }),
   });
 });
 
@@ -32,7 +32,6 @@ router.post('articles.create', '/new', async (ctx) => {
   } catch (validationError) {
     await ctx.render('articles/new', {
       article,
-      errors: validationError.errors,
     });
   }
 });
@@ -56,7 +55,6 @@ router.patch('articles.update', '/:id/edit', async (ctx) => {
   } catch (validationError) {
     await ctx.render('articles/edit', {
       article,
-      errors: validationError.errors,
     });
   }
 });

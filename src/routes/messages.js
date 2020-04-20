@@ -7,6 +7,7 @@ router.get('messages.index', '/', async (ctx) => {
   await ctx.render('messages/index', {
     messages,
     showPath: (message) => ctx.router.url('messages.show', { id: message.id }),
+    editPath: (message) => ctx.router.url('messages.edit', { id: message.id }),
     newPath: () => ctx.router.url('messages.new'),
     deletePath: (message) => ctx.router.url('messages.destroy', { id: message.id }),
   });
@@ -25,12 +26,14 @@ router.get('messages.new', '/new', async (ctx) => {
 router.post('messages.create', '/new', async (ctx) => {
   const message = ctx.orm.message.build(ctx.request.body);
   try {
+    ctx.helpers.messages.validate(ctx.request.body);
     await message.save({ fields: ['content', 'email'] });
     ctx.redirect(ctx.router.url('messages.index'));
-  } catch (validationError) {
+  } catch (validationErrors) {
+    const arrayMessages = validationErrors.map((error) => error.message);
+    ctx.state.flashMessage.danger = `Error: ${arrayMessages.join(', ')}`;
     await ctx.render('messages/new', {
       message,
-      errors: validationError.errors,
     });
   }
 });
@@ -44,6 +47,7 @@ router.patch('messages.update', '/:id/edit', async (ctx) => {
   const message = await ctx.orm.message.findByPk(ctx.params.id);
 
   try {
+    ctx.helpers.messages.validate(ctx.request.body);
     const {
       content, email,
     } = ctx.request.body;
@@ -51,10 +55,11 @@ router.patch('messages.update', '/:id/edit', async (ctx) => {
       content, email,
     });
     ctx.redirect(ctx.router.url('messages.index'));
-  } catch (validationError) {
+  } catch (validationErrors) {
+    const arrayMessages = validationErrors.map((error) => error.message);
+    ctx.state.flashMessage.danger = `Error: ${arrayMessages.join(', ')}`;
     await ctx.render('messages/edit', {
       message,
-      errors: validationError.errors,
     });
   }
 });
