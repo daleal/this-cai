@@ -11,7 +11,7 @@ module.exports = {
       content: {
         type: Sequelize.TEXT
       },
-      mail: {
+      email: {
         type: Sequelize.STRING
       },
       created_at: {

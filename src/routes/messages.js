@@ -25,7 +25,7 @@ router.get('messages.new', '/new', async (ctx) => {
 router.post('messages.create', '/new', async (ctx) => {
   const message = ctx.orm.message.build(ctx.request.body);
   try {
-    await message.save({ fields: ['name', 'description', 'contactInfo'] });
+    await message.save({ fields: ['content', 'email'] });
     ctx.redirect(ctx.router.url('messages.index'));
   } catch (validationError) {
     await ctx.render('messages/new', {
@@ -45,10 +45,10 @@ router.patch('messages.update', '/:id/edit', async (ctx) => {
 
   try {
     const {
-      name, description, contactInfo,
+      content, email,
     } = ctx.request.body;
     await message.update({
-      name, description, contactInfo,
+      content, email,
     });
     ctx.redirect(ctx.router.url('messages.index'));
   } catch (validationError) {
