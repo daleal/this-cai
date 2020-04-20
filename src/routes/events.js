@@ -34,8 +34,7 @@ router.post('events.create', '/new', async (ctx) => {
     await event.save({ fields: ['name', 'dateAndTime', 'category', 'location'] });
     ctx.redirect(ctx.router.url('events.index'));
   } catch (validationErrors) {
-    const arrayMessages = validationErrors.map((error) => error.message);
-    ctx.state.flashMessage.danger = `Error: ${arrayMessages.join(', ')}`;
+    ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
     await ctx.render('events/new');
   }
 });
@@ -58,8 +57,7 @@ router.patch('events.update', '/:id/edit', async (ctx) => {
     });
     ctx.redirect(ctx.router.url('events.index'));
   } catch (validationErrors) {
-    const arrayMessages = validationErrors.map((error) => error.message);
-    ctx.state.flashMessage.danger = `Error: ${arrayMessages.join(', ')}`;
+    ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
     await ctx.render('events/edit', { event });
   }
 });

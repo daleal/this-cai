@@ -1,16 +1,26 @@
-<% users.forEach((user) => { %>
+<div class="content">
+  <h1>Usuarios</h1>
+
   <p>
-    <%= user.email %><br>
-    <%= user.firstName %><br>
-    <%= user.lastName %><br>
-    <%= user.phoneNumber %><br>
-    <%= user.role %>
-    <a href="<%= showPath(user) %>">Show</a>
-    <a href="<%= editPath(user) %>">Edit</a>
+    <a href="<%= newPath() %>">New</a>
   </p>
-  <form action="<%= deletePath(user) %>" method="post">
-    <input type="hidden" name="_method" value="delete">
-    <input type="submit" value="Delete">
-  </form>
-<% }); %>
-<a href="<%= newPath() %>">New</a>
+
+  <% users.forEach((user) => { %>
+    <h2><%= user.firstName %> <%= user.lastName %></h2>
+    <p>
+      <%= user.email %><br>
+      <%= user.phoneNumber %><br>
+      Permisos: <%= user.role %>
+    </p>
+    <p>
+      <a href="<%= showPath(user) %>">Show</a>
+      <a href="<%= editPath(user) %>">Edit</a>
+    </p>
+    <p>
+      <form action="<%= deletePath(user) %>" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <input type="submit" value="Delete">
+      </form>
+    </p>
+  <% }); %>
+</div>

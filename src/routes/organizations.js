@@ -45,9 +45,8 @@ router.patch('organizations.update', '/:id/edit', async (ctx) => {
     const { name, description } = ctx.request.body;
     await organization.update({ name, description });
     ctx.redirect(ctx.router.url('organizations.index'));
-  } catch (validationErrors) {
-    const arrayMessages = validationErrors.map((error) => error.message);
-    ctx.state.flashMessage.danger = `Error: ${arrayMessages.join(', ')}`;
+  } catch (validationError) {
+    ctx.state.flashMessage.danger = validationError.message;
     await ctx.render('organizations/edit', { organization });
   }
 });

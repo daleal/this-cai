@@ -1,13 +1,24 @@
-<% organizations.forEach((organization) => { %>
+<div class="content">
+  <h1>Organizaciones</h1>
+
   <p>
-    <%= organization.name %><br>
-    <%= organization.description %>
-    <a href="<%= showPath(organization) %>">Show</a>
-    <a href="<%= editPath(organization) %>">Edit</a>
+    <a href="<%= newPath() %>">New</a>
   </p>
-  <form action="<%= deletePath(organization) %>" method="post">
-    <input type="hidden" name="_method" value="delete">
-    <input type="submit" value="Delete">
-  </form>
-<% }); %>
-<a href="<%= newPath() %>">New</a>
+
+  <% organizations.forEach((organization) => { %>
+    <h2><%= organization.name %></h2>
+    <p>
+      <%= organization.description %>
+    </p>
+    <p>
+      <a href="<%= showPath(organization) %>">Show</a>
+      <a href="<%= editPath(organization) %>">Edit</a>
+    </p>
+    <p>
+      <form action="<%= deletePath(organization) %>" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <input type="submit" value="Delete">
+      </form>
+    </p>
+  <% }); %>
+</div>

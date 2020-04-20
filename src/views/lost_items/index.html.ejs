@@ -1,13 +1,24 @@
-<% lostItems.forEach((lostItem) => { %>
+<div class="content">
+  <h1>Objetos Perdidos</h1>
+
   <p>
-    <%= lostItem.description %><br>
-    <%= lostItem.taken ? 'taken' : 'not taken' %>
-    <a href="<%= showPath(lostItem) %>">Show</a>
-    <a href="<%= editPath(lostItem) %>">Edit</a>
+    <a href="<%= newPath() %>">New</a>
   </p>
-  <form action="<%= deletePath(lostItem) %>" method="post">
-    <input type="hidden" name="_method" value="delete">
-    <input type="submit" value="Delete">
-  </form>
-<% }); %>
-<a href="<%= newPath() %>">New</a>
+
+  <% lostItems.forEach((lostItem) => { %>
+    <p>
+      <%= lostItem.description %><br>
+      <%= lostItem.taken ? 'Recuperado' : 'No recuperado' %>
+    </p>
+    <p>
+      <a href="<%= showPath(lostItem) %>">Show</a>
+      <a href="<%= editPath(lostItem) %>">Edit</a>
+    </p>
+    <p>
+      <form action="<%= deletePath(lostItem) %>" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <input type="submit" value="Delete">
+      </form>
+    </p>
+  <% }); %>
+</div>

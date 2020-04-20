@@ -1,7 +1,8 @@
-<p>
-  <%= user.email %><br>
-  <%= user.firstName %><br>
-  <%= user.lastName %><br>
-  <%= user.phoneNumber %><br>
-  <%= user.role %>
-</p>
+<div class="content">
+  <h2><%= user.firstName %> <%= user.lastName %></h2>
+  <p>
+    <%= user.email %><br>
+    <%= user.phoneNumber %><br>
+    Permisos: <%= user.role %>
+  </p>
+</div>

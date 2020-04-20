@@ -31,8 +31,7 @@ router.post('messages.create', '/new', async (ctx) => {
     await message.save({ fields: ['content', 'email'] });
     ctx.redirect(ctx.router.url('messages.index'));
   } catch (validationErrors) {
-    const arrayMessages = validationErrors.map((error) => error.message);
-    ctx.state.flashMessage.danger = `Error: ${arrayMessages.join(', ')}`;
+    ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
     await ctx.render('messages/new');
   }
 });
@@ -50,8 +49,7 @@ router.patch('messages.update', '/:id/edit', async (ctx) => {
     await message.update({ content, email });
     ctx.redirect(ctx.router.url('messages.index'));
   } catch (validationErrors) {
-    const arrayMessages = validationErrors.map((error) => error.message);
-    ctx.state.flashMessage.danger = `Error: ${arrayMessages.join(', ')}`;
+    ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
     await ctx.render('messages/edit', { message });
   }
 });

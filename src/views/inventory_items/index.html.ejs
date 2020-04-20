@@ -1,14 +1,26 @@
-<% inventoryItems.forEach((item) => { %>
+<div class="content">
+  <h1>Inventario</h1>
+
   <p>
-    <%= item.name %><br>
-    <%= item.description %><br>
-    <%= item.maxStock %><br>
-    <%= item.currentStock %>
-    <a href="<%= showPath(item) %>">Show</a>
+    <a href="<%= newPath() %>">New</a>
   </p>
-  <form action="<%= deletePath(item) %>" method="post">
-    <input type="hidden" name="_method" value="delete">
-    <input type="submit" value="Delete">
-  </form>
-<% }); %>
-<a href="<%= newPath() %>">New</a>
+
+  <% inventoryItems.forEach((item) => { %>
+    <p>
+      <%= item.name %><br>
+      <%= item.description %><br>
+      Unidades existentes: <%= item.maxStock %><br>
+      Disponible: <%= item.currentStock %>
+    </p>
+    <p>
+      <a href="<%= showPath(item) %>">Show</a>
+      <a href="<%= editPath(item) %>">Edit</a>
+    </p>
+    <p>
+      <form action="<%= deletePath(item) %>" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <input type="submit" value="Delete">
+      </form>
+    </p>
+  <% }); %>
+</div>
