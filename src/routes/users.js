@@ -36,7 +36,11 @@ router.post('users.create', '/new', async (ctx) => {
     });
     ctx.redirect(ctx.router.url('users.index'));
   } catch (validationErrors) {
-    ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
+    if (Array.isArray(validationErrors)) {
+      ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
+    } else {
+      ctx.state.flashMessage.danger = validationErrors.message;
+    }
     await ctx.render('users/new');
   }
 });
@@ -58,7 +62,11 @@ router.patch('users.update', '/:id/edit', async (ctx) => {
     });
     ctx.redirect(ctx.router.url('users.index'));
   } catch (validationErrors) {
-    ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
+    if (Array.isArray(validationErrors)) {
+      ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
+    } else {
+      ctx.state.flashMessage.danger = validationErrors.message;
+    }
     await ctx.render('users/edit', { user });
   }
 });

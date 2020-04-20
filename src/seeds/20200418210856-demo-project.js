@@ -2,7 +2,6 @@
 
 module.exports = {
   up: (queryInterface) => queryInterface.bulkInsert('projects', [{
-    id: 1,
     name: 'TDI 2020',
     description: 'Trabajos de Invierno Ingenieria UC para el 2020',
     contact_info: 'TDI2020@uc.cl',
@@ -10,7 +9,6 @@ module.exports = {
     created_at: new Date(),
     updated_at: new Date(),
   }, {
-    id: 2,
     name: 'Arcade Cabinet',
     description: 'Construccion de mueble para emular todo tipo de juegos retro',
     contact_info: 'gabo@laresistencia.cl',
@@ -18,7 +16,6 @@ module.exports = {
     created_at: new Date(),
     updated_at: new Date(),
   }, {
-    id: 3,
     name: 'PreU matematica',
     description: 'Pre-Universitario centrado en matematica',
     contact_info: 'preumates@uc.cl',
@@ -26,7 +23,6 @@ module.exports = {
     created_at: new Date(),
     updated_at: new Date(),
   }, {
-    id: 4,
     name: 'PreU Lenguaje',
     description: 'Pre-Universitario centrado en lenguaje',
     contact_info: 'preulenguas@uc.cl',
@@ -34,7 +30,6 @@ module.exports = {
     created_at: new Date(),
     updated_at: new Date(),
   }, {
-    id: 5,
     name: 'Misiones Santa Teresa',
     description: 'Repartimos la palabra de Dios y acompañamos a la gente de comunidades vulnerables',
     contact_info: 'jesuslalleva@uc.cl',
@@ -42,7 +37,6 @@ module.exports = {
     created_at: new Date(),
     updated_at: new Date(),
   }, {
-    id: 6,
     name: 'Reparación computadores',
     description: 'Reparamos computadores para donarlos a personas que los necesiten',
     contact_info: 'cputeam@uc.cl',

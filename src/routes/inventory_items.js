@@ -34,7 +34,11 @@ router.post('inventory_items.create', '/new', async (ctx) => {
     await inventoryItem.save({ fields: ['name', 'description', 'maxStock', 'currentStock'] });
     ctx.redirect(ctx.router.url('inventory_items.index'));
   } catch (validationErrors) {
-    ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
+    if (Array.isArray(validationErrors)) {
+      ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
+    } else {
+      ctx.state.flashMessage.danger = validationErrors.message;
+    }
     await ctx.render('inventory_items/new');
   }
 });
@@ -56,7 +60,11 @@ router.patch('inventory_items.update', '/:id/edit', async (ctx) => {
     });
     ctx.redirect(ctx.router.url('inventory_items.index'));
   } catch (validationErrors) {
-    ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
+    if (Array.isArray(validationErrors)) {
+      ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
+    } else {
+      ctx.state.flashMessage.danger = validationErrors.message;
+    }
     await ctx.render('inventory_items/edit', { inventoryItem });
   }
 });
