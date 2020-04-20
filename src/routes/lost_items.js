@@ -7,6 +7,8 @@ router.get('lost_items.index', '/', async (ctx) => {
   await ctx.render('lost_items/index', {
     lostItems,
     showPath: (item) => ctx.router.url('lost_items.show', { id: item.id }),
+    editPath: (item) => ctx.router.url('lost_items.edit', { id: item.id }),
+
     newPath: () => ctx.router.url('lost_items.new'),
     deletePath: (item) => ctx.router.url('lost_items.destroy', { id: item.id }),
   });
@@ -29,10 +31,9 @@ router.post('lost_items.create', '/new', async (ctx) => {
   try {
     await lostItem.save({ fields: ['description', 'taken'] });
     ctx.redirect(ctx.router.url('lost_items.index'));
-  } catch (validationError) {
+  } catch (validationErrors) {
     await ctx.render('lost_items/new', {
       lostItem,
-      errors: validationError.errors,
     });
   }
 });
@@ -48,10 +49,9 @@ router.patch('lost_items.update', '/:id/edit', async (ctx) => {
     const { description } = ctx.request.body;
     await lostItem.update({ description });
     ctx.redirect(ctx.router.url('lost_items.index'));
-  } catch (validationError) {
+  } catch (validationErrors) {
     await ctx.render('lost_items/edit', {
       lostItem,
-      errors: validationError.errors,
     });
   }
 });

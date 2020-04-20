@@ -8,6 +8,7 @@ router.get('events.index', '/', async (ctx) => {
     events,
     showPath: (event) => ctx.router.url('events.show', { id: event.id }),
     newPath: () => ctx.router.url('events.new'),
+    editPath: (event) => ctx.router.url('events.edit', { id: event.id }),
     deletePath: (event) => ctx.router.url('events.destroy', { id: event.id }),
   });
 });
@@ -24,12 +25,14 @@ router.get('events.new', '/new', async (ctx) => {
 router.post('events.create', '/new', async (ctx) => {
   const event = ctx.orm.event.build(ctx.request.body);
   try {
+    ctx.helpers.events.validate(ctx.request.body);
     await event.save({ fields: ['name', 'dateAndTime', 'category', 'location'] });
     ctx.redirect(ctx.router.url('events.index'));
-  } catch (validationError) {
+  } catch (validationErrors) {
+    const arrayMessages = validationErrors.map((error) => error.message);
+    ctx.state.flashMessage.danger = `Error: ${arrayMessages.join(', ')}`;
     await ctx.render('events/new', {
       event,
-      errors: validationError.errors,
     });
   }
 });
@@ -43,6 +46,7 @@ router.patch('events.update', '/:id/edit', async (ctx) => {
   const event = await ctx.orm.event.findByPk(ctx.params.id);
 
   try {
+    ctx.helpers.events.validate(ctx.request.body);
     const {
       name, dateAndTime, category, location,
     } = ctx.request.body;
@@ -50,10 +54,11 @@ router.patch('events.update', '/:id/edit', async (ctx) => {
       name, dateAndTime, category, location,
     });
     ctx.redirect(ctx.router.url('events.index'));
-  } catch (validationError) {
+  } catch (validationErrors) {
+    const arrayMessages = validationErrors.map((error) => error.message);
+    ctx.state.flashMessage.danger = `Error: ${arrayMessages.join(', ')}`;
     await ctx.render('events/edit', {
       event,
-      errors: validationError.errors,
     });
   }
 });

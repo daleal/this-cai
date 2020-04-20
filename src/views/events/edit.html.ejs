@@ -1,16 +1,16 @@
 <form method="post">
   <input type="hidden" name="_method" value="patch">
   <label for="name">Nombre:</label>
-  <input type="text" id="name" name="name" value= "<%= event.name%>" ><br><br>
-  
+  <input type="text" id="name" name="name" value= "<%= event.name%>" required><br><br>
+
   <label for="dateAndTime">Fecha y hora:</label>
-  <input type="datetime-local" id="dateAndTime" name="dateAndTime" value= "<%= event.dateAndTime%>"><br><br>
+  <input type="datetime-local" id="dateAndTime" name="dateAndTime" value= "<%= event.dateAndTime.toISOString().replace("Z","")%>" required><br><br>
 
   <label for="location">Ubicación:</label>
-  <input type="text" id="location" name="location" value= "<%= event.location%>"><br><br>
+  <input type="text" id="location" name="location" value= "<%= event.location%>" required><br><br>
 
   <label for="category">Categoría:</label>
-  <input type="text" id="category" name="category" value= "<%= event.category%>"><br><br>
+  <input type="text" id="category" name="category" value= "<%= event.category%>" required><br><br>
 
   <input type="submit" value="Submit">
 </form>

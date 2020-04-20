@@ -1,0 +1,14 @@
+<% messages.forEach((message) => { %>
+  <p>
+    <%= message.content %><br>
+    <%= message.email %><br>
+    <%= message.createdAt%><br>
+    <a href= "<%= showPath(message) %>">Show</a>
+    <a href= "<%= editPath(message) %>">Edit</a>
+  </p>
+  <form action="<%= deletePath(message) %>" method="POST">
+    <input type="hidden" name="_method" value="delete" />
+    <input type="submit" value="Delete" />
+  </form>
+<% }); %>
+<a href="<%= newPath() %>">New</a>

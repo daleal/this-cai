@@ -7,6 +7,7 @@ router.get('projects.index', '/', async (ctx) => {
   await ctx.render('projects/index', {
     projects,
     showPath: (project) => ctx.router.url('projects.show', { id: project.id }),
+    editPath: (project) => ctx.router.url('projects.edit', { id: project.id }),
     newPath: () => ctx.router.url('projects.new'),
     deletePath: (project) => ctx.router.url('projects.destroy', { id: project.id }),
   });
@@ -26,10 +27,9 @@ router.post('projects.create', '/new', async (ctx) => {
   try {
     await project.save({ fields: ['name', 'description', 'contactInfo'] });
     ctx.redirect(ctx.router.url('projects.index'));
-  } catch (validationError) {
+  } catch (validationErrors) {
     await ctx.render('projects/new', {
       project,
-      errors: validationError.errors,
     });
   }
 });
@@ -50,10 +50,9 @@ router.patch('projects.update', '/:id/edit', async (ctx) => {
       name, description, contactInfo,
     });
     ctx.redirect(ctx.router.url('projects.index'));
-  } catch (validationError) {
+  } catch (validationErrors) {
     await ctx.render('projects/edit', {
       project,
-      errors: validationError.errors,
     });
   }
 });

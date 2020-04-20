@@ -1,12 +1,12 @@
 <form method="post">
   <input type="hidden" name="_method" value="patch">
   <label for="name">Name:</label>
-  <input type="text" id="name" name="name" value= "<%= project.name%>" ><br><br>
+  <input type="text" id="name" name="name" value= "<%= project.name%>" required><br><br>
 
   <label for="description">Description:</label>
-  <input type="text" id="description" name="description" value= "<%= project.description%>"><br><br>
+  <input type="text" id="description" name="description" value= "<%= project.description%>" required><br><br>
 
   <label for="contactInfo">contact Info:</label>
-  <input type="text" id="contactInfo" name="contactInfo" value="<%= project.contactInfo%>"><br><br> 
+  <input type="text" id="contactInfo" name="contactInfo" value="<%= project.contactInfo%>" required ><br><br> 
   <input type="submit" value="Submit">
 </form>

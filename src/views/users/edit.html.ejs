@@ -1,0 +1,20 @@
+<form method="post">
+  <input type="hidden" name="_method" value="patch">
+
+  <label for="email">Email:</label>
+  <input type="text" id="email" name="email" value="<%= user.email %>" required><br><br>
+
+  <label for="firstName">First Name:</label>
+  <input type="text" id="firstName" name="firstName" value="<%= user.firstName %>" required><br><br>
+
+  <label for="lastName">Last Name:</label>
+  <input type="text" id="lastName" name="lastName" value="<%= user.lastName %>" required><br><br>
+
+  <label for="phoneNumber">Phone Number:</label>
+  <input type="text" id="phoneNumber" name="phoneNumber" value="<%= user.phoneNumber %>" required><br><br>
+
+  <label for="role">Role:</label>
+  <input type="text" id="role" name="role" value="<%= user.role %>" required><br><br>
+
+  <input type="submit" value="Submit">
+</form>

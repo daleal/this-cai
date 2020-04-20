@@ -4,6 +4,7 @@
     <%= project.description %><br>
     <%= project.contactInfo%><br>
     <a href= "<%= showPath(project) %>">Show</a>
+    <a href= "<%= editPath(project) %>">Edit</a>
   </p>
   <form action="<%= deletePath(project) %>" method="POST">
     <input type="hidden" name="_method" value="delete" />

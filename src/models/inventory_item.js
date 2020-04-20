@@ -7,8 +7,8 @@ module.exports = (sequelize, DataTypes) => {
     maxStock: DataTypes.INTEGER,
     currentStock: DataTypes.INTEGER,
   }, { underscored: true });
-  // inventoryItem.associate = function (models) {
-  //   // associations can be defined here
-  // };
+  inventoryItem.associate = function (models) {
+    inventoryItem.hasMany(models.reservation);
+  };
   return inventoryItem;
 };
