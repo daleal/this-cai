@@ -16,7 +16,8 @@ router.get('messages.index', '/', async (ctx) => {
 
 router.get('messages.show', '/:id/show', async (ctx) => {
   const message = await ctx.orm.message.findByPk(ctx.params.id);
-  await ctx.render('messages/show', { message });
+  const user = await ctx.orm.user.findByPk(message.userId);
+  await ctx.render('messages/show', { message, user });
 });
 
 router.get('messages.new', '/new', async (ctx) => {
