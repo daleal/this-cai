@@ -1,6 +1,6 @@
 'use-strict';
 
-import { EMAIL_REGEX } from '../constants';
+const { EMAIL_REGEX } = require('../constants');
 
 module.exports = {
   name: 'messages',
