@@ -19,18 +19,18 @@ router.get('projects.show', '/:id/show', async (ctx) => {
 });
 
 router.get('projects.new', '/new', async (ctx) => {
-  await ctx.render('projects/new');
+  const project = await ctx.orm.project.build();
+  await ctx.render('projects/new', { project });
 });
 
 router.post('projects.create', '/new', async (ctx) => {
+  const project = await ctx.orm.project.build(ctx.request.body);
   try {
-    const { name, description, contactInfo } = ctx.request.body;
-    const project = ctx.orm.project.build({ name, description, contactInfo });
     await project.save({ fields: ['name', 'description', 'contactInfo'] });
     ctx.redirect(ctx.router.url('projects.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;
-    await ctx.render('projects/new');
+    await ctx.render('projects/new', { project });
   }
 });
 

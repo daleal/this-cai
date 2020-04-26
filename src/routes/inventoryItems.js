@@ -2,53 +2,49 @@ const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
 
-router.get('inventory_items.index', '/', async (ctx) => {
+router.get('inventoryItems.index', '/', async (ctx) => {
   const inventoryItems = await ctx.orm.inventoryItem.findAll();
-  await ctx.render('inventory_items/index', {
+  await ctx.render('inventoryItems/index', {
     inventoryItems,
-    newPath: () => ctx.router.url('inventory_items.new'),
-    showPath: (item) => ctx.router.url('inventory_items.show', { id: item.id }),
-    editPath: (item) => ctx.router.url('inventory_items.edit', { id: item.id }),
-    deletePath: (item) => ctx.router.url('inventory_items.destroy', { id: item.id }),
+    newPath: () => ctx.router.url('inventoryItems.new'),
+    showPath: (item) => ctx.router.url('inventoryItems.show', { id: item.id }),
+    editPath: (item) => ctx.router.url('inventoryItems.edit', { id: item.id }),
+    deletePath: (item) => ctx.router.url('inventoryItems.destroy', { id: item.id }),
   });
 });
 
-router.get('inventory_items.show', '/:id/show', async (ctx) => {
+router.get('inventoryItems.show', '/:id/show', async (ctx) => {
   const inventoryItem = await ctx.orm.inventoryItem.findByPk(ctx.params.id);
-  await ctx.render('inventory_items/show', { inventoryItem });
+  await ctx.render('inventoryItems/show', { inventoryItem });
 });
 
-router.get('inventory_items.new', '/new', async (ctx) => {
-  await ctx.render('inventory_items/new');
+router.get('inventoryItems.new', '/new', async (ctx) => {
+  const inventoryItem = await ctx.orm.inventoryItem.build();
+  await ctx.render('inventoryItems/new', { inventoryItem });
 });
 
-router.post('inventory_items.create', '/new', async (ctx) => {
+router.post('inventoryItems.create', '/new', async (ctx) => {
+  const inventoryItem = ctx.orm.inventoryItem.build(ctx.request.body);
   try {
     ctx.helpers.inventoryItems.validate(ctx.request.body);
-    const {
-      name, description, maxStock, currentStock,
-    } = ctx.request.body;
-    const inventoryItem = ctx.orm.inventoryItem.build({
-      name, description, maxStock, currentStock,
-    });
     await inventoryItem.save({ fields: ['name', 'description', 'maxStock', 'currentStock'] });
-    ctx.redirect(ctx.router.url('inventory_items.index'));
+    ctx.redirect(ctx.router.url('inventoryItems.index'));
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {
       ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
     } else {
       ctx.state.flashMessage.danger = validationErrors.message;
     }
-    await ctx.render('inventory_items/new');
+    await ctx.render('inventoryItems/new', { inventoryItem });
   }
 });
 
-router.get('inventory_items.edit', '/:id/edit', async (ctx) => {
+router.get('inventoryItems.edit', '/:id/edit', async (ctx) => {
   const inventoryItem = await ctx.orm.inventoryItem.findByPk(ctx.params.id);
-  await ctx.render('inventory_items/edit', { inventoryItem });
+  await ctx.render('inventoryItems/edit', { inventoryItem });
 });
 
-router.patch('inventory_items.update', '/:id/edit', async (ctx) => {
+router.patch('inventoryItems.update', '/:id/edit', async (ctx) => {
   const inventoryItem = await ctx.orm.inventoryItem.findByPk(ctx.params.id);
   try {
     ctx.helpers.inventoryItems.validate(ctx.request.body);
@@ -58,21 +54,21 @@ router.patch('inventory_items.update', '/:id/edit', async (ctx) => {
     await inventoryItem.update({
       name, description, maxStock, currentStock,
     });
-    ctx.redirect(ctx.router.url('inventory_items.index'));
+    ctx.redirect(ctx.router.url('inventoryItems.index'));
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {
       ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
     } else {
       ctx.state.flashMessage.danger = validationErrors.message;
     }
-    await ctx.render('inventory_items/edit', { inventoryItem });
+    await ctx.render('inventoryItems/edit', { inventoryItem });
   }
 });
 
-router.del('inventory_items.destroy', '/:id/destroy', async (ctx) => {
+router.del('inventoryItems.destroy', '/:id/destroy', async (ctx) => {
   const inventoryItem = await ctx.orm.inventoryItem.findByPk(ctx.params.id);
   await inventoryItem.destroy();
-  ctx.redirect(ctx.router.url('inventory_items.index'));
+  ctx.redirect(ctx.router.url('inventoryItems.index'));
 });
 
 module.exports = router;

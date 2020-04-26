@@ -19,18 +19,14 @@ router.get('users.show', '/:id/show', async (ctx) => {
 });
 
 router.get('users.new', '/new', async (ctx) => {
-  await ctx.render('users/new');
+  const user = ctx.orm.user.build();
+  await ctx.render('users/new', { user });
 });
 
 router.post('users.create', '/new', async (ctx) => {
+  const user = ctx.orm.user.build(ctx.request.body);
   try {
     ctx.helpers.users.validate(ctx.request.body);
-    const {
-      email, firstName, lastName, phoneNumber, role,
-    } = ctx.request.body;
-    const user = ctx.orm.user.build({
-      email, firstName, lastName, phoneNumber, role,
-    });
     await user.save({
       fields: ['email', 'firstName', 'lastName', 'phoneNumber', 'role'],
     });
@@ -41,7 +37,7 @@ router.post('users.create', '/new', async (ctx) => {
     } else {
       ctx.state.flashMessage.danger = validationErrors.message;
     }
-    await ctx.render('users/new');
+    await ctx.render('users/new', { user });
   }
 });
 
