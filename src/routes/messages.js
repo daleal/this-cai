@@ -20,14 +20,14 @@ router.get('messages.show', '/:id/show', async (ctx) => {
 });
 
 router.get('messages.new', '/new', async (ctx) => {
-  await ctx.render('messages/new');
+  const message = await ctx.orm.message.build();
+  await ctx.render('messages/new', { message });
 });
 
 router.post('messages.create', '/new', async (ctx) => {
+  const message = await ctx.orm.message.build(ctx.request.body);
   try {
     ctx.helpers.messages.validate(ctx.request.body);
-    const { content, email } = ctx.request.body;
-    const message = ctx.orm.message.build({ content, email });
     await message.save({ fields: ['content', 'email'] });
     ctx.redirect(ctx.router.url('messages.index'));
   } catch (validationErrors) {
@@ -36,7 +36,7 @@ router.post('messages.create', '/new', async (ctx) => {
     } else {
       ctx.state.flashMessage.danger = validationErrors.message;
     }
-    await ctx.render('messages/new');
+    await ctx.render('messages/new', { message });
   }
 });
 
