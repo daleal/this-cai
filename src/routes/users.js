@@ -28,7 +28,7 @@ router.post('users.create', '/new', async (ctx) => {
   try {
     ctx.helpers.users.validate(ctx.request.body);
     await user.save({
-      fields: ['email', 'firstName', 'lastName', 'phoneNumber', 'role'],
+      fields: ['email', 'firstName', 'lastName', 'phoneNumber', 'role', 'password'],
     });
     ctx.redirect(ctx.router.url('users.index'));
   } catch (validationErrors) {
