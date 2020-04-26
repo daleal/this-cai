@@ -3,10 +3,7 @@
   <form method="post">
     <input type="hidden" name="_method" value="patch">
 
-    <textarea type="text" id="description" name="description" required>
-      <%= lostItem.description %>
-    </textarea>
-    <br><br>
+    <textarea type="text" id="description" name="description" required><%= lostItem.description %></textarea><br><br>
 
     <input type="submit" value="Submit">
   </form>
