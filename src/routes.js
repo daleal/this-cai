@@ -2,6 +2,7 @@ const KoaRouter = require('koa-router');
 
 const index = require('./routes/index');
 const users = require('./routes/users');
+const session = require('./routes/session');
 const organizations = require('./routes/organizations');
 const inventoryItems = require('./routes/inventoryItems');
 const lostItems = require('./routes/lostItems');
@@ -13,6 +14,7 @@ const articles = require('./routes/articles');
 const router = new KoaRouter();
 
 router.use('/', index.routes());
+router.use('/session', session.routes());
 router.use('/users', users.routes());
 router.use('/organizations', organizations.routes());
 router.use('/inventory-items', inventoryItems.routes());
