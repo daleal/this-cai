@@ -27,7 +27,7 @@ router.post('projects.create', '/new', async (ctx) => {
   const project = await ctx.orm.project.build(ctx.request.body);
   try {
     await project.save({ fields: ['name', 'description', 'contactInfo'] });
-    ctx.redirect(ctx.router.url('projects.index'));
+    return ctx.redirect(ctx.router.url('projects.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;
     await ctx.render('projects/new', { project });
@@ -48,7 +48,7 @@ router.patch('projects.update', '/:id/edit', async (ctx) => {
     await project.update({
       name, description, contactInfo,
     });
-    ctx.redirect(ctx.router.url('projects.index'));
+    return ctx.redirect(ctx.router.url('projects.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;
     await ctx.render('projects/edit', { project });
@@ -58,7 +58,7 @@ router.patch('projects.update', '/:id/edit', async (ctx) => {
 router.del('projects.destroy', '/:id/destroy', async (ctx) => {
   const project = await ctx.orm.project.findByPk(ctx.params.id);
   await project.destroy();
-  ctx.redirect(ctx.router.url('projects.index'));
+  return ctx.redirect(ctx.router.url('projects.index'));
 });
 
 module.exports = router;

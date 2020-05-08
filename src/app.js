@@ -14,6 +14,8 @@ const helpers = require('./helpers');
 const orm = require('./models');
 const currentUser = require('./middleware/currentUser');
 
+const { SESSION_DURATION } = require('./constants');
+
 // App constructor
 const app = new Koa();
 
@@ -35,9 +37,6 @@ app.context.helpers = helpers;
 /**
  * Middlewares
  */
-
-// Load current user to the app state if there is one
-app.use(currentUser);
 
 // expose running mode in ctx.state
 app.use((ctx, next) => {
@@ -62,8 +61,11 @@ app.use(koaStatic(path.join(__dirname, '..', 'build'), {}));
 // expose a session hash to store information across requests from same client
 app.use(session({
   key: 'SESSIONID',
-  maxAge: 1000 * parseInt(process.env.SESSION_DURATION || 3600, 10), // In seconds, defaults to 3600
+  maxAge: 1000 * SESSION_DURATION,
 }, app));
+
+// Load current user to the app state if there is one
+app.use(currentUser);
 
 // flash messages support
 app.use(koaFlashMessage);

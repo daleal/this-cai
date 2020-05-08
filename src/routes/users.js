@@ -19,7 +19,7 @@ router.post('users.create', '/new', async (ctx) => {
     await user.save({
       fields: ['email', 'firstName', 'lastName', 'phoneNumber', 'role', 'password'],
     });
-    ctx.redirect(ctx.router.url('session.new'));
+    return ctx.redirect(ctx.router.url('session.new'));
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {
       ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
@@ -45,7 +45,7 @@ router.patch('users.update', '/:id/edit', async (ctx) => {
     await user.update({
       email, firstName, lastName, phoneNumber, role,
     });
-    ctx.redirect(ctx.router.url('session.new'));
+    return ctx.redirect(ctx.router.url('session.new'));
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {
       ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
@@ -59,7 +59,7 @@ router.patch('users.update', '/:id/edit', async (ctx) => {
 router.delete('users.destroy', '/:id/destroy', async (ctx) => {
   const user = await ctx.orm.user.findByPk(ctx.params.id);
   await user.destroy();
-  ctx.redirect(ctx.router.url('users.new'));
+  return ctx.redirect(ctx.router.url('users.new'));
 });
 
 module.exports = router;

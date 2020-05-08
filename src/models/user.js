@@ -66,6 +66,7 @@ module.exports = (sequelize, DataTypes) => {
     user.hasMany(models.reservation);
     user.hasMany(models.lostItem);
     user.hasMany(models.message);
+    user.hasMany(models.session);
   };
 
   return user;

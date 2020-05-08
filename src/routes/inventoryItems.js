@@ -28,7 +28,7 @@ router.post('inventoryItems.create', '/new', async (ctx) => {
   try {
     ctx.helpers.inventoryItems.validate(ctx.request.body);
     await inventoryItem.save({ fields: ['name', 'description', 'maxStock', 'currentStock'] });
-    ctx.redirect(ctx.router.url('inventoryItems.index'));
+    return ctx.redirect(ctx.router.url('inventoryItems.index'));
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {
       ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
@@ -54,7 +54,7 @@ router.patch('inventoryItems.update', '/:id/edit', async (ctx) => {
     await inventoryItem.update({
       name, description, maxStock, currentStock,
     });
-    ctx.redirect(ctx.router.url('inventoryItems.index'));
+    return ctx.redirect(ctx.router.url('inventoryItems.index'));
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {
       ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
@@ -68,7 +68,7 @@ router.patch('inventoryItems.update', '/:id/edit', async (ctx) => {
 router.del('inventoryItems.destroy', '/:id/destroy', async (ctx) => {
   const inventoryItem = await ctx.orm.inventoryItem.findByPk(ctx.params.id);
   await inventoryItem.destroy();
-  ctx.redirect(ctx.router.url('inventoryItems.index'));
+  return ctx.redirect(ctx.router.url('inventoryItems.index'));
 });
 
 module.exports = router;

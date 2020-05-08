@@ -1,9 +1,15 @@
 module.exports = async (ctx, next) => {
-  // Get user ID from cookies
-  const { userID } = ctx.session;
+  ctx.state.currentUser = null;
 
-  // Load the Current User to the context state if it exists
-  ctx.state.currentUser = userID ? await ctx.orm.user.findByPk(userID) : null;
+  // Get session ID from cookies
+  const { id: sessionID } = ctx.session;
+
+  if (sessionID) {
+    const session = await ctx.orm.session.findByPk(sessionID, { include: ctx.orm.user });
+    if (session.isValid() && session.userId) {
+      ctx.state.currentUser = session.user;
+    }
+  }
 
   await next();
 };

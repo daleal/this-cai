@@ -27,7 +27,7 @@ router.post('lostItems.create', '/new', async (ctx) => {
   const lostItem = await ctx.orm.lostItem.build(ctx.request.body);
   try {
     await lostItem.save({ fields: ['description', 'taken'] });
-    ctx.redirect(ctx.router.url('lostItems.index'));
+    return ctx.redirect(ctx.router.url('lostItems.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;
     await ctx.render('lostItems/new', { lostItem });
@@ -44,7 +44,7 @@ router.patch('lostItems.update', '/:id/edit', async (ctx) => {
   try {
     const { description } = ctx.request.body;
     await lostItem.update({ description });
-    ctx.redirect(ctx.router.url('lostItems.index'));
+    return ctx.redirect(ctx.router.url('lostItems.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;
     await ctx.render('lostItems/edit', { lostItem });
@@ -54,7 +54,7 @@ router.patch('lostItems.update', '/:id/edit', async (ctx) => {
 router.delete('lostItems.destroy', '/:id/destroy', async (ctx) => {
   const lostItem = await ctx.orm.lostItem.findByPk(ctx.params.id);
   await lostItem.destroy();
-  ctx.redirect(ctx.router.url('lostItems.index'));
+  return ctx.redirect(ctx.router.url('lostItems.index'));
 });
 
 module.exports = router;

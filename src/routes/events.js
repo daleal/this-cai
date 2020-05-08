@@ -30,7 +30,7 @@ router.post('events.create', '/new', async (ctx) => {
   try {
     ctx.helpers.events.validate(ctx.request.body);
     await event.save({ fields: ['name', 'dateAndTime', 'category', 'location'] });
-    ctx.redirect(ctx.router.url('events.index'));
+    return ctx.redirect(ctx.router.url('events.index'));
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {
       ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
@@ -57,7 +57,7 @@ router.patch('events.update', '/:id/edit', async (ctx) => {
     await event.update({
       name, dateAndTime, category, location,
     });
-    ctx.redirect(ctx.router.url('events.index'));
+    return ctx.redirect(ctx.router.url('events.index'));
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {
       ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
@@ -71,7 +71,7 @@ router.patch('events.update', '/:id/edit', async (ctx) => {
 router.del('events.destroy', '/:id/destroy', async (ctx) => {
   const event = await ctx.orm.event.findByPk(ctx.params.id);
   await event.destroy();
-  ctx.redirect(ctx.router.url('events.index'));
+  return ctx.redirect(ctx.router.url('events.index'));
 });
 
 module.exports = router;

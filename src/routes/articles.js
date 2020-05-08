@@ -27,7 +27,7 @@ router.post('articles.create', '/new', async (ctx) => {
   const article = ctx.orm.article.build(ctx.request.body);
   try {
     await article.save({ fields: ['title', 'content'] });
-    ctx.redirect(ctx.router.url('articles.index'));
+    return ctx.redirect(ctx.router.url('articles.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;
     await ctx.render('articles/new', { article });
@@ -44,7 +44,7 @@ router.patch('articles.update', '/:id/edit', async (ctx) => {
   try {
     const { title, content } = ctx.request.body;
     await article.update({ title, content });
-    ctx.redirect(ctx.router.url('articles.index'));
+    return ctx.redirect(ctx.router.url('articles.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;
     await ctx.render('articles/edit', { article });
@@ -54,7 +54,7 @@ router.patch('articles.update', '/:id/edit', async (ctx) => {
 router.del('articles.destroy', '/:id/destroy', async (ctx) => {
   const article = await ctx.orm.article.findByPk(ctx.params.id);
   await article.destroy();
-  ctx.redirect(ctx.router.url('articles.index'));
+  return ctx.redirect(ctx.router.url('articles.index'));
 });
 
 module.exports = router;

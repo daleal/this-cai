@@ -27,7 +27,7 @@ router.post('organizations.create', '/new', async (ctx) => {
   const organization = await ctx.orm.organization.build(ctx.request.body);
   try {
     await organization.save({ fields: ['name', 'description'] });
-    ctx.redirect(ctx.router.url('organizations.index'));
+    return ctx.redirect(ctx.router.url('organizations.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;
     await ctx.render('organizations/new', { organization });
@@ -44,7 +44,7 @@ router.patch('organizations.update', '/:id/edit', async (ctx) => {
   try {
     const { name, description } = ctx.request.body;
     await organization.update({ name, description });
-    ctx.redirect(ctx.router.url('organizations.index'));
+    return ctx.redirect(ctx.router.url('organizations.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;
     await ctx.render('organizations/edit', { organization });
@@ -54,7 +54,7 @@ router.patch('organizations.update', '/:id/edit', async (ctx) => {
 router.delete('organizations.destroy', '/:id/destroy', async (ctx) => {
   const organization = await ctx.orm.organization.findByPk(ctx.params.id);
   await organization.destroy();
-  ctx.redirect(ctx.router.url('organizations.index'));
+  return ctx.redirect(ctx.router.url('organizations.index'));
 });
 
 module.exports = router;
