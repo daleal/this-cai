@@ -1,15 +1,15 @@
 <div class="content">
   <h1>Nuevo Usuario</h1>
   <form method="post">
-    <input type="email" id="email" name="email" placeholder="Email" required><br><br>
+    <input type="email" id="email" name="email" placeholder="Email" value="<%= user.email %>" required><br><br>
 
-    <input type="text" id="firstName" name="firstName" placeholder="Primer Nombre" required><br><br>
+    <input type="text" id="firstName" name="firstName" placeholder="Primer Nombre" value="<%= user.firstName %>" required><br><br>
 
-    <input type="text" id="lastName" name="lastName" placeholder="Apellido" required><br><br>
+    <input type="text" id="lastName" name="lastName" placeholder="Apellido" value="<%= user.lastName %>" required><br><br>
 
-    <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Número de teléfono" required><br><br>
+    <input type="text" id="phoneNumber" name="phoneNumber" placeholder="N° de teléfono, ej +56912312312" value="<%= user.phoneNumber %>" required><br><br>
 
-    <input type="text" id="role" name="role" placeholder="Rol" required><br><br>
+    <input type="password" id="password" name="password" placeholder="Contraseña" required><br><br>
 
     <input type="submit" value="Submit">
   </form>

@@ -20,23 +20,23 @@ router.get('messages.show', '/:id/show', async (ctx) => {
 });
 
 router.get('messages.new', '/new', async (ctx) => {
-  await ctx.render('messages/new');
+  const message = await ctx.orm.message.build();
+  await ctx.render('messages/new', { message });
 });
 
 router.post('messages.create', '/new', async (ctx) => {
+  const message = await ctx.orm.message.build(ctx.request.body);
   try {
     ctx.helpers.messages.validate(ctx.request.body);
-    const { content, email } = ctx.request.body;
-    const message = ctx.orm.message.build({ content, email });
     await message.save({ fields: ['content', 'email'] });
-    ctx.redirect(ctx.router.url('messages.index'));
+    return ctx.redirect(ctx.router.url('messages.index'));
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {
       ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
     } else {
       ctx.state.flashMessage.danger = validationErrors.message;
     }
-    await ctx.render('messages/new');
+    await ctx.render('messages/new', { message });
   }
 });
 
@@ -51,7 +51,7 @@ router.patch('messages.update', '/:id/edit', async (ctx) => {
     ctx.helpers.messages.validate(ctx.request.body);
     const { content, email } = ctx.request.body;
     await message.update({ content, email });
-    ctx.redirect(ctx.router.url('messages.index'));
+    return ctx.redirect(ctx.router.url('messages.index'));
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {
       ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
@@ -65,7 +65,7 @@ router.patch('messages.update', '/:id/edit', async (ctx) => {
 router.del('messages.destroy', '/:id/destroy', async (ctx) => {
   const message = await ctx.orm.message.findByPk(ctx.params.id);
   await message.destroy();
-  ctx.redirect(ctx.router.url('messages.index'));
+  return ctx.redirect(ctx.router.url('messages.index'));
 });
 
 module.exports = router;

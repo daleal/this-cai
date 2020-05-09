@@ -1,11 +1,11 @@
 <div class="content">
   <h1>Nuevo Proyecto</h1>
   <form method="post">
-    <input type="text" id="name" name="name" placeholder="Nombre" required><br><br>
+    <input type="text" id="name" name="name" placeholder="Nombre" value="<%= project.name %>" required><br><br>
 
-    <input type="text" id="contactInfo" name="contactInfo" placeholder="Información de contacto" required><br><br>
+    <input type="text" id="contactInfo" name="contactInfo" placeholder="Información de contacto" value="<%= project.contactInfo %>" required><br><br>
 
-    <textarea type="text" id="description" name="description" placeholder="Descripción" required></textarea><br><br>
+    <textarea type="text" id="description" name="description" placeholder="Descripción" required><%= project.description %></textarea><br><br>
 
     <input type="submit" value="Submit">
   </form>

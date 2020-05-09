@@ -12,6 +12,9 @@ const mailer = require('./mailers');
 const routes = require('./routes');
 const helpers = require('./helpers');
 const orm = require('./models');
+const currentUser = require('./middleware/currentUser');
+
+const { SESSION_DURATION } = require('./constants');
 
 // App constructor
 const app = new Koa();
@@ -57,8 +60,12 @@ app.use(koaStatic(path.join(__dirname, '..', 'build'), {}));
 
 // expose a session hash to store information across requests from same client
 app.use(session({
-  maxAge: 14 * 24 * 60 * 60 * 1000, // 2 weeks
+  key: 'SESSIONID',
+  maxAge: 1000 * SESSION_DURATION,
 }, app));
+
+// Load current user to the app state if there is one
+app.use(currentUser);
 
 // flash messages support
 app.use(koaFlashMessage);

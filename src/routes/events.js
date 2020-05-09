@@ -19,27 +19,25 @@ router.get('events.show', '/:id/show', async (ctx) => {
 });
 
 router.get('events.new', '/new', async (ctx) => {
-  await ctx.render('events/new');
+  const base = new Date();
+  const date = new Date(base.getFullYear(), base.getMonth() + 1, base.getDate());
+  const event = await ctx.orm.event.build({ dateAndTime: date });
+  await ctx.render('events/new', { event });
 });
 
 router.post('events.create', '/new', async (ctx) => {
+  const event = ctx.orm.event.build(ctx.request.body);
   try {
     ctx.helpers.events.validate(ctx.request.body);
-    const {
-      name, dateAndTime, category, location,
-    } = ctx.request.body;
-    const event = ctx.orm.event.build({
-      name, dateAndTime, category, location,
-    });
     await event.save({ fields: ['name', 'dateAndTime', 'category', 'location'] });
-    ctx.redirect(ctx.router.url('events.index'));
+    return ctx.redirect(ctx.router.url('events.index'));
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {
       ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
     } else {
       ctx.state.flashMessage.danger = validationErrors.message;
     }
-    await ctx.render('events/new');
+    await ctx.render('events/new', { event });
   }
 });
 
@@ -59,7 +57,7 @@ router.patch('events.update', '/:id/edit', async (ctx) => {
     await event.update({
       name, dateAndTime, category, location,
     });
-    ctx.redirect(ctx.router.url('events.index'));
+    return ctx.redirect(ctx.router.url('events.index'));
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {
       ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
@@ -73,7 +71,7 @@ router.patch('events.update', '/:id/edit', async (ctx) => {
 router.del('events.destroy', '/:id/destroy', async (ctx) => {
   const event = await ctx.orm.event.findByPk(ctx.params.id);
   await event.destroy();
-  ctx.redirect(ctx.router.url('events.index'));
+  return ctx.redirect(ctx.router.url('events.index'));
 });
 
 module.exports = router;

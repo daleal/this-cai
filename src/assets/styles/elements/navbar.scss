@@ -43,12 +43,35 @@
   margin-right: 1em;
 }
 
-.nav-item > a {
+.nav-item > a,
+.nav-item button {
   text-decoration: none;
   transition: $transition-speed;
   color: $light;
 }
 
-.nav-item > a:hover {
+.nav-item button {  // transform button to text like anchor
+  background: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  line-height: 1;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  text-transform: none;
+  -webkit-appearance: button;
+
+  &::-moz-focus-inner {
+    border-style: none;
+    padding: 0;
+  }
+  &:-moz-focusring {
+    outline: 1px dotted ButtonText;
+  }
+}
+
+.nav-item > a:hover,
+.nav-item button:hover {
   color: $primary;
 }

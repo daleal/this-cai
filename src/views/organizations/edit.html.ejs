@@ -5,10 +5,7 @@
 
     <input type="text" id="name" name="name" placeholder="Nombre" value="<%= organization.name %>" required><br><br>
 
-    <textarea type="text" id="description" name="description" placeholder="Descripción" required>
-      <%= organization.description %>
-    </textarea>
-    <br><br>
+    <textarea type="text" id="description" name="description" placeholder="Descripción" required><%= organization.description %></textarea><br><br>
 
     <input type="submit" value="Submit">
   </form>

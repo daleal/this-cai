@@ -5,10 +5,7 @@
 
     <input type="text" id="title" name="title" placeholder="Título" value="<%= article.title %>" required><br><br>
 
-    <textarea type="text" id="content" name="content" placeholder="Contenido" required>
-      <%= article.content %>
-    </textarea>
-    <br><br>
+    <textarea type="text" id="content" name="content" placeholder="Contenido" required><%= article.content %></textarea><br><br>
 
     <input type="submit" value="Submit">
   </form>
