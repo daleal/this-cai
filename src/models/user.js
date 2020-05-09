@@ -2,7 +2,7 @@
 
 const bcrypt = require('bcrypt');
 
-const { PASSWORD_SALT } = require('../constants');
+const { PASSWORD_SALT, USER_ROLES, USER_ROLE_PRIVILEGES } = require('../constants');
 
 async function buildHash(user) {
   if (user.changed('password')) {
@@ -32,13 +32,42 @@ module.exports = (sequelize, DataTypes) => {
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
     phoneNumber: DataTypes.STRING,
-    role: DataTypes.STRING,
+    role: {
+      type: DataTypes.STRING,
+      defaultValue: USER_ROLES.user,
+    },
     password: DataTypes.STRING,
   }, { underscored: true });
 
   // Pre-build hooks
   user.beforeCreate(buildHash);
   user.beforeUpdate(buildHash);
+
+  // Properties
+  Object.defineProperties(user.prototype, {
+    isCAi: {
+      get: function isCAi() {
+        // Returns true if user has AT LEAST level CAi permissions
+        const userPrivileges = USER_ROLE_PRIVILEGES[this.role];
+        const expectedPrivileges = USER_ROLE_PRIVILEGES[USER_ROLES.cai];
+        if (userPrivileges < expectedPrivileges) {
+          return false;
+        }
+        return true;
+      },
+    },
+    isAdministrator: {
+      get: function isAdministrator() {
+        // Returns true if user has AT LEAST level administrator permissions
+        const userPrivileges = USER_ROLE_PRIVILEGES[this.role];
+        const expectedPrivileges = USER_ROLE_PRIVILEGES[USER_ROLES.administrator];
+        if (userPrivileges < expectedPrivileges) {
+          return false;
+        }
+        return true;
+      },
+    },
+  });
 
   // Check email and password. Return the user if valid, null if otherwise
   user.authenticate = async (email, password) => {
