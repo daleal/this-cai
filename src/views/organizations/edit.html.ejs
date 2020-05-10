@@ -1,11 +1,17 @@
 <div class="content">
   <h1>Editar Organización</h1>
-  <form method="post">
+  <form method="post" enctype="multipart/form-data">
     <input type="hidden" name="_method" value="patch">
 
     <input type="text" id="name" name="name" placeholder="Nombre" value="<%= organization.name %>" required><br><br>
 
     <textarea type="text" id="description" name="description" placeholder="Descripción" required><%= organization.description %></textarea><br><br>
+
+
+    <div class="field">
+    <label for="image">Imagen</label>
+    <input type="file" name="image" />
+    </div>
 
     <input type="submit" value="Submit">
   </form>

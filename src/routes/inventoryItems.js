@@ -27,7 +27,13 @@ router.post('inventoryItems.create', '/new', async (ctx) => {
   const inventoryItem = ctx.orm.inventoryItem.build(ctx.request.body);
   try {
     ctx.helpers.inventoryItems.validate(ctx.request.body);
-    await inventoryItem.save({ fields: ['name', 'description', 'maxStock', 'currentStock'] });
+    await inventoryItem.save({ fields: ['name', 'description', 'maxStock', 'currentStock', 'img'] });
+    await ctx.helpers.images.uploadAndSave(
+      ctx.request.files.image,
+      process.env,
+      'inventry-items',
+      inventoryItem,
+    );
     return ctx.redirect(ctx.router.url('inventoryItems.index'));
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {
@@ -54,6 +60,12 @@ router.patch('inventoryItems.update', '/:id/edit', async (ctx) => {
     await inventoryItem.update({
       name, description, maxStock, currentStock,
     });
+    await ctx.helpers.images.uploadAndSave(
+      ctx.request.files.image,
+      process.env,
+      'inventry-items',
+      inventoryItem,
+    );
     return ctx.redirect(ctx.router.url('inventoryItems.index'));
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {

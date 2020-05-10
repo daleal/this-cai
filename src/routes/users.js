@@ -17,8 +17,14 @@ router.post('users.create', '/new', async (ctx) => {
   try {
     ctx.helpers.users.validate(ctx.request.body);
     await user.save({
-      fields: ['email', 'firstName', 'lastName', 'phoneNumber', 'role', 'password'],
+      fields: ['email', 'firstName', 'lastName', 'phoneNumber', 'role', 'password', 'img'],
     });
+    await ctx.helpers.images.uploadAndSave(
+      ctx.request.files.image,
+      process.env,
+      'users',
+      user,
+    );
     return ctx.redirect(ctx.router.url('session.new'));
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {
@@ -45,6 +51,12 @@ router.patch('users.update', '/:id/edit', async (ctx) => {
     await user.update({
       email, firstName, lastName, phoneNumber, role,
     });
+    await ctx.helpers.images.uploadAndSave(
+      ctx.request.files.image,
+      process.env,
+      'users',
+      user,
+    );
     return ctx.redirect(ctx.router.url('session.new'));
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {

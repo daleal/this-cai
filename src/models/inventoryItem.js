@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.TEXT,
     maxStock: DataTypes.INTEGER,
     currentStock: DataTypes.INTEGER,
+    img: DataTypes.STRING,
   }, { underscored: true });
 
   inventoryItem.associate = function (models) {

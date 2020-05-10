@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   const organization = sequelize.define('organization', {
     name: DataTypes.STRING,
     description: DataTypes.TEXT,
+    img: DataTypes.STRING,
   }, { underscored: true });
 
   organization.associate = function(models) {

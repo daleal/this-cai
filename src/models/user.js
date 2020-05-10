@@ -37,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: USER_ROLES.user,
     },
     password: DataTypes.STRING,
+    img: DataTypes.STRING,
   }, { underscored: true });
 
   // Pre-build hooks

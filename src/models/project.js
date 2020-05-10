@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     description: DataTypes.TEXT,
     contactInfo: DataTypes.TEXT,
+    img: DataTypes.STRING,
   }, { underscored: true });
 
   project.associate = function(models) {

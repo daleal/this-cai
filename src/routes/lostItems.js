@@ -26,7 +26,13 @@ router.get('lostItems.new', '/new', async (ctx) => {
 router.post('lostItems.create', '/new', async (ctx) => {
   const lostItem = await ctx.orm.lostItem.build(ctx.request.body);
   try {
-    await lostItem.save({ fields: ['description', 'taken'] });
+    await lostItem.save({ fields: ['description', 'taken', 'img'] });
+    await ctx.helpers.images.uploadAndSave(
+      ctx.request.files.image,
+      process.env,
+      'lost-items',
+      lostItem,
+    );
     return ctx.redirect(ctx.router.url('lostItems.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;
@@ -44,6 +50,12 @@ router.patch('lostItems.update', '/:id/edit', async (ctx) => {
   try {
     const { description } = ctx.request.body;
     await lostItem.update({ description });
+    await ctx.helpers.images.uploadAndSave(
+      ctx.request.files.image,
+      process.env,
+      'lost-items',
+      lostItem,
+    );
     return ctx.redirect(ctx.router.url('lostItems.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;

@@ -2,6 +2,7 @@ const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
 
+
 router.get('projects.index', '/', async (ctx) => {
   const projects = await ctx.orm.project.findAll();
   await ctx.render('projects/index', {
@@ -15,7 +16,9 @@ router.get('projects.index', '/', async (ctx) => {
 
 router.get('projects.show', '/:id/show', async (ctx) => {
   const project = await ctx.orm.project.findByPk(ctx.params.id);
-  await ctx.render('projects/show', { project });
+  await ctx.render('projects/show', {
+    project,
+  });
 });
 
 router.get('projects.new', '/new', async (ctx) => {
@@ -26,7 +29,13 @@ router.get('projects.new', '/new', async (ctx) => {
 router.post('projects.create', '/new', async (ctx) => {
   const project = await ctx.orm.project.build(ctx.request.body);
   try {
-    await project.save({ fields: ['name', 'description', 'contactInfo'] });
+    await project.save({ fields: ['name', 'description', 'contactInfo', 'img'] });
+    await ctx.helpers.images.uploadAndSave(
+      ctx.request.files.image,
+      process.env,
+      'projects',
+      project,
+    );
     return ctx.redirect(ctx.router.url('projects.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;
@@ -48,6 +57,12 @@ router.patch('projects.update', '/:id/edit', async (ctx) => {
     await project.update({
       name, description, contactInfo,
     });
+    await ctx.helpers.images.uploadAndSave(
+      ctx.request.files.image,
+      process.env,
+      'projects',
+      project,
+    );
     return ctx.redirect(ctx.router.url('projects.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;
