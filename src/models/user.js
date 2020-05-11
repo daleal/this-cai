@@ -2,7 +2,13 @@
 
 const bcrypt = require('bcrypt');
 
-const { PASSWORD_SALT, USER_ROLES, USER_ROLE_PRIVILEGES } = require('../constants');
+const { assetPath, saveImage } = require('../helpers/global');
+const {
+  PASSWORD_SALT,
+  USER_ROLES,
+  USER_ROLE_PRIVILEGES,
+  LANDSCAPE_PLACEHOLDER_IMAGE,
+} = require('../constants');
 
 async function buildHash(user) {
   if (user.changed('password')) {
@@ -41,6 +47,8 @@ module.exports = (sequelize, DataTypes) => {
   }, { underscored: true });
 
   // Pre-build hooks
+  user.beforeCreate(saveImage);
+  user.beforeUpdate(saveImage);
   user.beforeCreate(buildHash);
   user.beforeUpdate(buildHash);
 
@@ -66,6 +74,11 @@ module.exports = (sequelize, DataTypes) => {
           return false;
         }
         return true;
+      },
+    },
+    image: {
+      get: function image() {
+        return this.img ? this.img : assetPath(LANDSCAPE_PLACEHOLDER_IMAGE);
       },
     },
   });

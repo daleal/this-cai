@@ -27,12 +27,6 @@ router.post('organizations.create', '/new', async (ctx) => {
   const organization = await ctx.orm.organization.build(ctx.request.body);
   try {
     await organization.save({ fields: ['name', 'description', 'img'] });
-    await ctx.helpers.images.uploadAndSave(
-      ctx.request.files.image,
-      process.env,
-      'organizations',
-      organization,
-    );
     return ctx.redirect(ctx.router.url('organizations.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;
@@ -48,14 +42,8 @@ router.get('organizations.edit', '/:id/edit', async (ctx) => {
 router.patch('organizations.update', '/:id/edit', async (ctx) => {
   const organization = await ctx.orm.organization.findByPk(ctx.params.id);
   try {
-    const { name, description } = ctx.request.body;
-    await organization.update({ name, description });
-    await ctx.helpers.images.uploadAndSave(
-      ctx.request.files.image,
-      process.env,
-      'organizations',
-      organization,
-    );
+    const { name, description, img } = ctx.request.body;
+    await organization.update({ name, description, img });
     return ctx.redirect(ctx.router.url('organizations.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;

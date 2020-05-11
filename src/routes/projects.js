@@ -30,12 +30,6 @@ router.post('projects.create', '/new', async (ctx) => {
   const project = await ctx.orm.project.build(ctx.request.body);
   try {
     await project.save({ fields: ['name', 'description', 'contactInfo', 'img'] });
-    await ctx.helpers.images.uploadAndSave(
-      ctx.request.files.image,
-      process.env,
-      'projects',
-      project,
-    );
     return ctx.redirect(ctx.router.url('projects.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;
@@ -52,17 +46,11 @@ router.patch('projects.update', '/:id/edit', async (ctx) => {
   const project = await ctx.orm.project.findByPk(ctx.params.id);
   try {
     const {
-      name, description, contactInfo,
+      name, description, contactInfo, img,
     } = ctx.request.body;
     await project.update({
-      name, description, contactInfo,
+      name, description, contactInfo, img,
     });
-    await ctx.helpers.images.uploadAndSave(
-      ctx.request.files.image,
-      process.env,
-      'projects',
-      project,
-    );
     return ctx.redirect(ctx.router.url('projects.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;

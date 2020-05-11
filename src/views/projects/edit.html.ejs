@@ -8,10 +8,14 @@
     <input type="text" id="contactInfo" name="contactInfo" placeholder="Información de contacto" value="<%= project.contactInfo %>" required><br><br>
 
     <textarea type="text" id="description" name="description" placeholder="Descripción" required><%= project.description %></textarea><br><br>
+
     <div class="field">
-    <label for="image">Imagen</label>
-    <input type="file" name="image" />
+      <label for="img">Imagen</label>
+      <input type="file" name="img">
     </div>
+
+    <br>
+
     <input type="submit" value="Submit">
   </form>
 </div>
