@@ -3,20 +3,40 @@ const KoaRouter = require('koa-router');
 const router = new KoaRouter();
 
 router.get('messages.index', '/', async (ctx) => {
-  const messages = await ctx.orm.message.findAll();
-  await ctx.render('messages/index', {
-    messages,
-    newPath: () => ctx.router.url('messages.new'),
-    showPath: (message) => ctx.router.url('messages.show', { id: message.id }),
-    editPath: (message) => ctx.router.url('messages.edit', { id: message.id }),
-    deletePath: (message) => ctx.router.url('messages.destroy', { id: message.id }),
-  });
+  if (!ctx.state.currentUser) {
+    ctx.redirect('/messages/new');
+  } else if (ctx.state.currentUser.isCAi) {
+    const messages = await ctx.orm.message.findAll();
+    const personal = await ctx.orm.message.findAll({ where: { userId: ctx.state.currentUser.id } });
+    await ctx.render('messages/index', {
+      messages,
+      personal,
+      newPath: () => ctx.router.url('messages.new'),
+      showPath: (message) => ctx.router.url('messages.show', { id: message.id }),
+      editPath: (message) => ctx.router.url('messages.edit', { id: message.id }),
+      deletePath: (message) => ctx.router.url('messages.destroy', { id: message.id }),
+    });
+  } else {
+    const personal = await ctx.orm.message.findAll({ where: { userId: ctx.state.currentUser.id } });
+    await ctx.render('messages/index', {
+      personal,
+      newPath: () => ctx.router.url('messages.new'),
+      showPath: (message) => ctx.router.url('messages.show', { id: message.id }),
+      editPath: (message) => ctx.router.url('messages.edit', { id: message.id }),
+      deletePath: (message) => ctx.router.url('messages.destroy', { id: message.id }),
+    });
+  }
 });
 
 router.get('messages.show', '/:id/show', async (ctx) => {
+  const session = ctx.state.currentUser;
   const message = await ctx.orm.message.findByPk(ctx.params.id);
   const user = await ctx.orm.user.findByPk(message.userId);
-  await ctx.render('messages/show', { message, user });
+  if (session.isCAi) {
+    await ctx.render('messages/show', { message, user });
+  } else if (session.id === user.id) {
+    await ctx.render('messages/show', { message, user });
+  }
 });
 
 router.get('messages.new', '/new', async (ctx) => {
@@ -27,6 +47,10 @@ router.get('messages.new', '/new', async (ctx) => {
 router.post('messages.create', '/new', async (ctx) => {
   const message = await ctx.orm.message.build(ctx.request.body);
   try {
+    if (ctx.state.currentUser.id) {
+      message.userId = ctx.state.currentUser.id;
+      await message.save();
+    }
     ctx.helpers.messages.validate(ctx.request.body);
     await message.save({ fields: ['content', 'email'] });
     return ctx.redirect(ctx.router.url('messages.index'));
