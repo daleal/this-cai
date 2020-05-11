@@ -4,4 +4,13 @@
     <img src=<%= organization.image %> alt="">
     <%= organization.description %>
   </p>
+  <h4>Miembros</h4>
+  <% users.forEach((user) => { %>
+    <p>
+      <%= user.firstName %>
+      <%= user.lastName %><br>
+      <%= user.email %><br>
+      <%= user.phoneNumber %>
+    </p>
+  <% }); %>
 </div>

@@ -15,7 +15,8 @@ router.get('organizations.index', '/', async (ctx) => {
 
 router.get('organizations.show', '/:id/show', async (ctx) => {
   const organization = await ctx.orm.organization.findByPk(ctx.params.id);
-  await ctx.render('organizations/show', { organization });
+  const users = await organization.getUsers();
+  await ctx.render('organizations/show', { organization, users });
 });
 
 router.get('organizations.new', '/new', async (ctx) => {
