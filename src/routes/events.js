@@ -15,7 +15,13 @@ router.get('events.index', '/', async (ctx) => {
 
 router.get('events.show', '/:id/show', async (ctx) => {
   const event = await ctx.orm.event.findByPk(ctx.params.id);
-  await ctx.render('events/show', { event });
+  const attendees = await event.getUsers();
+  const attendeesIds = attendees.map((user) => user.id);
+  await ctx.render('events/show', {
+    event,
+    attendees,
+    attendeesIds,
+  });
 });
 
 router.get('events.new', '/new', async (ctx) => {
@@ -39,6 +45,44 @@ router.post('events.create', '/new', async (ctx) => {
     }
     await ctx.render('events/new', { event });
   }
+});
+
+router.post('events.attend', '/:id/show', async (ctx) => {
+  const event = await ctx.orm.event.findByPk(ctx.params.id);
+  try {
+    if (ctx.state.currentUser) {
+      ctx.helpers.events.validateAttendance(event);
+      await event.addUser(ctx.state.currentUser);
+    } else {
+      throw new Error('Inicia sesión para asistir a este evento');
+    }
+  } catch (validationErrors) {
+    if (Array.isArray(validationErrors)) {
+      ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
+    } else {
+      ctx.state.flashMessage.danger = validationErrors.message;
+    }
+  }
+  return ctx.redirect(ctx.router.url('events.show', event.id));
+});
+
+router.del('events.unattend', '/:id/show', async (ctx) => {
+  const event = await ctx.orm.event.findByPk(ctx.params.id);
+  try {
+    if (ctx.state.currentUser) {
+      ctx.helpers.events.validateAttendance(event);
+      await event.removeUser(ctx.state.currentUser);
+    } else {
+      throw new Error('Inicia sesión para realizar los cambios');
+    }
+  } catch (validationErrors) {
+    if (Array.isArray(validationErrors)) {
+      ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
+    } else {
+      ctx.state.flashMessage.danger = validationErrors.message;
+    }
+  }
+  return ctx.redirect(ctx.router.url('events.show', event.id));
 });
 
 router.get('events.edit', '/:id/edit', async (ctx) => {
