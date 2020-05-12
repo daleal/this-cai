@@ -38,12 +38,12 @@ router.get('messages.show', '/:id/show', requireLogIn, async (ctx) => {
   }
 });
 
-router.get('messages.new', '/new', requireLogIn, async (ctx) => {
+router.get('messages.new', '/new', async (ctx) => {
   const message = await ctx.orm.message.build();
   await ctx.render('messages/new', { message });
 });
 
-router.post('messages.create', '/new', requireLogIn, async (ctx) => {
+router.post('messages.create', '/new', async (ctx) => {
   const message = await ctx.orm.message.build(ctx.request.body);
   try {
     message.userId = ctx.state.currentUser.id;
@@ -59,11 +59,6 @@ router.post('messages.create', '/new', requireLogIn, async (ctx) => {
     }
     await ctx.render('messages/new', { message });
   }
-});
-
-router.get('messages.edit', '/:id/edit', requireLogIn, async (ctx) => {
-  const message = await ctx.orm.message.findByPk(ctx.params.id);
-  await ctx.render('messages/edit', { message });
 });
 
 router.patch('messages.update', '/:id/edit', requireLogIn, async (ctx) => {
