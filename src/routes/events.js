@@ -50,15 +50,11 @@ router.post('events.create', '/new', requireLogIn, requireCAi, async (ctx) => {
   }
 });
 
-router.post('events.attend', '/:id/show', async (ctx) => {
+router.post('events.attend', '/:id/show', requireLogIn, async (ctx) => {
   const event = await ctx.orm.event.findByPk(ctx.params.id);
   try {
-    if (ctx.state.currentUser) {
-      ctx.helpers.events.validateAttendance(event);
-      await event.addUser(ctx.state.currentUser);
-    } else {
-      throw new Error('Inicia sesión para asistir a este evento');
-    }
+    ctx.helpers.events.validateAttendance(event);
+    await event.addUser(ctx.state.currentUser);
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {
       ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
@@ -72,12 +68,8 @@ router.post('events.attend', '/:id/show', async (ctx) => {
 router.del('events.unattend', '/:id/show', async (ctx) => {
   const event = await ctx.orm.event.findByPk(ctx.params.id);
   try {
-    if (ctx.state.currentUser) {
-      ctx.helpers.events.validateAttendance(event);
-      await event.removeUser(ctx.state.currentUser);
-    } else {
-      throw new Error('Inicia sesión para realizar los cambios');
-    }
+    ctx.helpers.events.validateAttendance(event);
+    await event.removeUser(ctx.state.currentUser);
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {
       ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);

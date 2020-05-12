@@ -4,7 +4,7 @@ const { requireLogIn, requireNotLoggedIn } = require('../middleware/sessions');
 
 const router = new KoaRouter();
 
-router.get('users.show', '/:id/show', async (ctx) => {
+router.get('users.show', '/profile', requireLogIn, async (ctx) => {
   const user = await ctx.orm.user.findByPk(ctx.params.id);
   const events = await user.getEvents();
   const orgs = await user.getOrganizations();
@@ -48,13 +48,12 @@ router.post('users.create', '/new', requireNotLoggedIn, async (ctx) => {
   }
 });
 
-router.get('users.edit', '/:id/edit', requireLogIn, async (ctx) => {
-  const user = await ctx.orm.user.findByPk(ctx.params.id);
-  await ctx.render('users/edit', { user });
+router.get('users.edit', '/edit', requireLogIn, async (ctx) => {
+  await ctx.render('users/edit', {});
 });
 
-router.patch('users.update', '/:id/edit', requireLogIn, async (ctx) => {
-  const user = await ctx.orm.user.findByPk(ctx.params.id);
+router.patch('users.update', '/edit', requireLogIn, async (ctx) => {
+  const user = ctx.state.currentUser;
   try {
     ctx.helpers.users.validate(ctx.request.body);
     const {
@@ -70,12 +69,12 @@ router.patch('users.update', '/:id/edit', requireLogIn, async (ctx) => {
     } else {
       ctx.state.flashMessage.danger = validationErrors.message;
     }
-    await ctx.render('users/edit', { user });
+    await ctx.render('users/edit', {});
   }
 });
 
-router.delete('users.destroy', '/:id/destroy', requireLogIn, async (ctx) => {
-  const user = await ctx.orm.user.findByPk(ctx.params.id);
+router.delete('users.destroy', '/destroy', requireLogIn, async (ctx) => {
+  const user = ctx.state.currentUser;
   await user.destroy();
   return ctx.redirect(ctx.router.url('users.new'));
 });

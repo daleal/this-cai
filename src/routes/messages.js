@@ -5,9 +5,7 @@ const { requireLogIn } = require('../middleware/sessions');
 const router = new KoaRouter();
 
 router.get('messages.index', '/', requireLogIn, async (ctx) => {
-  if (!ctx.state.currentUser) {
-    ctx.redirect('/messages/new');
-  } else if (ctx.state.currentUser.isCAi) {
+  if (ctx.state.currentUser.isCAi) {
     const messages = await ctx.orm.message.findAll();
     const personal = await ctx.orm.message.findAll({ where: { userId: ctx.state.currentUser.id } });
     await ctx.render('messages/index', {
@@ -48,10 +46,8 @@ router.get('messages.new', '/new', requireLogIn, async (ctx) => {
 router.post('messages.create', '/new', requireLogIn, async (ctx) => {
   const message = await ctx.orm.message.build(ctx.request.body);
   try {
-    if (ctx.state.currentUser.id) {
-      message.userId = ctx.state.currentUser.id;
-      await message.save();
-    }
+    message.userId = ctx.state.currentUser.id;
+    await message.save();
     ctx.helpers.messages.validate(ctx.request.body);
     await message.save({ fields: ['content', 'email'] });
     return ctx.redirect(ctx.router.url('messages.index'));

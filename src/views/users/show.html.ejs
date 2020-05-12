@@ -4,14 +4,14 @@
       <div class="column is-5">
         <div id="profile-column">
           <div >
-            <img src="<%= user.image %>" class="pfp" alt="">
+            <img src="<%= currentUser.image %>" class="pfp" alt="">
             <div class="center">
 
-            <h2><%= user.firstName %> <%= user.lastName %></h2>
+            <h2><%= currentUser.firstName %> <%= currentUser.lastName %></h2>
             <p>
-              <%= user.email %><br>
-              <%= user.phoneNumber %><br>
-              Permisos: <%= user.role %>
+              <%= currentUser.email %><br>
+              <%= currentUser.phoneNumber %><br>
+              Permisos: <%= currentUser.role %>
             </p>
             <h3>Mensajes Enviados al Cai:</h3>
             <% messages.forEach((message) =>{ %>
@@ -80,13 +80,3 @@
       <% }); %>
     </div>
   </div>
-
-
-
-
-
-
-
-
-
-</div>
