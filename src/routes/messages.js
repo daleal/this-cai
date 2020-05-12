@@ -1,8 +1,10 @@
 const KoaRouter = require('koa-router');
 
+const { requireLogIn } = require('../middleware/sessions');
+
 const router = new KoaRouter();
 
-router.get('messages.index', '/', async (ctx) => {
+router.get('messages.index', '/', requireLogIn, async (ctx) => {
   if (!ctx.state.currentUser) {
     ctx.redirect('/messages/new');
   } else if (ctx.state.currentUser.isCAi) {
@@ -28,7 +30,7 @@ router.get('messages.index', '/', async (ctx) => {
   }
 });
 
-router.get('messages.show', '/:id/show', async (ctx) => {
+router.get('messages.show', '/:id/show', requireLogIn, async (ctx) => {
   const session = ctx.state.currentUser;
   const message = await ctx.orm.message.findByPk(ctx.params.id);
   const user = await ctx.orm.user.findByPk(message.userId);
@@ -39,12 +41,12 @@ router.get('messages.show', '/:id/show', async (ctx) => {
   }
 });
 
-router.get('messages.new', '/new', async (ctx) => {
+router.get('messages.new', '/new', requireLogIn, async (ctx) => {
   const message = await ctx.orm.message.build();
   await ctx.render('messages/new', { message });
 });
 
-router.post('messages.create', '/new', async (ctx) => {
+router.post('messages.create', '/new', requireLogIn, async (ctx) => {
   const message = await ctx.orm.message.build(ctx.request.body);
   try {
     if (ctx.state.currentUser.id) {
@@ -64,12 +66,12 @@ router.post('messages.create', '/new', async (ctx) => {
   }
 });
 
-router.get('messages.edit', '/:id/edit', async (ctx) => {
+router.get('messages.edit', '/:id/edit', requireLogIn, async (ctx) => {
   const message = await ctx.orm.message.findByPk(ctx.params.id);
   await ctx.render('messages/edit', { message });
 });
 
-router.patch('messages.update', '/:id/edit', async (ctx) => {
+router.patch('messages.update', '/:id/edit', requireLogIn, async (ctx) => {
   const message = await ctx.orm.message.findByPk(ctx.params.id);
   try {
     ctx.helpers.messages.validate(ctx.request.body);
@@ -86,7 +88,7 @@ router.patch('messages.update', '/:id/edit', async (ctx) => {
   }
 });
 
-router.del('messages.destroy', '/:id/destroy', async (ctx) => {
+router.delete('messages.destroy', '/:id/destroy', requireLogIn, async (ctx) => {
   const message = await ctx.orm.message.findByPk(ctx.params.id);
   await message.destroy();
   return ctx.redirect(ctx.router.url('messages.index'));

@@ -1,5 +1,7 @@
 const KoaRouter = require('koa-router');
 
+const { requireLogIn, requireNotLoggedIn } = require('../middleware/sessions');
+
 const router = new KoaRouter();
 
 router.get('users.show', '/:id/show', async (ctx) => {
@@ -7,12 +9,12 @@ router.get('users.show', '/:id/show', async (ctx) => {
   await ctx.render('users/show', { user });
 });
 
-router.get('users.new', '/new', async (ctx) => {
+router.get('users.new', '/new', requireNotLoggedIn, async (ctx) => {
   const user = ctx.orm.user.build();
   await ctx.render('users/new', { user });
 });
 
-router.post('users.create', '/new', async (ctx) => {
+router.post('users.create', '/new', requireNotLoggedIn, async (ctx) => {
   const user = ctx.orm.user.build(ctx.request.body);
   try {
     ctx.helpers.users.validate(ctx.request.body);
@@ -30,12 +32,12 @@ router.post('users.create', '/new', async (ctx) => {
   }
 });
 
-router.get('users.edit', '/:id/edit', async (ctx) => {
+router.get('users.edit', '/:id/edit', requireLogIn, async (ctx) => {
   const user = await ctx.orm.user.findByPk(ctx.params.id);
   await ctx.render('users/edit', { user });
 });
 
-router.patch('users.update', '/:id/edit', async (ctx) => {
+router.patch('users.update', '/:id/edit', requireLogIn, async (ctx) => {
   const user = await ctx.orm.user.findByPk(ctx.params.id);
   try {
     ctx.helpers.users.validate(ctx.request.body);
@@ -56,7 +58,7 @@ router.patch('users.update', '/:id/edit', async (ctx) => {
   }
 });
 
-router.delete('users.destroy', '/:id/destroy', async (ctx) => {
+router.delete('users.destroy', '/:id/destroy', requireLogIn, async (ctx) => {
   const user = await ctx.orm.user.findByPk(ctx.params.id);
   await user.destroy();
   return ctx.redirect(ctx.router.url('users.new'));

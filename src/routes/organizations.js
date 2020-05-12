@@ -1,5 +1,8 @@
 const KoaRouter = require('koa-router');
 
+const { requireLogIn } = require('../middleware/sessions');
+const { requireCAi, requireAdministrator } = require('../middleware/userPermissions');
+
 const router = new KoaRouter();
 
 router.get('organizations.index', '/', async (ctx) => {
@@ -19,12 +22,12 @@ router.get('organizations.show', '/:id/show', async (ctx) => {
   await ctx.render('organizations/show', { organization, users });
 });
 
-router.get('organizations.new', '/new', async (ctx) => {
+router.get('organizations.new', '/new', requireLogIn, requireAdministrator, async (ctx) => {
   const organization = await ctx.orm.organization.build();
   await ctx.render('organizations/new', { organization });
 });
 
-router.post('organizations.create', '/new', async (ctx) => {
+router.post('organizations.create', '/new', requireLogIn, requireAdministrator, async (ctx) => {
   const organization = await ctx.orm.organization.build(ctx.request.body);
   try {
     await organization.save({ fields: ['name', 'description', 'img'] });
@@ -35,12 +38,12 @@ router.post('organizations.create', '/new', async (ctx) => {
   }
 });
 
-router.get('organizations.edit', '/:id/edit', async (ctx) => {
+router.get('organizations.edit', '/:id/edit', requireLogIn, requireCAi, async (ctx) => {
   const organization = await ctx.orm.organization.findByPk(ctx.params.id);
   await ctx.render('organizations/edit', { organization });
 });
 
-router.patch('organizations.update', '/:id/edit', async (ctx) => {
+router.patch('organizations.update', '/:id/edit', requireLogIn, requireCAi, async (ctx) => {
   const organization = await ctx.orm.organization.findByPk(ctx.params.id);
   try {
     const { name, description, img } = ctx.request.body;
@@ -52,7 +55,7 @@ router.patch('organizations.update', '/:id/edit', async (ctx) => {
   }
 });
 
-router.delete('organizations.destroy', '/:id/destroy', async (ctx) => {
+router.delete('organizations.destroy', '/:id/destroy', requireLogIn, requireAdministrator, async (ctx) => {
   const organization = await ctx.orm.organization.findByPk(ctx.params.id);
   await organization.destroy();
   return ctx.redirect(ctx.router.url('organizations.index'));

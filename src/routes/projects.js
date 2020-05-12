@@ -1,5 +1,8 @@
 const KoaRouter = require('koa-router');
 
+const { requireLogIn } = require('../middleware/sessions');
+const { requireCAi } = require('../middleware/userPermissions');
+
 const router = new KoaRouter();
 
 
@@ -21,12 +24,12 @@ router.get('projects.show', '/:id/show', async (ctx) => {
   });
 });
 
-router.get('projects.new', '/new', async (ctx) => {
+router.get('projects.new', '/new', requireLogIn, requireCAi, async (ctx) => {
   const project = await ctx.orm.project.build();
   await ctx.render('projects/new', { project });
 });
 
-router.post('projects.create', '/new', async (ctx) => {
+router.post('projects.create', '/new', requireLogIn, requireCAi, async (ctx) => {
   const project = await ctx.orm.project.build(ctx.request.body);
   try {
     await project.save({ fields: ['name', 'description', 'contactInfo', 'img'] });
@@ -37,12 +40,12 @@ router.post('projects.create', '/new', async (ctx) => {
   }
 });
 
-router.get('projects.edit', '/:id/edit', async (ctx) => {
+router.get('projects.edit', '/:id/edit', requireLogIn, requireCAi, async (ctx) => {
   const project = await ctx.orm.project.findByPk(ctx.params.id);
   await ctx.render('projects/edit', { project });
 });
 
-router.patch('projects.update', '/:id/edit', async (ctx) => {
+router.patch('projects.update', '/:id/edit', requireLogIn, requireCAi, async (ctx) => {
   const project = await ctx.orm.project.findByPk(ctx.params.id);
   try {
     const {
@@ -58,7 +61,7 @@ router.patch('projects.update', '/:id/edit', async (ctx) => {
   }
 });
 
-router.del('projects.destroy', '/:id/destroy', async (ctx) => {
+router.delete('projects.destroy', '/:id/destroy', requireLogIn, requireCAi, async (ctx) => {
   const project = await ctx.orm.project.findByPk(ctx.params.id);
   await project.destroy();
   return ctx.redirect(ctx.router.url('projects.index'));

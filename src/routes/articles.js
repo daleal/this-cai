@@ -1,5 +1,8 @@
 const KoaRouter = require('koa-router');
 
+const { requireLogIn } = require('../middleware/sessions');
+const { requireCAi } = require('../middleware/userPermissions');
+
 const router = new KoaRouter();
 
 router.get('articles.index', '/', async (ctx) => {
@@ -18,12 +21,12 @@ router.get('articles.show', '/:id/show', async (ctx) => {
   await ctx.render('articles/show', { article });
 });
 
-router.get('articles.new', '/new', async (ctx) => {
+router.get('articles.new', '/new', requireLogIn, requireCAi, async (ctx) => {
   const article = await ctx.orm.article.build();
   await ctx.render('articles/new', { article });
 });
 
-router.post('articles.create', '/new', async (ctx) => {
+router.post('articles.create', '/new', requireLogIn, requireCAi, async (ctx) => {
   const article = ctx.orm.article.build(ctx.request.body);
   try {
     await article.save({ fields: ['title', 'content'] });
@@ -34,12 +37,12 @@ router.post('articles.create', '/new', async (ctx) => {
   }
 });
 
-router.get('articles.edit', '/:id/edit', async (ctx) => {
+router.get('articles.edit', '/:id/edit', requireLogIn, requireCAi, async (ctx) => {
   const article = await ctx.orm.article.findByPk(ctx.params.id);
   await ctx.render('articles/edit', { article });
 });
 
-router.patch('articles.update', '/:id/edit', async (ctx) => {
+router.patch('articles.update', '/:id/edit', requireLogIn, requireCAi, async (ctx) => {
   const article = await ctx.orm.article.findByPk(ctx.params.id);
   try {
     const { title, content } = ctx.request.body;
@@ -51,7 +54,7 @@ router.patch('articles.update', '/:id/edit', async (ctx) => {
   }
 });
 
-router.del('articles.destroy', '/:id/destroy', async (ctx) => {
+router.delete('articles.destroy', '/:id/destroy', requireLogIn, requireCAi, async (ctx) => {
   const article = await ctx.orm.article.findByPk(ctx.params.id);
   await article.destroy();
   return ctx.redirect(ctx.router.url('articles.index'));
