@@ -27,7 +27,10 @@ router.get('users.show', '/profile', requireLogIn, async (ctx) => {
 
 router.get('users.new', '/new', requireNotLoggedIn, async (ctx) => {
   const user = ctx.orm.user.build();
-  await ctx.render('users/new', { user });
+  await ctx.render('users/new', {
+    user,
+    logInPath: ctx.router.url('session.new'),
+  });
 });
 
 router.post('users.create', '/new', requireNotLoggedIn, async (ctx) => {
@@ -44,7 +47,10 @@ router.post('users.create', '/new', requireNotLoggedIn, async (ctx) => {
     } else {
       ctx.state.flashMessage.danger = validationErrors.message;
     }
-    await ctx.render('users/new', { user });
+    await ctx.render('users/new', {
+      user,
+      logInPath: ctx.router.url('session.new'),
+    });
   }
 });
 

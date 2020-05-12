@@ -6,7 +6,10 @@ const router = new KoaRouter();
 
 router.get('session.new', '/log-in', requireNotLoggedIn, async (ctx) => {
   const user = ctx.orm.user.build();
-  await ctx.render('session/new', { user });
+  await ctx.render('session/new', {
+    user,
+    newUserPath: ctx.router.url('users.new'),
+  });
 });
 
 router.post('session.create', '/log-in', requireNotLoggedIn, async (ctx) => {
@@ -32,6 +35,7 @@ router.post('session.create', '/log-in', requireNotLoggedIn, async (ctx) => {
     await ctx.render('session/new', {
       // Generate a data holder
       user: ctx.orm.user.build({ email, password }),
+      newUserPath: ctx.router.url('users.new'),
     });
   }
 });
