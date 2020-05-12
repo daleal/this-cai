@@ -8,8 +8,10 @@ const router = new KoaRouter();
 
 router.get('projects.index', '/', async (ctx) => {
   const projects = await ctx.orm.project.findAll();
+  const projectRows = ctx.helpers.global.columnator(projects, 3);
+
   await ctx.render('projects/index', {
-    projects,
+    projectRows,
     newPath: () => ctx.router.url('projects.new'),
     showPath: (project) => ctx.router.url('projects.show', { id: project.id }),
     editPath: (project) => ctx.router.url('projects.edit', { id: project.id }),

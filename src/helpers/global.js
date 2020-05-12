@@ -19,6 +19,24 @@ const uploadImage = async (imagePath, publicId) => {
 
 module.exports = {
   name: 'global',
+  columnator: (array, columns) => {
+    // Needs to be beautified
+    const rows = [];
+    let counter = 0;
+    let row = -1;
+    array.forEach((element) => {
+      if (counter === 0) { // New row
+        row += 1;
+        rows[row] = [];
+      }
+
+      rows[row].push(element);
+
+      counter = (counter + 1) % columns;
+    });
+
+    return rows;
+  },
   saveImage: async (model) => {
     if (model.changed('img')) {
       const timestamp = Math.floor(new Date().getTime() / 1000);

@@ -5,9 +5,7 @@
       <%= message.content %><br>
       <%= message.createdAt %>
     </p>
-  <% } else if (!message){ %>
-    <h2>You don't own this message </h2>
-  } else { %>
+  <%} else { %>
     <h2>User: <%= user.firstName %> <%= user.lastName %></h2>
     <p>
       <%= message.content %><br>

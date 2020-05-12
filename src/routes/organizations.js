@@ -5,10 +5,12 @@ const { requireCAi, requireAdministrator } = require('../middleware/userPermissi
 
 const router = new KoaRouter();
 
-router.get('organizations.index', '/', async (ctx) => {
+router.get('organizations.index', '/', async(ctx) => {
   const organizations = await ctx.orm.organization.findAll();
+  const orgRows = ctx.helpers.global.columnator(organizations, 3);
+
   await ctx.render('organizations/index', {
-    organizations,
+    orgRows,
     newPath: () => ctx.router.url('organizations.new'),
     showPath: (organization) => ctx.router.url('organizations.show', { id: organization.id }),
     editPath: (organization) => ctx.router.url('organizations.edit', { id: organization.id }),
@@ -16,16 +18,25 @@ router.get('organizations.index', '/', async (ctx) => {
   });
 });
 
-router.get('organizations.show', '/:id/show', async (ctx) => {
+router.get('organizations.show', '/:id/show', async(ctx) => {
   const organization = await ctx.orm.organization.findByPk(ctx.params.id);
   const users = await organization.getUsers();
-  await ctx.render('organizations/show', { organization, users });
+  const projects = await organization.getProjects();
+  const projectRows = ctx.helpers.global.columnator(projects, 3);
+  await ctx.render('organizations/show', {
+    organization,
+    users,
+    projectRows,
+    projectPath: (project) => ctx.router.url('projects.show', { id: project.id }),
+  });
 });
+
 
 router.get('organizations.new', '/new', requireLogIn, requireAdministrator, async (ctx) => {
   const organization = await ctx.orm.organization.build();
   await ctx.render('organizations/new', { organization });
 });
+
 
 router.post('organizations.create', '/new', requireLogIn, requireAdministrator, async (ctx) => {
   const organization = await ctx.orm.organization.build(ctx.request.body);
@@ -38,10 +49,12 @@ router.post('organizations.create', '/new', requireLogIn, requireAdministrator, 
   }
 });
 
+
 router.get('organizations.edit', '/:id/edit', requireLogIn, requireCAi, async (ctx) => {
   const organization = await ctx.orm.organization.findByPk(ctx.params.id);
   await ctx.render('organizations/edit', { organization });
 });
+
 
 router.patch('organizations.update', '/:id/edit', requireLogIn, requireCAi, async (ctx) => {
   const organization = await ctx.orm.organization.findByPk(ctx.params.id);

@@ -1,25 +1,29 @@
 <div class="content">
-  <h1>Proyectos</h1>
+  <h1 class= "center ">Proyectos</h1>
 
   <p>
     <a href="<%= newPath() %>">New</a>
   </p>
+<% projectRows.forEach((row) => { %>
+  <div class="columns">
+    <% row.forEach((project) => { %>
+      <div class="column is-4">
+        <div class="card">
+          <img src=<%= project.image %> class= "card-img">
+            <div class="description">
 
-  <% projects.forEach((project) => { %>
-    <h2><%= project.name %></h2>
-    <p>
-      <%= project.description %><br>
-      Contacto: <%= project.contactInfo %>
-    </p>
-    <p>
-      <a href="<%= showPath(project) %>">Show</a>
-      <a href="<%= editPath(project) %>">Edit</a>
-    </p>
-    <p>
-      <form action="<%= deletePath(project) %>" method="post">
-        <input type="hidden" name="_method" value="delete">
-        <input type="submit" value="Delete">
-      </form>
-    </p>
-  <% }); %>
+
+              <a href="<%= showPath(project) %>" class="pink-link"> <h2><%= project.name %></h2></a>
+              <a href="<%= editPath(project) %>">Edit</a>
+
+            <form action="<%= deletePath(project) %>" method="post">
+              <input type="hidden" name="_method" value="delete">
+              <input type="submit" value="Eliminar" class="card-btn">
+            </form>
+          </div>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+<% }); %>
 </div>

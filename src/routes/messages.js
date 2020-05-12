@@ -31,12 +31,11 @@ router.get('messages.index', '/', requireLogIn, async (ctx) => {
 });
 
 router.get('messages.show', '/:id/show', requireLogIn, async (ctx) => {
-  const session = ctx.state.currentUser;
   const message = await ctx.orm.message.findByPk(ctx.params.id);
   const user = await ctx.orm.user.findByPk(message.userId);
-  if (session.isCAi) {
+  if (ctx.state.currentUser.isCAi) {
     await ctx.render('messages/show', { message, user });
-  } else if (session.id === user.id) {
+  } else if (ctx.state.currentUser.id === user.id) {
     await ctx.render('messages/show', { message, user });
   }
 });

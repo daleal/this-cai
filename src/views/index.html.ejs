@@ -1,7 +1,60 @@
 <div class="content">
-  <h1>This CAi!</h1>
-  <p>
-    Nada por aquí, nada por acá...
-  </p>
+  <div id="mission">
+    <div class="center">
+      <h1>Nuestra misión</h1>
+    </div>
+      <p class="white-rect">
+        Nuestra misión como CaiAPP es poder acercar todas las prestaciones del centro de almunos de ingeniería a todos y cada uno de los miembros de nuestra comunidad. Es importantísimo para nosotros poder darnos a conocer, a nosotros y a nuestras queridas organizaciones, a todos los alumnos por medio del canal mas accesible posible, especialmente en estos tiempos de la educación online. También, queremos con esto lograr que esta plataforma sea una instancia de acercamiento y contacto entre nosotros, por lo que siempre estaremos recibiendo sus mensajes.
+      </p>
+
+    <br>
   <!-- <div id="react-app">Here a React app will be rendered</div> -->
+</div>
+  <br>
+<div class="news-section">
+  <h2 class="center">Últimas Noticias</h2>
+  <br>
+  <div class="columns">
+
+  <% articles.forEach((article) => { %>
+    <div class="column is-3">
+      <div class="news-card">
+
+        <p>
+          <%= article.createdAt%>
+           <h4 class="is-marginless"><%= article.title %></h4>
+           <form action= <%= showArticlePath(article)%>>
+             <br>
+            <button type="submit" class="card-btn">Leer más</button>
+           </form>
+        </p>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+</div>
+<br>
+<br>
+<div class="news-section">
+  <h2 class="center">Próximos Eventos</h2>
+  <br>
+  <div class="columns">
+
+  <% events.forEach((event) => { %>
+    <div class="column is-3">
+      <div class="news-card">
+
+        <p>
+          <%= event.dateAndTime%>
+           <h4 class="is-marginless"><%= event.name %></h4>
+           <form action= <%= showEventPath(event)%>>
+             <br>
+            <button type="submit" class="card-btn">Ver Evento</button>
+           </form>
+        </p>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+</div>
 </div>

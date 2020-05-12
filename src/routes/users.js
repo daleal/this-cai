@@ -6,7 +6,23 @@ const router = new KoaRouter();
 
 router.get('users.show', '/:id/show', async (ctx) => {
   const user = await ctx.orm.user.findByPk(ctx.params.id);
-  await ctx.render('users/show', { user });
+  const events = await user.getEvents();
+  const orgs = await user.getOrganizations();
+  const orgRows = ctx.helpers.global.columnator(orgs, 2);
+  const pastEvents = events.filter((event) => ctx.helpers.events.isPast(event));
+  const upcomingEvents = events.filter((event) => !ctx.helpers.events.isPast(event));
+  const pastEventsRows = ctx.helpers.global.columnator(pastEvents, 2);
+  const upcomingEventsRows = ctx.helpers.global.columnator(upcomingEvents, 2);
+  const messages = await user.getMessages();
+  await ctx.render('users/show', {
+    user,
+    pastEventsRows,
+    upcomingEventsRows,
+    orgRows,
+    messages,
+    eventPath: (event) => ctx.router.url('events.show', { id: event.id }),
+    orgPath: (org) => ctx.router.url('organizations.show', { id: org.id }),
+  });
 });
 
 router.get('users.new', '/new', requireNotLoggedIn, async (ctx) => {

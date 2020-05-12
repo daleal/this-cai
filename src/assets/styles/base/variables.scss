@@ -2,6 +2,12 @@
 $font-family: 'Cantarell', sans-serif;
 
 // Colors
+
+$ivory: #FEFDEB;
+$deep-champagne: #F2CF93;
+$prussian-blue: #003153;
+$terracotta: #E2725B;
+
 $white: rgb(255, 255, 255);
 $almost-white: rgb(240, 240, 240);
 $not-quite-white: rgb(225, 225, 225);
@@ -16,7 +22,7 @@ $warning: rgb(255, 221, 87);
 $danger: rgb(255, 56, 96);
 
 // Sizes
-$desktop-container-width: 1344px;  // Standard desktop max width
+$desktop-container-width: 1100px;  // Standard desktop max width
 
 // Misc
 $transition-speed: 400ms;
