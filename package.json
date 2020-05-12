@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "bcrypt": "^4.0.1",
+    "cloudinary": "^1.21.0",
     "core-js": "^3.6.4",
     "koa": "^2.11.0",
     "koa-body": "^4.1.1",

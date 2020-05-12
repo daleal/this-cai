@@ -1,15 +1,22 @@
 <div class="content">
   <h1>Editar Usuario</h1>
-  <form method="post">
+  <form method="post" enctype="multipart/form-data">
     <input type="hidden" name="_method" value="patch">
 
-    <input type="text" id="email" name="email" placeholder="Email" value="<%= user.email %>" required><br><br>
+    <input type="text" id="email" name="email" placeholder="Email" value="<%= currentUser.email %>" required><br><br>
 
-    <input type="text" id="firstName" name="firstName" placeholder="Primer Nombre" value="<%= user.firstName %>" required><br><br>
+    <input type="text" id="firstName" name="firstName" placeholder="Primer Nombre" value="<%= currentUser.firstName %>" required><br><br>
 
-    <input type="text" id="lastName" name="lastName" placeholder="Apellido" value="<%= user.lastName %>" required><br><br>
+    <input type="text" id="lastName" name="lastName" placeholder="Apellido" value="<%= currentUser.lastName %>" required><br><br>
 
-    <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Número de teléfono" value="<%= user.phoneNumber %>" required><br><br>
+    <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Número de teléfono" value="<%= currentUser.phoneNumber %>" required><br><br>
+
+    <div class="field">
+      <label for="img">Imagen</label>
+      <input type="file" name="img">
+    </div>
+
+    <br>
 
     <input type="submit" value="Submit">
   </form>

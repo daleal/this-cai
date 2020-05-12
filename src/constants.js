@@ -20,6 +20,9 @@ const USER_ROLE_PRIVILEGES = {
   administrator: 3,
 };
 
+// Placeholders
+const LANDSCAPE_PLACEHOLDER_IMAGE = 'landscape-placeholder-image.jpg';
+
 module.exports = {
   EMAIL_REGEX,
   PHONE_NUMBER_REGEX,
@@ -27,4 +30,5 @@ module.exports = {
   SESSION_DURATION,
   USER_ROLES,
   USER_ROLE_PRIVILEGES,
+  LANDSCAPE_PLACEHOLDER_IMAGE,
 };

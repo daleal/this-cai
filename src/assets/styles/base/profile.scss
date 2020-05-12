@@ -1,0 +1,59 @@
+.white-background {
+  background-color: $ivory;
+  margin-top: 0;
+  border-radius: 25px;
+
+}
+.small-user{
+  width: 100%;
+  object-fit: cover;
+}
+.pfp {
+  margin: 5%;
+  margin-top: 2%;
+  margin-bottom: 0px;
+  height: 70%;
+  width: 90%;
+  object-fit: cover;
+  border-radius: 25px;
+}
+
+#profile-column{
+  width: 100%;
+  height: 100%;
+  border-right: $prussian-blue 5px solid;
+  p {
+    margin-top: 0.5em;
+  }
+  h5 {
+    font-size: 0.5em;
+  }
+  h3 {
+    margin: 1.3em;
+    padding-bottom: 0.5em;
+    border-bottom: $prussian-blue 2px solid;
+
+  }
+}
+  .orgcard{
+    width: 80%;
+    height: 400px;
+    box-shadow: 10px 10px 5px grey;
+    h2 {
+      margin-top: 0.5em;
+    }
+  }
+  .eventcard{
+    width: 80%;
+    height: 200px;
+    box-shadow: 10px 10px 5px grey;
+    h2 {
+      margin-top: 0.5em;
+    }
+    h5 {
+      font-size: 1em;
+    }
+  }
+  .card-headers {
+    margin-bottom: 2em; 
+  }

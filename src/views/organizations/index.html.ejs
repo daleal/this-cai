@@ -1,24 +1,29 @@
 <div class="content">
-  <h1>Organizaciones</h1>
+  <h1 class= "center ">Organizaciones</h1>
 
   <p>
     <a href="<%= newPath() %>">New</a>
   </p>
+<% orgRows.forEach((row) => { %>
+  <div class="columns">
+    <% row.forEach((org) => { %>
+      <div class="column is-4">
+        <div class="card">
+          <img src=<%= org.image %> class= "card-img">
+            <div class="description">
 
-  <% organizations.forEach((organization) => { %>
-    <h2><%= organization.name %></h2>
-    <p>
-      <%= organization.description %>
-    </p>
-    <p>
-      <a href="<%= showPath(organization) %>">Show</a>
-      <a href="<%= editPath(organization) %>">Edit</a>
-    </p>
-    <p>
-      <form action="<%= deletePath(organization) %>" method="post">
-        <input type="hidden" name="_method" value="delete">
-        <input type="submit" value="Delete">
-      </form>
-    </p>
-  <% }); %>
+
+              <a href="<%= showPath(org) %>" class="pink-link"> <h2><%= org.name %></h2></a>
+              <a href="<%= editPath(org) %>">Edit</a>
+
+            <form action="<%= deletePath(org) %>" method="post">
+              <input type="hidden" name="_method" value="delete">
+              <input type="submit" value="Eliminar" class="card-btn">
+            </form>
+          </div>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+<% }); %>
 </div>

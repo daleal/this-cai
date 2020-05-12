@@ -8,7 +8,7 @@
 
   h2, h3, h4 {
     margin-top: 1em;
-    margin-bottom: 0.5em;
+    margin-bottom: 0.2em;
   }
 
   h2 {
@@ -18,7 +18,6 @@
   h3, h4 {
     font-size: 1.5em;
   }
-
   // Paragraphs
   p {
     margin-bottom: 1em;
@@ -61,7 +60,7 @@
     input[type="url"]:focus,
     textarea:focus,
     select:focus {
-      background: $not-quite-white;
+      background: $ivory;
     }
     textarea {
       height: 20em;

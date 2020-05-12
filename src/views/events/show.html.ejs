@@ -5,4 +5,23 @@
     <%= event.location %><br>
     <%= event.category %>
   </p>
+  <h3> Asistentes </h3>
+  <% if (attendees.length) { %>
+    <% attendees.forEach((user) => { %>
+      <%= `${user.firstName} ${user.lastName}`%>
+      <br>
+    <% }); %>
+  <% } else { %>
+    No hay ningún asistente de momento :(
+  <% } %>
+<% if (!currentUser || !attendeesIds.includes(currentUser.id)) { %>
+<form method="post">
+  <input type="submit" value="Asistir">
+</form>
+<% } else {%>
+  <form method="post">
+    <input type="hidden" name="_method" value="delete">
+    <input type="submit" value="Ya no asistiré">
+  </form>
+<% } %>
 </div>

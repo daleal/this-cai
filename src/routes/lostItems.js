@@ -1,5 +1,8 @@
 const KoaRouter = require('koa-router');
 
+const { requireLogIn } = require('../middleware/sessions');
+const { requireCAi } = require('../middleware/userPermissions');
+
 const router = new KoaRouter();
 
 router.get('lostItems.index', '/', async (ctx) => {
@@ -18,15 +21,15 @@ router.get('lostItems.show', '/:id/show', async (ctx) => {
   await ctx.render('lostItems/show', { lostItem });
 });
 
-router.get('lostItems.new', '/new', async (ctx) => {
+router.get('lostItems.new', '/new', requireLogIn, requireCAi, async (ctx) => {
   const lostItem = await ctx.orm.lostItem.build();
   await ctx.render('lostItems/new', { lostItem });
 });
 
-router.post('lostItems.create', '/new', async (ctx) => {
+router.post('lostItems.create', '/new', requireLogIn, requireCAi, async (ctx) => {
   const lostItem = await ctx.orm.lostItem.build(ctx.request.body);
   try {
-    await lostItem.save({ fields: ['description', 'taken'] });
+    await lostItem.save({ fields: ['description', 'taken', 'img'] });
     return ctx.redirect(ctx.router.url('lostItems.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;
@@ -34,16 +37,16 @@ router.post('lostItems.create', '/new', async (ctx) => {
   }
 });
 
-router.get('lostItems.edit', '/:id/edit', async (ctx) => {
+router.get('lostItems.edit', '/:id/edit', requireLogIn, requireCAi, async (ctx) => {
   const lostItem = await ctx.orm.lostItem.findByPk(ctx.params.id);
   await ctx.render('lostItems/edit', { lostItem });
 });
 
-router.patch('lostItems.update', '/:id/edit', async (ctx) => {
+router.patch('lostItems.update', '/:id/edit', requireLogIn, requireCAi, async (ctx) => {
   const lostItem = await ctx.orm.lostItem.findByPk(ctx.params.id);
   try {
-    const { description } = ctx.request.body;
-    await lostItem.update({ description });
+    const { description, img } = ctx.request.body;
+    await lostItem.update({ description, img });
     return ctx.redirect(ctx.router.url('lostItems.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;
@@ -51,7 +54,7 @@ router.patch('lostItems.update', '/:id/edit', async (ctx) => {
   }
 });
 
-router.delete('lostItems.destroy', '/:id/destroy', async (ctx) => {
+router.delete('lostItems.destroy', '/:id/destroy', requireLogIn, requireCAi, async (ctx) => {
   const lostItem = await ctx.orm.lostItem.findByPk(ctx.params.id);
   await lostItem.destroy();
   return ctx.redirect(ctx.router.url('lostItems.index'));
