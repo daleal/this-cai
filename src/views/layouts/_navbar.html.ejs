@@ -31,15 +31,12 @@
         <li class="nav-item">
           <a href="/session/log-in">Iniciar Sesión!</a>
         </li>
-        <li class="nav-item">
-          <a href="/users/new">Crear Cuenta!</a>
-        </li>
       <% } else { %>
         <li class="nav-item">
           <a href="/messages">Mensajes</a>
         </li>
         <li class="nav-item">
-          <a href=<%= `/users/profile` %>>Mi Perfil</a>
+          <a href="/users/profile">Mi Perfil</a>
         </li>
         <li class="nav-item">
           <% // Fix this action to be called using javascript and an anchor for consistency %>
