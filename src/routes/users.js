@@ -5,7 +5,7 @@ const { requireLogIn, requireNotLoggedIn } = require('../middleware/sessions');
 const router = new KoaRouter();
 
 router.get('users.show', '/profile', requireLogIn, async (ctx) => {
-  const user = await ctx.orm.user.findByPk(ctx.params.id);
+  const user = await ctx.state.currentUser;
   const events = await user.getEvents();
   const orgs = await user.getOrganizations();
   const orgRows = ctx.helpers.global.columnator(orgs, 2);
