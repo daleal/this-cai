@@ -83,5 +83,9 @@
       color: $danger;
       border-radius: 3px;
     }
+    input:disabled, input:disabled:hover{
+      background: #ccc;
+      color: $dark;
+    }
   }
 }

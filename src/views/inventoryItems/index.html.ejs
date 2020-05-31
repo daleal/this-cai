@@ -9,17 +9,24 @@
     <p>
       <%= item.name %><br>
       <%= item.description %><br>
+      <img src="<%= item.image %>" > <br>   
       Unidades existentes: <%= item.maxStock %><br>
       Disponible: <%= item.currentStock %>
     </p>
     <p>
-      <a href="<%= showPath(item) %>">Show</a>
       <a href="<%= editPath(item) %>">Edit</a>
     </p>
     <p>
       <form action="<%= deletePath(item) %>" method="post">
         <input type="hidden" name="_method" value="delete">
         <input type="submit" value="Delete">
+      </form>
+      <form action="<%= reservePath(item) %>" method="post">
+        <% if (item.currentStock > 0) { %>
+          <input type="submit" value="Reservar" >
+        <% } else { %>
+          <input type="submit" value="Reservar" disabled>
+        <% } %>
       </form>
     </p>
   <% }); %>

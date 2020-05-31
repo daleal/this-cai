@@ -5,20 +5,31 @@
     <a href="<%= newPath() %>">New</a>
   </p>
 
+  <h2> Si reconoces alguno de estos objetos, márcalo como tuyo y ve al CAi a reclamarlo </h2>
+  <p> Todos los objetos listados aquí se encuentran físicamente en el cai, incluso si han sido reclamados por alguien, si siguen listados es porque no se han venido a retirar aún. </p>
   <% lostItems.forEach((lostItem) => { %>
     <p>
       <%= lostItem.description %><br>
-      <%= lostItem.taken ? 'Recuperado' : 'No recuperado' %>
+      <img src="<%= lostItem.img %>" alt=""> <br> 
+      <%= lostItem.taken ? 'Reclamado por alguien' : 'No recuperado' %>
     </p>
     <p>
-      <a href="<%= showPath(lostItem) %>">Show</a>
       <a href="<%= editPath(lostItem) %>">Edit</a>
     </p>
-    <p>
+
       <form action="<%= deletePath(lostItem) %>" method="post">
         <input type="hidden" name="_method" value="delete">
         <input type="submit" value="Delete">
       </form>
-    </p>
+      <% if (!lostItem.taken) {%>
+        <form action="<%= claimPath(lostItem) %>" method="post">
+          <input type="submit" value="Reclamar">
+        </form>
+      <%} else if (lostItem.userId === currentUser.id) { %>
+        <form action="<%= unclaimPath(lostItem) %>" method="post">
+          <input type="submit" value="¡Ups! No era mío">
+        </form>
+      <% } %>
+
   <% }); %>
 </div>

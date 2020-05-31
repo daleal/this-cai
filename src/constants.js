@@ -19,6 +19,8 @@ const USER_ROLE_PRIVILEGES = {
   cai: 2,
   administrator: 3,
 };
+// Item loans stuff
+const RESERVATION_TIME = 2; // In days
 
 // Placeholders
 const LANDSCAPE_PLACEHOLDER_IMAGE = 'landscape-placeholder-image.jpg';
@@ -30,5 +32,6 @@ module.exports = {
   SESSION_DURATION,
   USER_ROLES,
   USER_ROLE_PRIVILEGES,
+  RESERVATION_TIME,
   LANDSCAPE_PLACEHOLDER_IMAGE,
 };

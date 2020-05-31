@@ -2,6 +2,7 @@ const KoaRouter = require('koa-router');
 
 const { requireLogIn } = require('../middleware/sessions');
 const { requireCAi } = require('../middleware/userPermissions');
+const { RESERVATION_TIME } = require('../constants');
 
 const router = new KoaRouter();
 
@@ -10,16 +11,12 @@ router.get('inventoryItems.index', '/', async (ctx) => {
   await ctx.render('inventoryItems/index', {
     inventoryItems,
     newPath: () => ctx.router.url('inventoryItems.new'),
-    showPath: (item) => ctx.router.url('inventoryItems.show', { id: item.id }),
     editPath: (item) => ctx.router.url('inventoryItems.edit', { id: item.id }),
     deletePath: (item) => ctx.router.url('inventoryItems.destroy', { id: item.id }),
+    reservePath: (item) => ctx.router.url('inventoryItems.reserve', { id: item.id }),
   });
 });
 
-router.get('inventoryItems.show', '/:id/show', async (ctx) => {
-  const inventoryItem = await ctx.orm.inventoryItem.findByPk(ctx.params.id);
-  await ctx.render('inventoryItems/show', { inventoryItem });
-});
 
 router.get('inventoryItems.new', '/new', requireLogIn, requireCAi, async (ctx) => {
   const inventoryItem = await ctx.orm.inventoryItem.build();
@@ -65,6 +62,31 @@ router.patch('inventoryItems.update', '/:id/edit', requireLogIn, requireCAi, asy
       ctx.state.flashMessage.danger = validationErrors.message;
     }
     await ctx.render('inventoryItems/edit', { inventoryItem });
+  }
+});
+
+router.post('inventoryItems.reserve', '/:id/reserve', requireLogIn, async (ctx) => {
+  const today = new Date();
+  const dueDate = new Date();
+  dueDate.setDate(today.getDate() + RESERVATION_TIME);
+
+  try {
+    const inventoryItem = await ctx.orm.inventoryItem.findByPk(ctx.params.id);
+    ctx.helpers.inventoryItems.consistentDecrement(inventoryItem);
+
+    const reservation = await ctx.orm.reservation.create({ dueDate });
+    await ctx.state.currentUser.addReservation(reservation);
+    await inventoryItem.addReservation(reservation);
+    ctx.state.flashMessage.success = 'Objeto reservado';
+
+    return ctx.redirect(ctx.router.url('inventoryItems.index'));
+  } catch (validationErrors) {
+    if (Array.isArray(validationErrors)) {
+      ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
+    } else {
+      ctx.state.flashMessage.danger = validationErrors.message;
+    }
+    return ctx.redirect(ctx.router.url('inventoryItems.index'));
   }
 });
 

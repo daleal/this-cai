@@ -22,6 +22,8 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
   });
-
+  lostItem.associate = function (models) {
+    lostItem.belongsTo(models.user);
+  };
   return lostItem;
 };
