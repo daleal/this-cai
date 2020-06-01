@@ -13,7 +13,7 @@
                         </p>
                         <h3>Miembros</h3>
                         <% users.forEach((user) =>{ %>
-                            <div class ="small-user">    
+                            <div class ="small-user">
                                 <%= user.firstName %> <%= user.lastName%></h5>
                                 <p>
                                     <img src="<%= user.image %>" class="pfp" alt="">
@@ -33,7 +33,7 @@
                     <% row.forEach((project) => { %>
                         <div class="column is-6">
                             <div class="card orgcard">
-                                <img src=<%=project.image %> class="card-img">
+                                <img src=<%=project.image %> class="card-image">
                                 <div class="description">
                                     <a href="<%= projectPath(project)%>">
                                         <h2>

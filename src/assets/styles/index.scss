@@ -1,4 +1,6 @@
 @import 'reset';
 @import 'base/_all';
+@import 'default-variables';
 @import 'elements/_all';
-@import 'content';
+@import 'components/_all';
+@import 'views/_all';

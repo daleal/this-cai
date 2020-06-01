@@ -41,6 +41,7 @@ router.post('session.create', '/log-in', requireNotLoggedIn, async (ctx) => {
 });
 
 router.delete('session.destroy', '/log-out', requireLogIn, async (ctx) => {
+  console.log('OOF');
   const session = await ctx.orm.session.findByPk(ctx.session.id);
   session.invalidate();
   await session.save();

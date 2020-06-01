@@ -1,13 +1,16 @@
 // Font
-$font-family: 'Cantarell', sans-serif;
+$font-family: 'Karla', sans-serif;
 
-// Colors
+// Palette colors
+$placeholder: #E2725B;
+$pale-blue: #364f6b;
+$light-blue: #3d5775;
+$deep-blue: #30465f;
+$strong-pink: #fc5185;
+$light-grey: #f0f0f0;
+$cyan: #43dde6;
 
-$ivory: #FEFDEB;
-$deep-champagne: #F2CF93;
-$prussian-blue: #003153;
-$terracotta: #E2725B;
-
+// Default colors
 $white: rgb(255, 255, 255);
 $almost-white: rgb(240, 240, 240);
 $not-quite-white: rgb(225, 225, 225);
@@ -25,4 +28,5 @@ $danger: rgb(255, 56, 96);
 $desktop-container-width: 1100px;  // Standard desktop max width
 
 // Misc
-$transition-speed: 400ms;
+$slow-transition-speed: 400ms;
+$fast-transition-speed: 400ms;

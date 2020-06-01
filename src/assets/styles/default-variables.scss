@@ -1,0 +1,24 @@
+:root {
+  // Navbar variables
+  --navbar-background-color: #{$light-blue};
+  --navbar-accent-color: #{$deep-blue};
+
+  // Main container variables
+  --main-background-color: #{$pale-blue};
+
+  // Card variables
+  --card-background-color: #{$deep-blue};
+
+  // Font variables
+  --light-font-color: #{$not-quite-white};
+  --dark-font-color: #{$black};
+
+  // Color variables
+  --accent-1: #{$strong-pink};
+  --accent-2: #{$cyan};
+  --accent-3: #{$light-grey};
+
+  // Transition variables
+  --slow-transition-speed: #{$slow-transition-speed};
+  --fast-transition-speed: #{$fast-transition-speed};
+}
