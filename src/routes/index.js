@@ -4,7 +4,7 @@ const pkg = require('../../package.json');
 const router = new KoaRouter();
 
 router.get('/', async (ctx) => {
-  if (ctx.state.currentUser.isCAi) {
+  if (ctx.state.currentUser && ctx.state.currentUser.isCAi) {
     return ctx.redirect(ctx.router.url('dashboard.info'));
   }
   let articles = await ctx.orm.article.findAll();
