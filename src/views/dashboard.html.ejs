@@ -1,29 +1,76 @@
-<div class="content">
-  <h1> Objetos con devolución pendiente </h1>
-  <% reservationsArray.forEach((arrayItem) => { %>
-    <%= `Arrendatario: ${arrayItem.user.firstName} ${arrayItem.user.lastName}`  %>
-    <br>
-    <%= `Objeto prestado: ${arrayItem.item.name}`  %>
-    <br>
-    <%= `Stock actual: ${arrayItem.item.currentStock}` %>
-    <br>
-    <%= `Para el día: ${arrayItem.reservation.dueDate}`  %>
-    <br>
-    <%= `Atrasado ? ${new Date() < arrayItem.reservation.dueDate ? "Sí" : "No"}`  %>
-    <br>
-    <form action=<%= dereservePath(arrayItem.item) %> method="post">
-      <input name="reservationId" type="hidden" value= <%= arrayItem.reservation.id %>>
-      <input type="submit" name="" value="Devolver Objeto">
-    </form>
-    <br>
-  <% }); %>
-  <h1> Mensajes sin abrir </h1>
-  <% unopenedMessages.forEach((message) => { %>
-    <h3><%= message.email %></h3>
-    <p>
-      <%= message.content %><br>
-      <%= message.createdAt %>
+<h1 class="title is-1 center">Dashboard</h1>
+
+<div class="subtitle is-15center">
+  Todo lo que necesitas para hacer tu trabajo, en la punta de tus dedos.
+</div>
+
+<div class="card is-round">
+  <header class="card-header">
+    <p class="card-header-title is-centered">
+      Objetos con devolución pendiente
     </p>
-      <a href="<%= messageShowPath(message) %>">Abrir</a>
-  <% }); %>
+  </header>
+  <div class="card-content is-centered">
+    <div class="columns wrap">
+      <% reservationsArray.forEach((arrayItem) => { %>
+        <div class="column is-6">
+          <div class="card is-round dashboard-card">
+            <header class="card-header">
+              <p class="card-header-title is-centered">
+                <%= arrayItem.item.name %>
+              </p>
+            </header>
+
+            <div class="card-content is-centered">
+              <p>
+                <%= `Arrendatario: ${arrayItem.user.firstName} ${arrayItem.user.lastName}` %>
+              </p>
+              <p>
+                <%= `Stock actual: ${arrayItem.item.currentStock}` %>
+              </p>
+              <p>
+                <%= `Para el día: ${arrayItem.reservation.dueDate}` %>
+              </p>
+              <p>
+                <%= new Date() < arrayItem.reservation.dueDate ? 'Atrasado!' : 'A tiempo'  %>
+              </p>
+
+              <form class="form-to-text button" action=<%= dereservePath(arrayItem.item) %> method="post">
+                <input name="reservationId" type="hidden" value= <%= arrayItem.reservation.id %>>
+                <button>Devolver Objeto</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+</div>
+
+<div class="card is-round">
+  <header class="card-header">
+    <p class="card-header-title is-centered">
+      Mensajes sin abrir
+    </p>
+  </header>
+  <div class="card-content is-centered">
+    <div class="columns wrap">
+      <% unopenedMessages.forEach((message) => { %>
+        <div class="column is-6">
+          <div class="card is-round dashboard-card">
+            <header class="card-header">
+              <p class="card-header-title is-centered">
+                <%= message.email || 'Anónimo' %>
+              </p>
+            </header>
+            <div class="card-content is-centered">
+              <p><%= message.content %></p>
+              <p><%= message.createdAt %></p>
+              <a href="<%= messageShowPath(message) %>" class="button">Abrir mensaje</a>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </div>
 </div>

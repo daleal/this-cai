@@ -27,56 +27,48 @@
 
     <div class="column is-7">
       <h2>Organizaciones a las que perteneces</h2>
-      <% orgRows.forEach((row) => { %>
-        <div class="columns">
-          <% row.forEach((org) => { %>
-            <div class="column is-6">
-              <div class="card orgcard">
-                <img src=<%= org.image %> class= "card-image" >
-                  <div class="description">
-                    <a href="<%= orgPath(org)%>"><h2><%= org.name %></h2></a>
-                </div>
+      <div class="columns wrap">
+        <% organizations.forEach((organization) => { %>
+          <div class="column is-6">
+            <div class="card orgcard">
+              <img src=<%= organization.image %> class= "card-image" >
+                <div class="description">
+                  <a href="<%= orgPath(organization)%>">
+                    <h2><%= organization.name %></h2>
+                  </a>
               </div>
             </div>
-          <% }); %>
-        </div>
-      <% }); %>
+          </div>
+        <% }); %>
+      </div>
       <div class="card-headers center">
         <h2 class="card-headers center"> Eventos que te interesan </h2>
       </div>
-      <% upcomingEventsRows.forEach((row) => { %>
-        <div class="columns">
-          <% row.forEach((event) => { %>
-            <div class="column is-6">
-              <div class="card eventcard center">
-                <h5><%= event.dateAndTime %></h5>
-                <h3><%= event.name %></h3>
-                <form action="<%= eventPath(event) %>" method="get">
-                  <input type="submit" value="Ir" class="card-btn">
-                </form>
-              </div>
+      <div class="columns wrap">
+        <% upcomingEvents.forEach((event) => { %>
+          <div class="column is-6">
+            <div class="card eventcard center">
+              <h5><%= event.dateAndTime %></h5>
+              <h3><%= event.name %></h3>
+              <a class="button" href="<%= eventPath(event) %>">Ir</a>
             </div>
-          <% }); %>
-        </div>
-      <% }); %>
+          </div>
+        <% }); %>
+      </div>
 
       <div class="card-headers center">
         <h2 class="card-headers center"> Eventos que asististe </h2>
       </div>
-      <% pastEventsRows.forEach((row) => { %>
-        <div class="columns">
-          <% row.forEach((event) => { %>
-            <div class="column is-6">
-              <div class="card eventcard center">
-                <h5><%= event.dateAndTime %></h5>
-                <h3><%= event.name %></h3>
-                <form action="<%= eventPath(event) %>" method="get">
-                  <input type="submit" value="Ir" class="card-btn">
-                </form>
-              </div>
+      <div class="columns wrap">
+        <% pastEvents.forEach((event) => { %>
+          <div class="column is-6">
+            <div class="card eventcard center">
+              <h5><%= event.dateAndTime %></h5>
+              <h3><%= event.name %></h3>
+              <a class="button" href="<%= eventPath(event) %>">Ir</a>
             </div>
-          <% }); %>
-        </div>
-      <% }); %>
+          </div>
+        <% }); %>
+      </div>
     </div>
   </div>

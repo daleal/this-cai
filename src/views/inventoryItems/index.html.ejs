@@ -1,33 +1,39 @@
-<div class="content">
-  <h1>Inventario</h1>
+<h1 class="title is-1 center">Inventario</h1>
 
-  <p>
-    <a href="<%= newPath() %>">New</a>
-  </p>
+<p>
+  <a href="<%= newPath() %>">New</a>
+</p>
 
-  <% inventoryItems.forEach((item) => { %>
+<% inventoryItems.forEach((item) => { %>
+  <div class="card">
+    <header class="card-header">
+      <div class="card-image is-16x9">
+        <img src="<%= item.image %>">
+      </div>
+
+      <p class="card-header-title is-centered">
+        <%= item.name %>
+      </p>
+    </header>
+
+    <div class="card-content is-centered">
+      <p><%= item.description %></p>
+      <p>Unidades existentes: <%= item.maxStock %></p>
+      <p>Disponible: <%= item.currentStock %></p>
+    </div>
     <p>
-      <%= item.name %><br>
-      <%= item.description %><br>
-      <img src="<%= item.image %>" > <br>   
-      Unidades existentes: <%= item.maxStock %><br>
-      Disponible: <%= item.currentStock %>
-    </p>
-    <p>
-      <a href="<%= editPath(item) %>">Edit</a>
-    </p>
-    <p>
-      <form action="<%= deletePath(item) %>" method="post">
+      <a class="button" href="<%= editPath(item) %>">Editar</a>
+      <form class="form-to-text button" action="<%= deletePath(item) %>" method="post">
         <input type="hidden" name="_method" value="delete">
-        <input type="submit" value="Delete">
+        <button>Delete</button>
       </form>
-      <form action="<%= reservePath(item) %>" method="post">
+      <form class="form-to-text button" action="<%= reservePath(item) %>" method="post">
         <% if (item.currentStock > 0) { %>
-          <input type="submit" value="Reservar" >
+          <button>Reservar</button>
         <% } else { %>
-          <input type="submit" value="Reservar" disabled>
+          <button disabled>Reservar</button>
         <% } %>
       </form>
     </p>
-  <% }); %>
-</div>
+  </div>
+<% }); %>

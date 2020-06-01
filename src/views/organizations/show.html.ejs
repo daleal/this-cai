@@ -1,51 +1,49 @@
 <div class="contentF white-background">
-    <div class="columns">
-        <div class="column is-5">
-            <div id="profile-column">
-                <div>
-                    <img src="<%= organization.image %>" class="pfp" alt="">
-                    <div class="center">
-                        <h2>
-                            <%= organization.name %>
-                        </h2>
-                        <p>
-                            <%= organization.description %><br>
-                        </p>
-                        <h3>Miembros</h3>
-                        <% users.forEach((user) =>{ %>
-                            <div class ="small-user">
-                                <%= user.firstName %> <%= user.lastName%></h5>
-                                <p>
-                                    <img src="<%= user.image %>" class="pfp" alt="">
-                                    <%= user.email %>
-                                </p>
-                            </div>
-                        <% }); %>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="column is-7">
-            <h2>Proyectos</h2>
-            <% projectRows.forEach((row) => { %>
-                <div class="columns">
-                    <% row.forEach((project) => { %>
-                        <div class="column is-6">
-                            <div class="card orgcard">
-                                <img src=<%=project.image %> class="card-image">
-                                <div class="description">
-                                    <a href="<%= projectPath(project)%>">
-                                        <h2>
-                                            <%= project.name %>
-                                        </h2>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    <% }); %>
-                </div>
+  <div class="columns">
+    <div class="column is-5">
+      <div id="profile-column">
+        <div>
+          <img src="<%= organization.image %>" class="pfp" alt="">
+          <div class="center">
+            <h2>
+              <%= organization.name %>
+            </h2>
+            <p>
+              <%= organization.description %><br>
+            </p>
+            <h3>Miembros</h3>
+            <% users.forEach((user) =>{ %>
+              <div class ="small-user">
+                <%= user.firstName %> <%= user.lastName%></h5>
+                <p>
+                  <img src="<%= user.image %>" class="pfp" alt="">
+                  <%= user.email %>
+                </p>
+              </div>
             <% }); %>
+          </div>
         </div>
+      </div>
     </div>
+
+    <div class="column is-7">
+        <h2>Proyectos</h2>
+          <div class="columns wrap">
+            <% projects.forEach((project) => { %>
+              <div class="column is-6">
+                <div class="card orgcard">
+                  <img src=<%=project.image %> class="card-image">
+                  <div class="description">
+                    <a href="<%= projectPath(project)%>">
+                      <h2>
+                        <%= project.name %>
+                      </h2>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+    </div>
+  </div>
 </div>

@@ -1,3 +1,5 @@
+<h1 class="title is-1 center">This CAi</h1>
+
 <div class="card is-round">
   <header class="card-header">
     <p class="card-header-title is-centered">
@@ -16,15 +18,13 @@
   </p>
 </div>
 
-<br>
-
 <div class="card is-round">
   <header class="card-header">
     <p class="card-header-title is-centered">
       Últimas Noticias
     </p>
   </header>
-  <div class="card-content">
+  <div class="card-content is-centered">
     <div class="columns">
       <% articles.forEach((article) => { %>
         <div class="column is-3">
@@ -34,12 +34,9 @@
                 <%= article.title %>
               </p>
             </header>
-            <div class="card-content">
-              <%= article.createdAt%>
-              <form action= <%= showArticlePath(article)%>>
-                <br>
-                <button type="submit" class="card-btn">Leer más</button>
-              </form>
+            <div class="card-content is-centered">
+              <p><%= article.createdAt %></p>
+              <a href="<%= showArticlePath(article) %>" class="button">Leer más</a>
             </div>
           </div>
         </div>
@@ -48,15 +45,13 @@
   </div>
 </div>
 
-<br>
-
 <div class="card is-round">
   <header class="card-header">
     <p class="card-header-title is-centered">
       Próximos Eventos
     </p>
   </header>
-  <div class="card-content">
+  <div class="card-content is-centered">
     <div class="columns">
       <% events.forEach((event) => { %>
         <div class="column is-3">
@@ -67,10 +62,8 @@
               </p>
             </header>
             <div class="card-content">
-              <%= event.dateAndTime%>
-              <form action= <%= showEventPath(event)%>>
-                <button type="submit" class="card-btn">Ver Evento</button>
-              </form>
+              <p><%= event.dateAndTime %></p>
+              <a href="<%= showEventPath(event) %>" class="button">Ver Evento</a>
             </div>
           </div>
         </div>

@@ -1,10 +1,10 @@
 <div class="content">
   <h1>Mensajes</h1>
-  
+
   <p>
     <a href="<%= newPath() %>">New</a>
   </p>
-  
+
   <h2>Enviados por ti:</h2>
   <% personal.forEach((message) => { %>
     <h3><%= message.email %></h2>
@@ -17,13 +17,13 @@
       <a href="<%= editPath(message) %>">Edit</a>
     </p>
     <p>
-      <form action="<%= deletePath(message) %>" method="post">
+      <form class="form-to-text button" action="<%= deletePath(message) %>" method="post">
         <input type="hidden" name="_method" value="delete">
-        <input type="submit" value="Delete">
+        <button>Delete</button>
       </form>
     </p>
     <% }); %>
-    <% if (messages) { //for Cai only %> 
+    <% if (messages) { //for Cai only %>
       <h2>Mensajes enviados al CAi</h2>
     <% messages.forEach((message) => { %>
       <h3><%= message.email %></h2>
@@ -36,9 +36,9 @@
         <a href="<%= editPath(message) %>">Edit</a>
       </p>
       <p>
-        <form action="<%= deletePath(message) %>" method="post">
+        <form class="form-to-text button" action="<%= deletePath(message) %>" method="post">
           <input type="hidden" name="_method" value="delete">
-          <input type="submit" value="Delete">
+          <button>Delete</button>
         </form>
       </p>
     <% }); %>
