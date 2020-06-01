@@ -90,6 +90,26 @@ router.post('inventoryItems.reserve', '/:id/reserve', requireLogIn, async (ctx) 
   }
 });
 
+router.post('inventoryItems.dereserve', '/:id/dereserve', requireLogIn, requireCAi, async (ctx) => {
+  try {
+    const inventoryItem = await ctx.orm.inventoryItem.findByPk(ctx.params.id);
+    const reservation = await ctx.orm.reservation.findByPk(ctx.request.body.reservationId);
+    await reservation.destroy();
+    await inventoryItem.increment('currentStock', { by: 1 });
+
+    ctx.state.flashMessage.success = 'Objeto devuelto, stock actualizado';
+
+    return ctx.redirect(ctx.router.url('dashboard.info'));
+  } catch (validationErrors) {
+    if (Array.isArray(validationErrors)) {
+      ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
+    } else {
+      ctx.state.flashMessage.danger = validationErrors.message;
+    }
+    return ctx.redirect(ctx.router.url('dashboard.info'));
+  }
+});
+
 router.delete('inventoryItems.destroy', '/:id/destroy', requireLogIn, requireCAi, async (ctx) => {
   const inventoryItem = await ctx.orm.inventoryItem.findByPk(ctx.params.id);
   await inventoryItem.destroy();

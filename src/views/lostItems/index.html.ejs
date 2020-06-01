@@ -10,7 +10,7 @@
   <% lostItems.forEach((lostItem) => { %>
     <p>
       <%= lostItem.description %><br>
-      <img src="<%= lostItem.img %>" alt=""> <br> 
+      <img src="<%= lostItem.img %>" alt=""> <br>
       <%= lostItem.taken ? 'Reclamado por alguien' : 'No recuperado' %>
     </p>
     <p>
@@ -25,7 +25,7 @@
         <form action="<%= claimPath(lostItem) %>" method="post">
           <input type="submit" value="Reclamar">
         </form>
-      <%} else if (lostItem.userId === currentUser.id) { %>
+      <%} else if (currentUser && lostItem.userId === currentUser.id) { %>
         <form action="<%= unclaimPath(lostItem) %>" method="post">
           <input type="submit" value="¡Ups! No era mío">
         </form>

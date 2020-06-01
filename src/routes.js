@@ -10,6 +10,8 @@ const events = require('./routes/events');
 const projects = require('./routes/projects');
 const messages = require('./routes/messages');
 const articles = require('./routes/articles');
+const dashboard = require('./routes/dashboard');
+
 
 const router = new KoaRouter();
 
@@ -23,5 +25,6 @@ router.use('/events', events.routes());
 router.use('/projects', projects.routes());
 router.use('/messages', messages.routes());
 router.use('/articles', articles.routes());
+router.use('/dashboard', dashboard.routes());
 
 module.exports = router;

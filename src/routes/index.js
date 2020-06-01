@@ -4,6 +4,9 @@ const pkg = require('../../package.json');
 const router = new KoaRouter();
 
 router.get('/', async (ctx) => {
+  if (ctx.state.currentUser.isCAi) {
+    return ctx.redirect(ctx.router.url('dashboard.info'));
+  }
   let articles = await ctx.orm.article.findAll();
   articles.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
   articles = articles.slice(0, 4);

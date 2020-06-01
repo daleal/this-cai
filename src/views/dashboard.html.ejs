@@ -1,0 +1,29 @@
+<div class="content">
+  <h1> Objetos con devolución pendiente </h1>
+  <% reservationsArray.forEach((arrayItem) => { %>
+    <%= `Arrendatario: ${arrayItem.user.firstName} ${arrayItem.user.lastName}`  %>
+    <br>
+    <%= `Objeto prestado: ${arrayItem.item.name}`  %>
+    <br>
+    <%= `Stock actual: ${arrayItem.item.currentStock}` %>
+    <br>
+    <%= `Para el día: ${arrayItem.reservation.dueDate}`  %>
+    <br>
+    <%= `Atrasado ? ${new Date() < arrayItem.reservation.dueDate ? "Sí" : "No"}`  %>
+    <br>
+    <form action=<%= dereservePath(arrayItem.item) %> method="post">
+      <input name="reservationId" type="hidden" value= <%= arrayItem.reservation.id %>>
+      <input type="submit" name="" value="Devolver Objeto">
+    </form>
+    <br>
+  <% }); %>
+  <h1> Mensajes sin abrir </h1>
+  <% unopenedMessages.forEach((message) => { %>
+    <h3><%= message.email %></h3>
+    <p>
+      <%= message.content %><br>
+      <%= message.createdAt %>
+    </p>
+      <a href="<%= messageShowPath(message) %>">Abrir</a>
+  <% }); %>
+</div>
