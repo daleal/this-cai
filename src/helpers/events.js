@@ -1,7 +1,7 @@
 'use strict';
 
 function isPast(event) {
-  if (new Date(`${event.dateAndTime}Z`).getTime() < new Date().getTime()) {
+  if (new Date(`${event.dateAndTime}`).getTime() < new Date().getTime()) {
     return true;
   }
   return false;

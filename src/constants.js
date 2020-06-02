@@ -24,6 +24,8 @@ const RESERVATION_TIME = 2; // In days
 
 // Placeholders
 const LANDSCAPE_PLACEHOLDER_IMAGE = 'landscape-placeholder-image.jpg';
+// Event stuff
+const EXTRA_DAYS = 30;
 
 module.exports = {
   EMAIL_REGEX,
@@ -34,4 +36,5 @@ module.exports = {
   USER_ROLE_PRIVILEGES,
   RESERVATION_TIME,
   LANDSCAPE_PLACEHOLDER_IMAGE,
+  EXTRA_DAYS,
 };
