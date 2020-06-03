@@ -6,12 +6,28 @@
       <%= message.content %><br>
       <%= message.createdAt %>
     </p>
-  <%} else { %>
+  <% } else { %>
     <h2>User: <%= user.firstName %> <%= user.lastName %></h2>
     <p>
       <%= message.content %><br>
       <%= user.email %><br>
       <%= message.createdAt %>
     </p>
+  <% } %>
+  <% if (currentUser.isCAi) { %>
+    <% if (message.responded) { %>
+      <div>
+        <h1> Este mensaje ya ha sido respondido </h1>
+      </div>
+    <% } else { %>
+      <div>
+        <h1> Este mensaje no ha sido respondido </h1>
+      </div>
+    <% } %>
+    <form method="post">
+      <label for="response">Respuesta:</label><br>
+      <input type="text" id="response" name="response">
+      <input type="submit" value="Enviar">
+    </form>
   <% } %>
 </div>

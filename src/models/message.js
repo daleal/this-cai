@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     content: DataTypes.TEXT,
     email: DataTypes.STRING,
     opened: DataTypes.BOOLEAN,
+    responded: DataTypes.BOOLEAN,
   }, { underscored: true });
 
   return message;

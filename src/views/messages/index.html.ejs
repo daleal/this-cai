@@ -12,9 +12,12 @@
       <%= message.content %><br>
       <%= message.createdAt %>
     </p>
+    <p>
+      <a href="<%= showPath(message) %>" class="button"> Abrir </a>
+    </p>
 
     <% }); %>
-    <% if (messages && currentUser && currentUser.isCAi) { //for Cai only %>
+    <% if (currentUser.isCAi) { //for Cai only %>
       <h2>Mensajes enviados al CAi</h2>
     <% messages.forEach((message) => { %>
       <h3><%= message.email %></h2>
