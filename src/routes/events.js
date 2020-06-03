@@ -27,6 +27,8 @@ router.get('events.show', '/:id/show', async (ctx) => {
     event,
     attendees,
     attendeesIds,
+    indexPath: () => ctx.router.url('events.index'),
+
   });
 });
 

@@ -1,8 +1,11 @@
 <h1 class="title is-1 center">Noticias</h1>
 
-<p>
-  <a href="<%= newPath() %>">New</a>
-</p>
+<% if (currentUser && currentUser.isCAi) { %>
+  <p>
+    <a href=<%= newPath() %> class="button">Nueva Noticia</a>
+  </p>
+  <br>
+<% }; %>
 
 <div class="columns wrap">
   <% articles.forEach((article) => { %>

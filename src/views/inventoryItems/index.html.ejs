@@ -1,9 +1,11 @@
 <h1 class="title is-1 center">Inventario</h1>
 
-<p>
-  <a href="<%= newPath() %>">New</a>
-</p>
-
+<% if (currentUser && currentUser.isCAi) { %>
+  <p>
+    <a href=<%= newPath() %> class="button">Nuevo Objeto de Inventario</a>
+  </p>
+  <br>
+<% }; %>
 <% inventoryItems.forEach((item) => { %>
   <div class="card">
     <header class="card-header">
@@ -22,11 +24,13 @@
       <p>Disponible: <%= item.currentStock %></p>
     </div>
     <p>
-      <a class="button" href="<%= editPath(item) %>">Editar</a>
-      <form class="form-to-text button" action="<%= deletePath(item) %>" method="post">
-        <input type="hidden" name="_method" value="delete">
-        <button>Delete</button>
-      </form>
+      <% if (currentUser && currentUser.isCAi) { %>
+        <a class="button" href="<%= editPath(item) %>">Editar</a>
+        <form class="form-to-text button" action="<%= deletePath(item) %>" method="post">
+          <input type="hidden" name="_method" value="delete">
+          <button>Delete</button>
+        </form>
+      <% }; %>
       <form class="form-to-text button" action="<%= reservePath(item) %>" method="post">
         <% if (item.currentStock > 0) { %>
           <button>Reservar</button>

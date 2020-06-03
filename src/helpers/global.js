@@ -33,7 +33,7 @@ module.exports = {
   },
   futureDate: (days) => {
     const date = new Date();
-    Date.setDate(date.getDate() + days);
+    date.setDate(date.getDate() + days);
     return date;
   },
   assetPath: (path) => (process.env.NODE_ENV !== 'development' && manifest && manifest[path]) || `/assets/${path}`,

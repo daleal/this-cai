@@ -33,9 +33,17 @@ router.get('messages.show', '/:id/show', requireLogIn, async (ctx) => {
   const user = await ctx.orm.user.findByPk(message.userId);
   if (ctx.state.currentUser.isCAi) {
     await message.update({ opened: true });
-    await ctx.render('messages/show', { message, user });
+    await ctx.render('messages/show', {
+      message,
+      user,
+      indexPath: () => ctx.router.url('messages.index'),
+    });
   } else if (ctx.state.currentUser.id === user.id) {
-    await ctx.render('messages/show', { message, user });
+    await ctx.render('messages/show', {
+      message,
+      user,
+      indexPath: () => ctx.router.url('messages.index'),
+    });
   }
 });
 

@@ -1,8 +1,11 @@
 <h1 class="title is-1 center">Organizaciones</h1>
 
-<p>
-  <a href="<%= newPath() %>">New</a>
-</p>
+<% if (currentUser && currentUser.isCAi)  {%>
+  <p>
+  <a href="<%= newPath() %>" class="button ">Nueva organización</a>
+  </p>
+  <br>
+<% }; %>
 <div class="columns wrap">
   <% organizations.forEach((organization) => { %>
     <div class="column is-4">

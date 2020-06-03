@@ -24,6 +24,7 @@ router.get('organizations.show', '/:id/show', async(ctx) => {
     users,
     projects,
     projectPath: (project) => ctx.router.url('projects.show', { id: project.id }),
+    indexPath: () => ctx.router.url('organizations.index'),
   });
 });
 

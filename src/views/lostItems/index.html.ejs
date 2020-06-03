@@ -1,8 +1,11 @@
 <h1 class="title is-1 center">Objetos Perdidos</h1>
 
-<p>
-  <a href="<%= newPath() %>">New</a>
-</p>
+<% if (currentUser && currentUser.isCAi) { %>
+  <p>
+    <a href=<%= newPath() %> class="button">Nuevo Objeto Perdido</a>
+  </p>
+  <br>
+<% }; %>
 
 <div class="subtitle is-5 center">
   Si reconoces alguno de estos objetos, márcalo como tuyo y ve al CAi a
@@ -28,11 +31,13 @@
           </p>
         </div>
         <p>
+          <% if (currentUser && currentUser.isCAi) { %>
           <a class="button" href="<%= editPath(lostItem) %>">Edit</a>
-          <form class="form-to-text button" action="<%= deletePath(lostItem) %>" method="post">
-            <input type="hidden" name="_method" value="delete">
-            <button>Delete</button>
-          </form>
+            <form class="form-to-text button" action="<%= deletePath(lostItem) %>" method="post">
+              <input type="hidden" name="_method" value="delete">
+              <button>Delete</button>
+            </form>
+          <% }; %>
           <% if (!lostItem.taken) {%>
             <form class="form-to-text button" action="<%= claimPath(lostItem) %>" method="post">
               <button>Reclamar</button>

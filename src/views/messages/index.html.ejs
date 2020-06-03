@@ -2,7 +2,7 @@
   <h1>Mensajes</h1>
 
   <p>
-    <a href="<%= newPath() %>">New</a>
+    <a href="<%= newPath() %>" class="button"> Nuevo Mensaje </a>
   </p>
 
   <h2>Enviados por ti:</h2>
@@ -12,33 +12,27 @@
       <%= message.content %><br>
       <%= message.createdAt %>
     </p>
-    <p>
-      <a href="<%= showPath(message) %>">Show</a>
-      <a href="<%= editPath(message) %>">Edit</a>
-    </p>
-    <p>
-      <form class="form-to-text button" action="<%= deletePath(message) %>" method="post">
-        <input type="hidden" name="_method" value="delete">
-        <button>Delete</button>
-      </form>
-    </p>
+
     <% }); %>
-    <% if (messages) { //for Cai only %>
+    <% if (messages && currentUser && currentUser.isCAi) { //for Cai only %>
       <h2>Mensajes enviados al CAi</h2>
     <% messages.forEach((message) => { %>
       <h3><%= message.email %></h2>
       <p>
         <%= message.content %><br>
         <%= message.createdAt %>
+        <% if (message.opened) { %>
+          <br>
+          - Leido
+        <% }; %>
       </p>
       <p>
-        <a href="<%= showPath(message) %>">Show</a>
-        <a href="<%= editPath(message) %>">Edit</a>
+        <a href="<%= showPath(message) %>" class="button"> Abrir </a>
       </p>
       <p>
         <form class="form-to-text button" action="<%= deletePath(message) %>" method="post">
           <input type="hidden" name="_method" value="delete">
-          <button>Delete</button>
+          <button> Eliminar </button>
         </form>
       </p>
     <% }); %>
