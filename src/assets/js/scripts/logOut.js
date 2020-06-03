@@ -1,7 +1,10 @@
 /* eslint-disable no-undef, func-names */
 $(() => {
-  $('#log-out-anchor').on('click', (event) => {
+  const logOutAnchor = $('#log-out-anchor');
+  const logOutForm = $('#log-out-form');
+
+  logOutAnchor.on('click', (event) => {
     event.preventDefault();
-    $('#log-out-form').submit();
+    logOutForm.submit();
   });
 });
