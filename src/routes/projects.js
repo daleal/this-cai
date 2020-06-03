@@ -18,8 +18,12 @@ router.get('projects.index', '/', async (ctx) => {
 
 router.get('projects.show', '/:id/show', async (ctx) => {
   const project = await ctx.orm.project.findByPk(ctx.params.id);
+  const organization = await ctx.orm.organization.findByPk(project.organizationId);
+  const organizationPath = ctx.router.url('organizations.show', { id: organization.id });
   await ctx.render('projects/show', {
     project,
+    organization,
+    organizationPath,
     indexPath: () => ctx.router.url('projects.index'),
   });
 });
