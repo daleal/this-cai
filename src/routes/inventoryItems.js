@@ -2,7 +2,8 @@ const KoaRouter = require('koa-router');
 
 const { requireLogIn } = require('../middleware/sessions');
 const { requireCAi } = require('../middleware/userPermissions');
-const { RESERVATION_TIME } = require('../constants');
+const { futureDate } = require('../helpers/global');
+const { INVENTORY_ITEM_RESERVATION_TIME } = require('../constants');
 
 const router = new KoaRouter();
 
@@ -66,11 +67,8 @@ router.patch('inventoryItems.update', '/:id/edit', requireLogIn, requireCAi, asy
 });
 
 router.post('inventoryItems.reserve', '/:id/reserve', requireLogIn, async (ctx) => {
-  const today = new Date();
-  const dueDate = new Date();
-  dueDate.setDate(today.getDate() + RESERVATION_TIME);
-
   try {
+    const dueDate = futureDate(INVENTORY_ITEM_RESERVATION_TIME);
     const inventoryItem = await ctx.orm.inventoryItem.findByPk(ctx.params.id);
     ctx.helpers.inventoryItems.consistentDecrement(inventoryItem);
 

@@ -20,11 +20,15 @@ const uploadImage = async (imagePath, publicId) => {
 module.exports = {
   name: 'global',
   saveImage: async (model) => {
-    if (model.changed('img')) {
-      const timestamp = Math.floor(new Date().getTime() / 1000);
-      const publicID = `${model.constructor.getTableName()}/${model.id}/${timestamp}`;
-      const responseURL = await uploadImage(model.img, publicID);
-      model.set('img', responseURL);
+    if (model.changed('img') && model.img.value) {
+      if (model.img.value) {
+        const timestamp = Math.floor(new Date().getTime() / 1000);
+        const publicID = `${model.constructor.getTableName()}/${model.id}/${timestamp}`;
+        const responseURL = await uploadImage(model.img, publicID);
+        model.set('img', responseURL);
+      } else {
+        model.set('img', null);
+      }
     }
   },
   futureDate: (days) => {

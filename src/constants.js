@@ -19,13 +19,15 @@ const USER_ROLE_PRIVILEGES = {
   cai: 2,
   administrator: 3,
 };
+
 // Item loans stuff
-const RESERVATION_TIME = 2; // In days
+const INVENTORY_ITEM_RESERVATION_TIME = 2; // In days
+
+// Event stuff
+const EVENT_DEFAULT_TIME_LEFT = 30; // In days
 
 // Placeholders
 const LANDSCAPE_PLACEHOLDER_IMAGE = 'landscape-placeholder-image.jpg';
-// Event stuff
-const EXTRA_DAYS = 30;
 
 module.exports = {
   EMAIL_REGEX,
@@ -34,7 +36,7 @@ module.exports = {
   SESSION_DURATION,
   USER_ROLES,
   USER_ROLE_PRIVILEGES,
-  RESERVATION_TIME,
+  INVENTORY_ITEM_RESERVATION_TIME,
   LANDSCAPE_PLACEHOLDER_IMAGE,
-  EXTRA_DAYS,
+  EVENT_DEFAULT_TIME_LEFT,
 };

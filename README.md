@@ -4,7 +4,19 @@ Repository for the IIC2513 project of `this` group.
 
 WebApp location: [https://this-cai.herokuapp.com/](https://this-cai.herokuapp.com/)
 
-## Requirements:
+## Credentials
+
+- Administrator:
+  - Email: `fharellano@uc.cl`
+  - Password: `password`
+- CAi:
+  - Email: `ebrzovic@uc.cl`
+  - Password: `password`
+- Normal User:
+  - Email: `jeschuwirth@uc.cl`
+  - Password: `password`
+
+## Requirements
 
 Simple requirements render happy developers:
 
