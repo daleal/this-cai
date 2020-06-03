@@ -1,59 +1,30 @@
-.white-background {
-  background-color: $placeholder;
-  margin-top: 0;
-  border-radius: 25px;
-
-}
-.small-user{
-  width: 100%;
-  object-fit: cover;
-}
-.pfp {
-  margin: 5%;
-  margin-top: 2%;
-  margin-bottom: 0px;
-  height: 70%;
-  width: 90%;
-  object-fit: cover;
-  border-radius: 25px;
+.profile-message-card {
+  background-color: var(--main-background-color);
 }
 
-#profile-column{
-  width: 100%;
-  height: 100%;
-  border-right: $placeholder 5px solid;
-  p {
-    margin-top: 0.5em;
-  }
-  h5 {
-    font-size: 0.5em;
-  }
-  h3 {
-    margin: 1.3em;
-    padding-bottom: 0.5em;
-    border-bottom: $placeholder 2px solid;
+.profile-organization-sub-card {
+  border: 1px solid var(--accent-1);
+}
 
+.profile-event-sub-card {
+  border: 1px solid var(--accent-2);
+
+  .button {
+    color: var(--dark-font-color);
+    background-color: var(--accent-2);
+  }
+
+  .button:hover {
+    background-color: var(--accent-2-hover);
   }
 }
-  .orgcard{
-    width: 80%;
-    height: 400px;
-    box-shadow: 10px 10px 5px grey;
-    h2 {
-      margin-top: 0.5em;
-    }
-  }
-  .eventcard{
-    width: 80%;
-    height: 200px;
-    box-shadow: 10px 10px 5px grey;
-    h2 {
-      margin-top: 0.5em;
-    }
-    h5 {
-      font-size: 1em;
-    }
-  }
-  .card-headers {
-    margin-bottom: 2em;
-  }
+
+.invisible-profile-card {
+  background-color: var(--main-background-color);
+}
+
+.soft-profile-card {
+  box-shadow:
+      12px 12px 12px 0 rgba(0, 0, 0, 0.1),
+      -12px -12px 12px 0 rgba(61, 87, 117, 0.7);
+}

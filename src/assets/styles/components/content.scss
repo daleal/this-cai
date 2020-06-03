@@ -60,7 +60,7 @@
     input[type="url"]:focus,
     textarea:focus,
     select:focus {
-      background: $placeholder;
+      background: $not-quite-white;
     }
     textarea {
       height: 20em;

@@ -1,1 +1,2 @@
 import './logOut';
+import './darkMode';

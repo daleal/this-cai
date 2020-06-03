@@ -1,10 +1,16 @@
 :root {
+  // Transition variables
+  --slow-transition-speed: #{$slow-transition-speed};
+  --fast-transition-speed: #{$fast-transition-speed};
+}
+
+.dark {
+  // Main container variables
+  --main-background-color: #{$pale-blue};
+
   // Navbar variables
   --navbar-background-color: #{$light-blue};
   --navbar-accent-color: #{$deep-blue};
-
-  // Main container variables
-  --main-background-color: #{$pale-blue};
 
   // Card variables
   --card-background-color: #{$deep-blue};
@@ -20,8 +26,28 @@
   --accent-1-hover: #{$strong-pink-hover};
   --accent-2-hover: #{$cyan-hover};
   --accent-3-hover: #{$light-grey-hover};
+}
 
-  // Transition variables
-  --slow-transition-speed: #{$slow-transition-speed};
-  --fast-transition-speed: #{$fast-transition-speed};
+.light {
+  // Main container variables
+  --main-background-color: #{$light-grey};
+
+  // Navbar variables
+  --navbar-background-color: #{$not-quite-white};
+  --navbar-accent-color: #{$light-grey};
+
+  // Card variables
+  --card-background-color: #{$not-quite-white};
+
+  // Font variables
+  --light-font-color: #{$black};
+  --dark-font-color: #{$not-quite-white};
+
+  // Color variables
+  --accent-1: #{$cyan};
+  --accent-2: #{$strong-pink};
+  --accent-3: #{$strong-pink};
+  --accent-1-hover: #{$cyan-hover};
+  --accent-2-hover: #{$strong-pink-hover};
+  --accent-3-hover: #{$strong-pink-hover};
 }

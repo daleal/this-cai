@@ -1,0 +1,5 @@
+* {
+  transition:
+      background-color var(--fast-transition-speed) ease-in-out,
+      background var(--fast-transition-speed) ease-in-out;
+}

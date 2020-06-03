@@ -9,10 +9,6 @@
   position: fixed;
   background-color: var(--navbar-background-color);
   transition: width var(--fast-transition-speed) ease;
-
-  &:hover .nav-logo svg {
-    transform: rotate(-360deg);
-  }
 }
 
 .navbar-nav {
@@ -44,7 +40,6 @@
     min-height: 3rem;
     max-height: 3rem;
     margin: 0 1rem;
-    transform: rotate(0deg);
     transition: var(--slow-transition-speed);
   }
 }
