@@ -1,17 +1,25 @@
 /* eslint-disable no-undef, func-names */
+
+// Re-apply cached theme
+const theme = localStorage.getItem('theme');
+if (theme) {
+  $('body')[0].classList.add(theme);
+} else {
+  $('body')[0].classList.add('dark');
+}
+
 $(() => {
+  const $body = $('body')[0];
   const $themeSelector = $('#theme-selector');
   const $themeSelectorText = $('#theme-selector-text');
-  const $body = $('body')[0];
 
-  // Re-apply cached theme
-  const theme = localStorage.getItem('theme');
-  if (theme) {
-    $body.classList.add(theme);
-    $themeSelectorText.text(theme === 'dark' ? 'Esclarecer' : 'Oscurecer');
-  } else {
-    $body.classList.add('dark');
-  }
+  // Remove the loading class
+  $body.classList.remove('is-loading');
+
+  // Re-define text
+  $themeSelectorText.text(
+    $body.classList.contains('dark') ? 'Esclarecer' : 'Oscurecer',
+  );
 
   $themeSelector.on('click', (event) => {
     event.preventDefault();
