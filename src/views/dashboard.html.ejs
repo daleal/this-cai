@@ -32,7 +32,7 @@
                 <%= `Para el día: ${arrayItem.reservation.dueDate}` %>
               </p>
               <p>
-                <%= new Date() < arrayItem.reservation.dueDate ? 'Atrasado!' : 'A tiempo'  %>
+                <%= new Date() > arrayItem.reservation.dueDate ? 'Atrasado!' : 'A tiempo'  %>
               </p>
 
               <form class="form-to-text button" action=<%= dereservePath(arrayItem.item) %> method="post">
