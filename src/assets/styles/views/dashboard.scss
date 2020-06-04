@@ -1,0 +1,20 @@
+.dashboard-card {
+  border: 1px solid var(--accent-2);
+
+  .button {
+    color: var(--secondary-font-color);
+    background-color: var(--accent-2);
+
+    &:hover {
+      background-color: var(--accent-2-hover);
+    }
+  }
+
+  .card-header {
+    font-size: 0.8em;
+  }
+
+  .card-content {
+    font-size: 1em;
+  }
+}

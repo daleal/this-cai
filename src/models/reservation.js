@@ -6,5 +6,9 @@ module.exports = (sequelize, DataTypes) => {
     dueDate: DataTypes.DATE,
   }, { underscored: true });
 
+  reservation.associate = function(models) {
+    reservation.belongsTo(models.user);
+    reservation.belongsTo(models.inventoryItem);
+  };
   return reservation;
 };

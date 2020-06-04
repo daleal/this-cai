@@ -7,18 +7,15 @@ const router = new KoaRouter();
 router.get('users.show', '/profile', requireLogIn, async (ctx) => {
   const user = await ctx.state.currentUser;
   const events = await user.getEvents();
-  const orgs = await user.getOrganizations();
-  const orgRows = ctx.helpers.global.columnator(orgs, 2);
+  const organizations = await user.getOrganizations();
   const pastEvents = events.filter((event) => ctx.helpers.events.isPast(event));
   const upcomingEvents = events.filter((event) => !ctx.helpers.events.isPast(event));
-  const pastEventsRows = ctx.helpers.global.columnator(pastEvents, 2);
-  const upcomingEventsRows = ctx.helpers.global.columnator(upcomingEvents, 2);
   const messages = await user.getMessages();
   await ctx.render('users/show', {
     user,
-    pastEventsRows,
-    upcomingEventsRows,
-    orgRows,
+    pastEvents,
+    upcomingEvents,
+    organizations,
     messages,
     eventPath: (event) => ctx.router.url('events.show', { id: event.id }),
     orgPath: (org) => ctx.router.url('organizations.show', { id: org.id }),

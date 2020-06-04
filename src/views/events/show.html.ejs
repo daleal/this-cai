@@ -1,4 +1,7 @@
 <div class="content">
+  <p>
+  <a href=<%=indexPath()%> class="button"> Eventos </a>
+  </p>
   <h2><%= event.name %></h2>
   <p>
     <%= event.dateAndTime %><br>
@@ -15,13 +18,13 @@
     No hay ningún asistente de momento :(
   <% } %>
 <% if (!currentUser || !attendeesIds.includes(currentUser.id)) { %>
-<form method="post">
-  <input type="submit" value="Asistir">
+<form class="form-to-text button" method="post">
+  <button>Asistir</button>
 </form>
 <% } else {%>
-  <form method="post">
+  <form class="form-to-text button" method="post">
     <input type="hidden" name="_method" value="delete">
-    <input type="submit" value="Ya no asistiré">
+    <button>Ya no asistiré</button>
   </form>
 <% } %>
 </div>

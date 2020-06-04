@@ -1,0 +1,84 @@
+<h1 class="title is-1 center">Dashboard</h1>
+
+<div class="subtitle is-15center">
+  Todo lo que necesitas para hacer tu trabajo, en la punta de tus dedos.
+</div>
+
+<div class="card is-round">
+  <header class="card-header">
+    <p class="card-header-title is-centered">
+      Objetos con devolución pendiente
+    </p>
+  </header>
+  <div class="card-content is-centered">
+    <div class="columns wrap">
+      <% reservationsArray.forEach((arrayItem) => { %>
+        <div class="column is-6">
+          <div class="card is-round dashboard-card">
+            <header class="card-header">
+              <p class="card-header-title is-centered">
+                <%= arrayItem.item.name %>
+              </p>
+            </header>
+
+            <div class="card-content is-centered">
+              <p>
+                <%= `Arrendatario: ${arrayItem.user.firstName} ${arrayItem.user.lastName}` %>
+              </p>
+              <p>
+                <%= `Stock actual: ${arrayItem.item.currentStock}` %>
+              </p>
+              <p>
+                <%= `Para el día: ${arrayItem.reservation.dueDate}` %>
+              </p>
+              <p>
+                <%= new Date() > arrayItem.reservation.dueDate ? 'Atrasado!' : 'A tiempo'  %>
+              </p>
+
+              <form class="form-to-text button" action=<%= dereservePath(arrayItem.item) %> method="post">
+                <input name="reservationId" type="hidden" value= <%= arrayItem.reservation.id %>>
+                <button>Devolver Objeto</button>
+              </form>
+              <form class="form-to-text button" action=<%= mailerPath(arrayItem.item) %> method="post">
+                <input name="reservationId" type="hidden" value= <%= arrayItem.reservation.id %>>
+                <button>Enviar recordatorio</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+</div>
+
+<div class="card is-round">
+  <header class="card-header">
+    <p class="card-header-title is-centered">
+      Mensajes sin abrir
+    </p>
+  </header>
+  <div class="card-content is-centered">
+    <div class="columns wrap">
+      <% unopenedMessages.forEach((message) => { %>
+        <div class="column is-6">
+          <div class="card is-round dashboard-card">
+            <header class="card-header">
+              <p class="card-header-title is-centered">
+                <% if (message.user) { %>
+                  <%= `${message.user.firstName} ${message.user.lastName}` %>
+                <% } else { %>
+                  Anónimo
+                <% } %>
+              </p>
+            </header>
+            <div class="card-content is-centered">
+              <p><%= message.content %></p>
+              <p><%= message.createdAt %></p>
+              <a href="<%= messageShowPath(message) %>" class="button">Abrir mensaje</a>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+</div>

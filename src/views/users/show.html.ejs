@@ -1,82 +1,122 @@
-<div class="content white-background">
-  <div class="columns">
-
-      <div class="column is-5">
-        <div id="profile-column">
-          <div >
-            <img src="<%= currentUser.image %>" class="pfp" alt="">
-            <div class="center">
-
-            <h2><%= currentUser.firstName %> <%= currentUser.lastName %></h2>
-            <p>
-              <%= currentUser.email %><br>
-              <%= currentUser.phoneNumber %><br>
-              Permisos: <%= currentUser.role %>
-            </p>
-            <h3>Mensajes Enviados al Cai:</h3>
-            <% messages.forEach((message) =>{ %>
-              <h5><%= message.createdAt %></h5>
-              <p>
-                <%= message.content %>
-              </p>
-            <% }); %>
-          </div>
-          </div>
+<div class="columns">
+  <div class="column is-4">
+    <div class="card">
+      <header class="card-header">
+        <div class="card-image is-1x1">
+          <img src="<%= currentUser.image %>" alt="">
         </div>
-    </div>
-
-    <div class="column is-7">
-      <h2>Organizaciones a las que perteneces</h2>
-      <% orgRows.forEach((row) => { %>
-        <div class="columns">
-          <% row.forEach((org) => { %>
-            <div class="column is-6">
-              <div class="card orgcard">
-                <img src=<%= org.image %> class= "card-img" >
-                  <div class="description">
-                    <a href="<%= orgPath(org)%>"><h2><%= org.name %></h2></a>
-                </div>
+      </header>
+      <div class="card-content">
+        <h3 class="title">
+          <%= currentUser.firstName %> <%= currentUser.lastName %>
+        </h3>
+        <p class="subtitle is-5">
+          <%= currentUser.email %>
+        </p>
+        <p>
+          <%= currentUser.phoneNumber %>
+        </p>
+        <p>
+          Permisos: <%= currentUser.role %>
+        </p>
+        <% if (messages.length) { %>
+          <h5 class="title is-5">
+            Últimos mensajes enviados al CAi:
+          </h5>
+          <% messages.forEach((message) => { %>
+            <div class="card is-round profile-message-card">
+              <div class="card-content">
+                <p>
+                  [<%= message.createdAt %>]
+                </p>
+                <p>
+                  <%= message.content %>
+                </p>
               </div>
             </div>
           <% }); %>
-        </div>
-      <% }); %>
-      <div class="card-headers center">
-        <h2 class="card-headers center"> Eventos que te interesan </h2>
+        <% } %>
       </div>
-      <% upcomingEventsRows.forEach((row) => { %>
-        <div class="columns">
-          <% row.forEach((event) => { %>
-            <div class="column is-6">
-              <div class="card eventcard center">
-                <h5><%= event.dateAndTime %></h5>
-                <h3><%= event.name %></h3>
-                <form action="<%= eventPath(event) %>" method="get">
-                  <input type="submit" value="Ir" class="card-btn">
-                </form>
-              </div>
-            </div>
-          <% }); %>
-        </div>
-      <% }); %>
-
-      <div class="card-headers center">
-        <h2 class="card-headers center"> Eventos que asististe </h2>
-      </div>
-      <% pastEventsRows.forEach((row) => { %>
-        <div class="columns">
-          <% row.forEach((event) => { %>
-            <div class="column is-6">
-              <div class="card eventcard center">
-                <h5><%= event.dateAndTime %></h5>
-                <h3><%= event.name %></h3>
-                <form action="<%= eventPath(event) %>" method="get">
-                  <input type="submit" value="Ir" class="card-btn">
-                </form>
-              </div>
-            </div>
-          <% }); %>
-        </div>
-      <% }); %>
     </div>
   </div>
+
+  <div class="column is-8">
+    <div class="card is-round soft-profile-card invisible-profile-card">
+      <div class="card is-round invisible-profile-card">
+        <% if(organizations.length) { %>
+          <header class="card-header">
+            <div class="card-header-title">
+              Has estado ocupado! Aquí están las organizaciones
+              a las que perteneces.
+            </div>
+          </header>
+          <div class="card-content">
+            <div class="columns wrap">
+              <% organizations.forEach((organization) => { %>
+                <div class="column is-4">
+                  <div class="card is-round profile-organization-sub-card invisible-profile-card">
+                    <header class="card-header">
+                      <div class="card-image is-1x1">
+                        <img src="<%= organization.image %>" alt="">
+                      </div>
+                      <div class="card-header-title is-centered">
+                        <%= organization.name %>
+                      </div>
+                    </header>
+                    <div class="card-content is-centered">
+                      <a href="<%= orgPath(organization) %>" class="button">
+                        Visitar!
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              <% }); %>
+            </div>
+          </div>
+        <% } else { %>
+          <header class="card-header">
+            <div class="card-header-title">
+              No perteneces a ninguna organización.
+            </div>
+          </header>
+        <% } %>
+      </div>
+
+      <div class="card is-round invisible-profile-card">
+        <% if(pastEvents.length) { %>
+          <header class="card-header">
+            <div class="card-header-title">
+              Estos han sido tus eventos! 🔥
+            </div>
+          </header>
+          <div class="card-content">
+            <div class="columns wrap">
+              <% pastEvents.forEach((event) => { %>
+                <div class="column is-6">
+                  <div class="card is-round profile-event-sub-card invisible-profile-card">
+                    <header class="card-header">
+                      <div class="card-header-title is-centered">
+                        <%= event.name %>
+                      </div>
+                    </header>
+                    <div class="card-content is-centered">
+                      <a href="<%= eventPath(event) %>" class="button">
+                        Ir al evento!
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              <% }); %>
+            </div>
+          </div>
+        <% } else { %>
+          <header class="card-header">
+            <div class="card-header-title">
+              Vaya, no has asistido a ningún evento! 💯
+            </div>
+          </header>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>

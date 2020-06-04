@@ -3,6 +3,9 @@ const KoaRouter = require('koa-router');
 const { requireLogIn } = require('../middleware/sessions');
 const { requireCAi } = require('../middleware/userPermissions');
 
+const { futureDate } = require('../helpers/global');
+const { EVENT_DEFAULT_TIME_LEFT } = require('../constants');
+
 const router = new KoaRouter();
 
 router.get('events.index', '/', async (ctx) => {
@@ -24,13 +27,15 @@ router.get('events.show', '/:id/show', async (ctx) => {
     event,
     attendees,
     attendeesIds,
+    indexPath: () => ctx.router.url('events.index'),
+
   });
 });
 
 router.get('events.new', '/new', requireLogIn, requireCAi, async (ctx) => {
-  const base = new Date();
-  const date = new Date(base.getFullYear(), base.getMonth() + 1, base.getDate());
-  const event = await ctx.orm.event.build({ dateAndTime: date });
+  const startDate = futureDate(EVENT_DEFAULT_TIME_LEFT);
+  startDate.setMinutes(0);
+  const event = await ctx.orm.event.build({ dateAndTime: startDate });
   await ctx.render('events/new', { event });
 });
 

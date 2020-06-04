@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="is-loading">
   <head>
     <% include layouts/_head.html.ejs %>
   </head>
@@ -7,10 +7,12 @@
   <body>
     <% include layouts/_navbar.html.ejs %>
 
-    <div class="container main-container">
-      <% include layouts/_flash.html.ejs %>
+    <div class="main-container">
+      <div class="container">
+        <% include layouts/_flash.html.ejs %>
 
-      <%- body %>
+        <%- body %>
+      </div>
     </div>
 
     <script src="<%= assetPath('app.js') %>"></script>

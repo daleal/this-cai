@@ -1,24 +1,54 @@
-<div class="content">
-  <h1>Objetos Perdidos</h1>
+<h1 class="title is-1 center">Objetos Perdidos</h1>
 
+<% if (currentUser && currentUser.isCAi) { %>
   <p>
-    <a href="<%= newPath() %>">New</a>
+    <a href=<%= newPath() %> class="button">Nuevo Objeto Perdido</a>
   </p>
+  <br>
+<% }; %>
 
+<div class="subtitle is-5 center">
+  Si reconoces alguno de estos objetos, márcalo como tuyo y ve al CAi a
+  reclamarlo. Todos los objetos listados aquí se encuentran físicamente
+  en el CAi. Incluso si han sido reclamados por alguien, si siguen
+  listados es porque no se han sido retirados aún.
+</div>
+
+<div class="columns wrap">
   <% lostItems.forEach((lostItem) => { %>
-    <p>
-      <%= lostItem.description %><br>
-      <%= lostItem.taken ? 'Recuperado' : 'No recuperado' %>
-    </p>
-    <p>
-      <a href="<%= showPath(lostItem) %>">Show</a>
-      <a href="<%= editPath(lostItem) %>">Edit</a>
-    </p>
-    <p>
-      <form action="<%= deletePath(lostItem) %>" method="post">
-        <input type="hidden" name="_method" value="delete">
-        <input type="submit" value="Delete">
-      </form>
-    </p>
+    <div class="column is-4">
+      <div class="card">
+        <header class="card-header">
+          <div class="card-image">
+            <img src="<%= lostItem.image %>">
+          </div>
+        </header>
+
+        <div class="card-content is-centered">
+          <p><%= lostItem.description %></p>
+          <p>
+            <%= lostItem.taken ? 'Reclamado por alguien' : 'No recuperado' %>
+          </p>
+        </div>
+        <p>
+          <% if (currentUser && currentUser.isCAi) { %>
+          <a class="button" href="<%= editPath(lostItem) %>">Edit</a>
+            <form class="form-to-text button" action="<%= deletePath(lostItem) %>" method="post">
+              <input type="hidden" name="_method" value="delete">
+              <button>Delete</button>
+            </form>
+          <% }; %>
+          <% if (!lostItem.taken) {%>
+            <form class="form-to-text button" action="<%= claimPath(lostItem) %>" method="post">
+              <button>Reclamar</button>
+            </form>
+          <%} else if (currentUser && lostItem.userId === currentUser.id) { %>
+            <form class="form-to-text button" action="<%= unclaimPath(lostItem) %>" method="post">
+              <button>¡Ups! No era mío</button>
+            </form>
+          <% } %>
+        </p>
+      </div>
+    </div>
   <% }); %>
 </div>

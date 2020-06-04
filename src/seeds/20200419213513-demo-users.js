@@ -10,6 +10,7 @@ module.exports = {
     password: '$2b$10$Ncr7vaIceQF3ZMWB.a8wNOPs6gpZnTyJLlT8dc4jafjCLxwPopos6',
     created_at: new Date(),
     updated_at: new Date(),
+    img: 'https://res.cloudinary.com/hrvt6ouf6/image/upload/v1591230854/seeds/user_4_rgwvqh.png',
   }, {
     email: 'ebrzovic@uc.cl',
     first_name: 'Esteban',
@@ -19,6 +20,7 @@ module.exports = {
     password: '$2b$10$Ncr7vaIceQF3ZMWB.a8wNOPs6gpZnTyJLlT8dc4jafjCLxwPopos6',
     created_at: new Date(),
     updated_at: new Date(),
+    img: 'https://res.cloudinary.com/hrvt6ouf6/image/upload/v1591230854/seeds/user_4_ekcamh.jpg',
   }, {
     email: 'jeschuwirth@uc.cl',
     first_name: 'Juan',
@@ -28,6 +30,7 @@ module.exports = {
     password: '$2b$10$Ncr7vaIceQF3ZMWB.a8wNOPs6gpZnTyJLlT8dc4jafjCLxwPopos6',
     created_at: new Date(),
     updated_at: new Date(),
+    img: 'https://res.cloudinary.com/hrvt6ouf6/image/upload/v1591230854/seeds/user_1_kgxgdi.jpg',
   }, {
     email: 'dlleal@uc.cl',
     first_name: 'Daniel',
@@ -37,6 +40,7 @@ module.exports = {
     password: '$2b$10$Ncr7vaIceQF3ZMWB.a8wNOPs6gpZnTyJLlT8dc4jafjCLxwPopos6',
     created_at: new Date(),
     updated_at: new Date(),
+    img: 'https://res.cloudinary.com/hrvt6ouf6/image/upload/v1591230854/seeds/user_2_xqvykd.jpg',
   }, {
     email: 'jtescobar1@uc.cl',
     first_name: 'Jose',
@@ -46,6 +50,7 @@ module.exports = {
     password: '$2b$10$Ncr7vaIceQF3ZMWB.a8wNOPs6gpZnTyJLlT8dc4jafjCLxwPopos6',
     created_at: new Date(),
     updated_at: new Date(),
+    img: 'https://res.cloudinary.com/hrvt6ouf6/image/upload/v1591229085/seeds/reparacion_lgfgcb.gif',
   }], {}),
 
   down: (queryInterface) => queryInterface.bulkDelete('users', null, {}),

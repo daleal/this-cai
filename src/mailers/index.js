@@ -9,6 +9,10 @@ module.exports = function mailers(app) {
       `emails/${emailName}`,
       { ...templateContext, layout: false, writeResp: false },
     );
-    return transport.sendMail({ ...options, html });
+    if (process.env.NODE_ENV === 'production') {
+      return transport.sendMail({ ...options, html });
+    }
+    // eslint-disable-next-line no-console
+    console.log(`\n\nfrom: ${emailConfig.defaults.from}\n\n${html}\n\n`);
   };
 };

@@ -18,4 +18,12 @@ module.exports = {
       throw errors;
     }
   },
+  consistentDecrement: (item) => {
+    if (item.currentStock > 0) {
+      item.decrement('currentStock', { by: 1 });
+    } else {
+      throw new Error('Stock agotado');
+    }
+  },
+
 };

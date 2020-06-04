@@ -1,26 +1,34 @@
-<div class="content">
-  <h1>Eventos</h1>
+<h1 class="title is-1 center">Eventos</h1>
 
+<% if (currentUser && currentUser.isCAi) { %>
   <p>
-    <a href="<%= newPath() %>">New</a>
+    <a href=<%= newPath() %> class="button">Nuevo Evento</a>
   </p>
+  <br>
+<% }; %>
 
+<div class="columns wrap">
   <% events.forEach((event) => { %>
-    <h2><%= event.name %></h2>
-    <p>
-      <%= event.dateAndTime %><br>
-      <%= event.location %><br>
-      <%= event.category %>
-    </p>
-    <p>
-      <a href="<%= showPath(event) %>">Show</a>
-      <a href="<%= editPath(event) %>">Edit</a>
-    </p>
-    <p>
-      <form action="<%= deletePath(event) %>" method="post">
-        <input type="hidden" name="_method" value="delete">
-        <input type="submit" value="Delete">
-      </form>
-    </p>
+    <div class="column is-4">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title is-centered">
+            <%= event.name %>
+          </p>
+        </header>
+
+        <div class="card-content is-centered">
+          <p>
+            [<%= event.category %>] <%= event.location %>
+          </p>
+          <p>
+            <%= event.dateAndTime %>
+          </p>
+          <a class="button" href="<%= showPath(event) %>">
+            Más información
+          </a>
+        </div>
+      </div>
+    </div>
   <% }); %>
 </div>

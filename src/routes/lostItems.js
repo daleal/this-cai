@@ -10,16 +10,14 @@ router.get('lostItems.index', '/', async (ctx) => {
   await ctx.render('lostItems/index', {
     lostItems,
     newPath: () => ctx.router.url('lostItems.new'),
-    showPath: (item) => ctx.router.url('lostItems.show', { id: item.id }),
     editPath: (item) => ctx.router.url('lostItems.edit', { id: item.id }),
     deletePath: (item) => ctx.router.url('lostItems.destroy', { id: item.id }),
+    claimPath: (item) => ctx.router.url('lostItems.claim', { id: item.id }),
+    unclaimPath: (item) => ctx.router.url('lostItems.unclaim', { id: item.id }),
+
   });
 });
 
-router.get('lostItems.show', '/:id/show', async (ctx) => {
-  const lostItem = await ctx.orm.lostItem.findByPk(ctx.params.id);
-  await ctx.render('lostItems/show', { lostItem });
-});
 
 router.get('lostItems.new', '/new', requireLogIn, requireCAi, async (ctx) => {
   const lostItem = await ctx.orm.lostItem.build();
@@ -36,7 +34,40 @@ router.post('lostItems.create', '/new', requireLogIn, requireCAi, async (ctx) =>
     await ctx.render('lostItems/new', { lostItem });
   }
 });
+router.post('lostItems.claim', '/:id/claim', requireLogIn, async (ctx) => {
+  const lostItem = await ctx.orm.lostItem.findByPk(ctx.params.id);
+  try {
+    ctx.helpers.lostItems.validateNotTaken(lostItem);
+    await lostItem.update({ taken: true });
+    await lostItem.setUser(ctx.state.currentUser);
+    ctx.state.flashMessage.success = 'Objeto reclamado ¡Ve a buscarlo al CAi!';
+    return ctx.redirect(ctx.router.url('lostItems.index'));
+  } catch (validationErrors) {
+    if (Array.isArray(validationErrors)) {
+      ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
+    } else {
+      ctx.state.flashMessage.danger = validationErrors.message;
+    }
+    return ctx.redirect(ctx.router.url('lostItems.index'));
+  }
+});
 
+router.post('lostItems.unclaim', '/:id/unclaim', requireLogIn, async (ctx) => {
+  const lostItem = await ctx.orm.lostItem.findByPk(ctx.params.id);
+  try {
+    ctx.helpers.lostItems.validateOwnership(ctx.state.currentUser, lostItem);
+    await lostItem.update({ taken: false, user_id: null });
+    ctx.state.flashMessage.success = 'Objeto liberado para que lo reclame su verdadero dueño :)';
+    return ctx.redirect(ctx.router.url('lostItems.index'));
+  } catch (validationErrors) {
+    if (Array.isArray(validationErrors)) {
+      ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
+    } else {
+      ctx.state.flashMessage.danger = validationErrors.message;
+    }
+    return ctx.redirect(ctx.router.url('lostItems.index'));
+  }
+});
 router.get('lostItems.edit', '/:id/edit', requireLogIn, requireCAi, async (ctx) => {
   const lostItem = await ctx.orm.lostItem.findByPk(ctx.params.id);
   await ctx.render('lostItems/edit', { lostItem });

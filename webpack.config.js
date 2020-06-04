@@ -9,6 +9,7 @@ module.exports = {
   context: path.join(__dirname, 'src', 'assets'),
   entry: {
     app: ['./js/index.js', './js/app.jsx'],
+    head: ['./head/index.js'],
   },
   output: {
     publicPath: '/assets/',

@@ -1,24 +1,30 @@
-<div class="content">
-  <h1>Noticias</h1>
+<h1 class="title is-1 center">Noticias</h1>
 
+<% if (currentUser && currentUser.isCAi) { %>
   <p>
-    <a href="<%= newPath() %>">New</a>
+    <a href=<%= newPath() %> class="button">Nueva Noticia</a>
   </p>
+  <br>
+<% }; %>
 
+<div class="columns wrap">
   <% articles.forEach((article) => { %>
-    <h2><%= article.title %></h2>
-    <p>
-      <%= article.content %><br>
-    </p>
-    <p>
-      <a href="<%= showPath(article) %>">Show</a>
-      <a href="<%= editPath(article) %>">Edit</a>
-    </p>
-    <p>
-      <form action="<%= deletePath(article) %>" method="post">
-        <input type="hidden" name="_method" value="delete">
-        <input type="submit" value="Delete">
-      </form>
-    </p>
+    <div class="column is-4">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title is-centered">
+            <%= article.title %>
+          </p>
+        </header>
+        <div class="card-content is-centered">
+          <p>
+            <%= article.content %>
+          </p>
+          <a class="button" href="<%= showPath(article) %>">
+            Más información
+          </a>
+        </div>
+      </div>
+    </div>
   <% }); %>
 </div>

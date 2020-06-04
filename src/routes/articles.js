@@ -18,7 +18,10 @@ router.get('articles.index', '/', async (ctx) => {
 
 router.get('articles.show', '/:id/show', async (ctx) => {
   const article = await ctx.orm.article.findByPk(ctx.params.id);
-  await ctx.render('articles/show', { article });
+  await ctx.render('articles/show', {
+    article,
+    indexPath: () => ctx.router.url('articles.index'),
+  });
 });
 
 router.get('articles.new', '/new', requireLogIn, requireCAi, async (ctx) => {

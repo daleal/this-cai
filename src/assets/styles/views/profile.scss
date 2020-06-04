@@ -1,0 +1,30 @@
+.profile-message-card {
+  background-color: var(--main-background-color);
+}
+
+.profile-organization-sub-card {
+  border: 1px solid var(--accent-1);
+}
+
+.profile-event-sub-card {
+  border: 1px solid var(--accent-2);
+
+  .button {
+    color: var(--secondary-font-color);
+    background-color: var(--accent-2);
+  }
+
+  .button:hover {
+    background-color: var(--accent-2-hover);
+  }
+}
+
+.invisible-profile-card {
+  background-color: var(--main-background-color);
+}
+
+.soft-profile-card {
+  box-shadow:
+      12px 12px 12px 0 var(--main-background-main-box-shadow),
+      -12px -12px 12px 0 var(--main-background-secondary-box-shadow);
+}

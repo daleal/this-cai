@@ -8,21 +8,23 @@ const router = new KoaRouter();
 
 router.get('projects.index', '/', async (ctx) => {
   const projects = await ctx.orm.project.findAll();
-  const projectRows = ctx.helpers.global.columnator(projects, 3);
 
   await ctx.render('projects/index', {
-    projectRows,
+    projects,
     newPath: () => ctx.router.url('projects.new'),
     showPath: (project) => ctx.router.url('projects.show', { id: project.id }),
-    editPath: (project) => ctx.router.url('projects.edit', { id: project.id }),
-    deletePath: (project) => ctx.router.url('projects.destroy', { id: project.id }),
   });
 });
 
 router.get('projects.show', '/:id/show', async (ctx) => {
   const project = await ctx.orm.project.findByPk(ctx.params.id);
+  const organization = await ctx.orm.organization.findByPk(project.organizationId);
+  const organizationPath = ctx.router.url('organizations.show', { id: organization.id });
   await ctx.render('projects/show', {
     project,
+    organization,
+    organizationPath,
+    indexPath: () => ctx.router.url('projects.index'),
   });
 });
 

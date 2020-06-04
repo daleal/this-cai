@@ -10,6 +10,7 @@ try {
   // noop
 }
 
+const fs = require('fs');
 const cloudinary = require('cloudinary').v2;
 
 const uploadImage = async (imagePath, publicId) => {
@@ -19,31 +20,23 @@ const uploadImage = async (imagePath, publicId) => {
 
 module.exports = {
   name: 'global',
-  columnator: (array, columns) => {
-    // Needs to be beautified
-    const rows = [];
-    let counter = 0;
-    let row = -1;
-    array.forEach((element) => {
-      if (counter === 0) { // New row
-        row += 1;
-        rows[row] = [];
-      }
-
-      rows[row].push(element);
-
-      counter = (counter + 1) % columns;
-    });
-
-    return rows;
-  },
   saveImage: async (model) => {
     if (model.changed('img')) {
-      const timestamp = Math.floor(new Date().getTime() / 1000);
-      const publicID = `${model.constructor.getTableName()}/${model.id}/${timestamp}`;
-      const responseURL = await uploadImage(model.img, publicID);
-      model.set('img', responseURL);
+      if (fs.readFileSync(model.img).length) {
+        const timestamp = Math.floor(new Date().getTime() / 1000);
+        const publicID = `${model.constructor.getTableName()}/${model.id}/${timestamp}`;
+        const responseURL = await uploadImage(model.img, publicID);
+        model.set('img', responseURL);
+      } else {
+        model.set('img', null);
+      }
     }
+  },
+  futureDate: (days) => {
+    const date = new Date();
+    date.setDate(date.getDate() + days);
+    date.setSeconds(0);
+    return date;
   },
   assetPath: (path) => (process.env.NODE_ENV !== 'development' && manifest && manifest[path]) || `/assets/${path}`,
 };
