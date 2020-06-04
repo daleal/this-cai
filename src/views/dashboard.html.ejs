@@ -39,6 +39,10 @@
                 <input name="reservationId" type="hidden" value= <%= arrayItem.reservation.id %>>
                 <button>Devolver Objeto</button>
               </form>
+              <form class="form-to-text button" action=<%= mailerPath(arrayItem.item) %> method="post">
+                <input name="reservationId" type="hidden" value= <%= arrayItem.reservation.id %>>
+                <button>Enviar recordatorio</button>
+              </form>
             </div>
           </div>
         </div>

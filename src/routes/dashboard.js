@@ -17,6 +17,7 @@ router.get('dashboard.info', '/', requireLogIn, requireCAi, async (ctx) => {
   await ctx.render('dashboard', {
     reservationsArray,
     dereservePath: (item) => ctx.router.url('inventoryItems.dereserve', { id: item.id }),
+    mailerPath: (item) => ctx.router.url('inventoryItems.mailer', { id: item.id }),
     unopenedMessages,
     messageShowPath: (message) => ctx.router.url('messages.show', { id: message.id }),
   });

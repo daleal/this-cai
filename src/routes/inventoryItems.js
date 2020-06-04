@@ -3,6 +3,7 @@ const KoaRouter = require('koa-router');
 const { requireLogIn } = require('../middleware/sessions');
 const { requireCAi } = require('../middleware/userPermissions');
 const { futureDate } = require('../helpers/global');
+const dueDateMail = require('../mailers/dueDateMail');
 const { INVENTORY_ITEM_RESERVATION_TIME } = require('../constants');
 
 const router = new KoaRouter();
@@ -105,6 +106,19 @@ router.post('inventoryItems.dereserve', '/:id/dereserve', requireLogIn, requireC
       ctx.state.flashMessage.danger = validationErrors.message;
     }
     return ctx.redirect(ctx.router.url('dashboard.info'));
+  }
+});
+
+router.post('inventoryItems.mailer', '/:id/mail', requireLogIn, requireCAi, async (ctx) => {
+  try {
+    const inventoryItem = await ctx.orm.inventoryItem.findByPk(ctx.params.id);
+    const reservation = await ctx.orm.reservation.findByPk(ctx.request.body.reservationId);
+    const user = await ctx.orm.user.findByPk(reservation.userId);
+    await dueDateMail(ctx, { inventoryItem, reservation }, user.email);
+    ctx.state.flashMessage.success = 'Correo enviado';
+    return ctx.redirect(ctx.router.url('dashboard.info'));
+  } catch (sendingErrors) {
+    ctx.state.flashMessage.danger = sendingErrors.message;
   }
 });
 
