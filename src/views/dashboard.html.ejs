@@ -60,7 +60,11 @@
           <div class="card is-round dashboard-card">
             <header class="card-header">
               <p class="card-header-title is-centered">
-                <%= message.email || 'Anónimo' %>
+                <% if (message.user) { %>
+                  <%= `${message.user.firstName} ${message.user.lastName}` %>
+                <% } else { %>
+                  Anónimo
+                <% } %>
               </p>
             </header>
             <div class="card-content is-centered">

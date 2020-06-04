@@ -1,52 +1,58 @@
-<div class="contentF white-background">
-  <a href=<%=indexPath()%> class="button">Organizaciones</a>
-  <br>
-  <br>
-  <div class="columns">
-    <div class="column is-5">
-      <div id="profile-column">
-        <div>
-          <img src="<%= organization.image %>" class="pfp" alt="">
-          <div class="center">
-            <h2>
-              <%= organization.name %>
-            </h2>
-            <p>
-              <%= organization.description %><br>
-            </p>
-            <h3>Miembros</h3>
-            <% users.forEach((user) =>{ %>
-              <div class ="small-user">
-                <%= user.firstName %> <%= user.lastName%></h5>
-                <p>
-                  <img src="<%= user.image %>" class="pfp" alt="">
-                  <%= user.email %>
-                </p>
-              </div>
-            <% }); %>
-          </div>
-        </div>
-      </div>
+<div class="card">
+  <header class="card-header">
+    <div class="card-image is-16x9">
+      <img src="<%= organization.image %>">
     </div>
-
-    <div class="column is-7">
-        <h2>Proyectos</h2>
-          <div class="columns wrap">
-            <% projects.forEach((project) => { %>
-              <div class="column is-6">
-                <div class="card orgcard">
-                  <img src=<%=project.image %> class="card-image">
-                  <div class="description">
-                    <a href="<%= projectPath(project)%>">
-                      <h2>
-                        <%= project.name %>
-                      </h2>
-                    </a>
-                  </div>
+    <p class="card-header-title is-centered">
+      <%= organization.name %>
+    </p>
+  </header>
+  <div class="card-content">
+    <p>
+      <%= organization.description %>
+    </p>
+    <a href=<%= indexPath() %> class="button">Todas las Organizaciones</a>
+    <% if (projects.length) { %>
+      <h4 class="title is-4">Proyectos</h4>
+      <div class="columns wrap">
+        <% projects.forEach((project) => { %>
+          <div class="column is-4">
+            <div class="card organization-inner-card">
+              <header class="card-header">
+                <div class="card-image is-1x1">
+                  <img src="<%= project.image %>">
                 </div>
-              </div>
-            <% }); %>
+                <p class="card-header-title is-centered">
+                  <%= project.name %>
+                </p>
+              </header>
+            </div>
           </div>
-    </div>
+        <% }); %>
+      </div>
+    <% } %>
+
+    <% if (users.length) { %>
+      <h4 class="title is-4">Miembros</h4>
+      <div class="columns wrap">
+        <% users.forEach((user) => { %>
+          <div class="column is-3">
+            <div class="card organization-inner-card">
+              <header class="card-header">
+                <div class="card-image is-1x1">
+                  <img src="<%= user.image %>">
+                </div>
+                <p class="card-header-title is-centered">
+                  <%= user.firstName %> <%= user.lastName%>
+                </p>
+              </header>
+              <div class="card-content is-centered">
+                <%= user.email %>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } %>
   </div>
 </div>

@@ -4,7 +4,7 @@ const { requireLogIn } = require('../middleware/sessions');
 
 const router = new KoaRouter();
 
-const sendResponseMail = require('../mailers/responseMail');
+const messageResponseMail = require('../mailers/messageResponseMail');
 
 router.get('messages.index', '/', requireLogIn, async (ctx) => {
   const personal = await ctx.orm.message.findAll({ where: { userId: ctx.state.currentUser.id } });
@@ -56,9 +56,9 @@ router.post('messages.respond', '/:id/show', async (ctx) => {
   try {
     if (message.userId) {
       const user = await ctx.orm.user.findByPk(message.userId);
-      await sendResponseMail(ctx, response, user.email);
+      await messageResponseMail(ctx, response.response, user.email);
     } else {
-      await sendResponseMail(ctx, response, message.email);
+      await messageResponseMail(ctx, response.response, message.email);
     }
     ctx.state.flashMessage.success = 'Respuesta enviada';
     await message.update({ responded: true });

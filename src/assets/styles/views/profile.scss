@@ -10,7 +10,7 @@
   border: 1px solid var(--accent-2);
 
   .button {
-    color: var(--dark-font-color);
+    color: var(--secondary-font-color);
     background-color: var(--accent-2);
   }
 
@@ -25,6 +25,6 @@
 
 .soft-profile-card {
   box-shadow:
-      12px 12px 12px 0 rgba(0, 0, 0, 0.1),
-      -12px -12px 12px 0 rgba(61, 87, 117, 0.7);
+      12px 12px 12px 0 var(--main-background-main-box-shadow),
+      -12px -12px 12px 0 var(--main-background-secondary-box-shadow);
 }

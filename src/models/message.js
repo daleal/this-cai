@@ -8,5 +8,9 @@ module.exports = (sequelize, DataTypes) => {
     responded: DataTypes.BOOLEAN,
   }, { underscored: true });
 
+  message.associate = function(models) {
+    message.belongsTo(models.user);
+  };
+
   return message;
 };

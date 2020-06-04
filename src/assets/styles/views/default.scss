@@ -1,13 +1,13 @@
 body {
   background-color: var(--main-background-color);
   line-height: 1.5rem;
-  color: var(--light-font-color);
+  color: var(--main-font-color);
   font-family: $font-family;
 }
 
 .form-to-text > button {
   text-decoration: none;
-  background: inherit;
+  background: none;
   font-size: 100%;
   font-family: inherit;
   line-height: inherit;

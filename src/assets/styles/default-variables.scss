@@ -5,19 +5,17 @@
 }
 
 .dark {
-  // Main container variables
+  // Main background colors
   --main-background-color: #{$pale-blue};
+  --secondary-background-color: #{$deep-blue};
 
   // Navbar variables
   --navbar-background-color: #{$light-blue};
   --navbar-accent-color: #{$deep-blue};
 
-  // Card variables
-  --card-background-color: #{$deep-blue};
-
   // Font variables
-  --light-font-color: #{$not-quite-white};
-  --dark-font-color: #{$black};
+  --main-font-color: #{$not-quite-white};
+  --secondary-font-color: #{$black};
 
   // Color variables
   --accent-1: #{$strong-pink};
@@ -26,22 +24,24 @@
   --accent-1-hover: #{$strong-pink-hover};
   --accent-2-hover: #{$cyan-hover};
   --accent-3-hover: #{$light-grey-hover};
+
+  // Box shadows
+  --main-background-main-box-shadow: #{$pale-blue-dark-box-shadow};
+  --main-background-secondary-box-shadow: #{$pale-blue-light-box-shadow};
 }
 
 .light {
-  // Main container variables
+  // Main background colors
   --main-background-color: #{$light-grey};
+  --secondary-background-color: #{$not-quite-white};
 
   // Navbar variables
   --navbar-background-color: #{$not-quite-white};
   --navbar-accent-color: #{$light-grey};
 
-  // Card variables
-  --card-background-color: #{$not-quite-white};
-
   // Font variables
-  --light-font-color: #{$black};
-  --dark-font-color: #{$not-quite-white};
+  --main-font-color: #{$black};
+  --secondary-font-color: #{$not-quite-white};
 
   // Color variables
   --accent-1: #{$cyan};
@@ -50,4 +50,8 @@
   --accent-1-hover: #{$cyan-hover};
   --accent-2-hover: #{$strong-pink-hover};
   --accent-3-hover: #{$strong-pink-hover};
+
+  // Box shadows
+  --main-background-main-box-shadow: #{$light-grey-dark-box-shadow};
+  --main-background-secondary-box-shadow: #{$light-grey-light-box-shadow};
 }
