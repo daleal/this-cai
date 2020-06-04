@@ -10,6 +10,7 @@ try {
   // noop
 }
 
+const fs = require('fs');
 const cloudinary = require('cloudinary').v2;
 
 const uploadImage = async (imagePath, publicId) => {
@@ -20,8 +21,8 @@ const uploadImage = async (imagePath, publicId) => {
 module.exports = {
   name: 'global',
   saveImage: async (model) => {
-    if (model.changed('img') && model.img.value) {
-      if (model.img.value) {
+    if (model.changed('img')) {
+      if (fs.readFileSync(model.img).length) {
         const timestamp = Math.floor(new Date().getTime() / 1000);
         const publicID = `${model.constructor.getTableName()}/${model.id}/${timestamp}`;
         const responseURL = await uploadImage(model.img, publicID);

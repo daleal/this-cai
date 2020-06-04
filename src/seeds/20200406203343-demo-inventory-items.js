@@ -10,6 +10,7 @@ module.exports = {
         current_stock: 5,
         created_at: new Date(),
         updated_at: new Date(),
+        img: 'https://res.cloudinary.com/hrvt6ouf6/image/upload/v1591226037/seeds/sweater_ldkzjj.jpg',
       }, {
         name: 'Pelota tenis de mesa',
         description: 'para jugar tenis de mesa',
@@ -17,6 +18,7 @@ module.exports = {
         current_stock: 6,
         created_at: new Date(),
         updated_at: new Date(),
+        img: 'https://res.cloudinary.com/hrvt6ouf6/image/upload/v1591226036/seeds/pelotaspinpon_egp0fp.jpg',
       }, {
         name: 'Paleta tenis de mesa',
         description: 'para jugar tenis de mesa',
@@ -24,6 +26,7 @@ module.exports = {
         current_stock: 13,
         created_at: new Date(),
         updated_at: new Date(),
+        img: 'https://res.cloudinary.com/hrvt6ouf6/image/upload/v1591226035/seeds/paleta_zozzee.jpg',
       }, {
         name: 'Calculadora',
         description: 'Para pruebas y trabajos',
@@ -31,6 +34,7 @@ module.exports = {
         current_stock: 12,
         created_at: new Date(),
         updated_at: new Date(),
+        img: 'https://res.cloudinary.com/hrvt6ouf6/image/upload/v1591226035/seeds/calculadora_dl7lyx.jpg',
       }, {
         name: 'Bata de laboratorio y Gafas',
         description: 'Para el laboratorio de quimica entre otros',
@@ -38,6 +42,7 @@ module.exports = {
         current_stock: 15,
         created_at: new Date(),
         updated_at: new Date(),
+        img: 'https://res.cloudinary.com/hrvt6ouf6/image/upload/v1591226035/seeds/bata_f3quvo.jpg',
       },
     ];
     return queryInterface.bulkInsert('inventory_items', itemsData);
