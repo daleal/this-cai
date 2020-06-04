@@ -24,10 +24,7 @@ router.get('projects.show', '/:id/show', async (ctx) => {
     project,
     organization,
     organizationPath,
-<<<<<<< HEAD
     indexPath: () => ctx.router.url('projects.index'),
-=======
->>>>>>> connected the page further
   });
 });
 
