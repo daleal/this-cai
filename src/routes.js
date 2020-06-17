@@ -12,6 +12,8 @@ const messages = require('./routes/messages');
 const articles = require('./routes/articles');
 const dashboard = require('./routes/dashboard');
 
+const api = require('./routes/api');
+
 
 const router = new KoaRouter();
 
@@ -26,5 +28,7 @@ router.use('/projects', projects.routes());
 router.use('/messages', messages.routes());
 router.use('/articles', articles.routes());
 router.use('/dashboard', dashboard.routes());
+
+router.use('/api', api.routes());
 
 module.exports = router;

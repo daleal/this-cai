@@ -1,2 +1,0 @@
-import './logOut';
-import './colorModeSwitch';
