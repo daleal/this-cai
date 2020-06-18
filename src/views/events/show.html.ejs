@@ -20,14 +20,18 @@
   <% } else { %>
     No hay ningún asistente de momento :(
   <% } %>
-<% if (!currentUser || !attendeesIds.includes(currentUser.id)) { %>
-<form class="form-to-text button" method="post">
-  <button>Asistir</button>
-</form>
-<% } else {%>
-  <form class="form-to-text button" method="post">
-    <input type="hidden" name="_method" value="delete">
-    <button>Ya no asistiré</button>
-  </form>
-<% } %>
+  <% if  (event.dateAndTime > new Date()) { %>
+    <% if (!currentUser || !attendeesIds.includes(currentUser.id)) { %>
+    <form class="form-to-text button" method="post">
+      <button>Asistir</button>
+    </form>
+    <% } else {%>
+      <form class="form-to-text button" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <button>Ya no asistiré</button>
+      </form>
+    <% } %>
+  <% } else { %>
+    <h2>¡Muy tarde! Este evento ya ocurrió</h2>
+  <% } %>
 </div>

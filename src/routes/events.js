@@ -4,7 +4,7 @@ const { requireLogIn } = require('../middleware/sessions');
 /* const { requireCAi } = require('../middleware/userPermissions'); */
 
 const { futureDate } = require('../helpers/global');
-const { EVENT_DEFAULT_TIME_LEFT } = require('../constants');
+const { EVENT_DEFAULT_TIME_LEFT, EVENT_CATEGORIES } = require('../constants');
 
 const router = new KoaRouter();
 
@@ -52,6 +52,7 @@ router.get('events.new', '/new', requireLogIn, async (ctx) => {
     event,
     source,
     organizations,
+    eventCategories: EVENT_CATEGORIES,
   });
 });
 
@@ -104,7 +105,10 @@ router.del('events.unattend', '/:id/show', async (ctx) => {
 
 router.get('events.edit', '/:id/edit', requireLogIn, async (ctx) => {
   const event = await ctx.orm.event.findByPk(ctx.params.id);
-  await ctx.render('events/edit', { event });
+  await ctx.render('events/edit', {
+    event,
+    eventCategories: EVENT_CATEGORIES,
+  });
 });
 
 router.patch('events.update', '/:id/edit', requireLogIn, async (ctx) => {

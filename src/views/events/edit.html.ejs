@@ -9,8 +9,16 @@
 
     <input type="datetime-local" id="dateAndTime" name="dateAndTime" placeholder="Fecha y hora" value="<%= event.dateAndTime.toISOString().replace("Z","") %>" required><br><br>
 
-    <input type="text" id="category" name="category" placeholder="Categoría" value="<%= event.category %>" required><br><br>
-
+    <fieldset>
+          <p>
+             <label>Categoría</label>
+             <select id = "category" name= "category" required>
+               <% eventCategories.forEach((category) => { %>
+                 <option value = <%= category %>> <%= category %> </option>
+               <% }); %>
+             </select>
+          </p>
+       </fieldset>
     <input type="submit" value="Submit">
   </form>
 </div>
