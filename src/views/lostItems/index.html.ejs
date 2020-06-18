@@ -4,7 +4,6 @@
   <p>
     <a href=<%= newPath() %> class="button">Nuevo Objeto Perdido</a>
   </p>
-  <br>
 <% }; %>
 
 <div class="subtitle is-5 center">
@@ -31,17 +30,20 @@
           <p>
             <%= lostItem.taken ? `Reclamado por ${userNameHash[lostItem.userId]}` : 'No recuperado' %>
           </p>
-        </div>
-        <p>
+
+
           <% if (!lostItem.taken) {%>
             <form class="form-to-text button" action="<%= claimPath(lostItem) %>" method="post">
               <button>Reclamar</button>
             </form>
-            <%} else if (currentUser && lostItem.userId === currentUser.id) { %>
-              <form class="form-to-text button" action="<%= unclaimPath(lostItem) %>" method="post">
-                <button>¡Ups! No era mío</button>
-              </form>
-            <% } %>
+
+          <%} else if (currentUser && lostItem.userId === currentUser.id) { %>
+            <form class="form-to-text button" action="<%= unclaimPath(lostItem) %>" method="post">
+              <button>¡Ups! No era mío</button>
+            </form>
+          <% }; %>
+
+
 
           <% if (currentUser && currentUser.isCAi) { %>
             <p class="subtitle is-7 center"> OPCIONES DEL CAI</p>
@@ -82,9 +84,10 @@
 
             </div>
           <% }; %>
-
+        </div>
 
         </p>
+
       </div>
     </div>
   <% }); %>
