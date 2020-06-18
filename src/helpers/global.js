@@ -36,7 +36,15 @@ module.exports = {
     const date = new Date();
     date.setDate(date.getDate() + days);
     date.setSeconds(0);
+    date.setMilliseconds(0);
     return date;
+  },
+  isMember: async (organization, user) => {
+    if (user) {
+      const members = await organization.getUsers();
+      return members.some((member) => user.id === member.id);
+    }
+    return false;
   },
   assetPath: (path) => (process.env.NODE_ENV !== 'development' && manifest && manifest[path]) || `/assets/${path}`,
 };

@@ -1,7 +1,7 @@
 const KoaRouter = require('koa-router');
 
 const { requireLogIn } = require('../middleware/sessions');
-/* const { requireCAi } = require('../middleware/userPermissions'); */
+const { isMember } = require('../helpers/global');
 
 const router = new KoaRouter();
 
@@ -18,11 +18,13 @@ router.get('projects.index', '/', async (ctx) => {
 
 router.get('projects.show', '/:id/show', async (ctx) => {
   const project = await ctx.orm.project.findByPk(ctx.params.id);
-  const organization = await ctx.orm.organization.findByPk(project.organizationId);
+  const organization = await project.getOrganization();
+  const member = await isMember(organization, ctx.state.currentUser);
   const organizationPath = ctx.router.url('organizations.show', { id: organization.id });
   await ctx.render('projects/show', {
     project,
     organization,
+    member,
     organizationPath,
     indexPath: () => ctx.router.url('projects.index'),
   });
@@ -48,7 +50,11 @@ router.get('projects.new', '/new', requireLogIn, async (ctx) => {
 
 router.post('projects.create', '/new', requireLogIn, async (ctx) => {
   const project = await ctx.orm.project.build(ctx.request.body);
+  const organization = await project.getOrganization();
   try {
+    if (!isMember(organization, ctx.state.currentUser)) {
+      throw new Error('No eres miembre de esta organización');
+    }
     await project.save({ fields: ['name', 'description', 'contactInfo', 'img', 'organizationId'] });
     return ctx.redirect(ctx.router.url('projects.index'));
   } catch (validationError) {
@@ -64,7 +70,11 @@ router.get('projects.edit', '/:id/edit', requireLogIn, async (ctx) => {
 
 router.patch('projects.update', '/:id/edit', requireLogIn, async (ctx) => {
   const project = await ctx.orm.project.findByPk(ctx.params.id);
+  const organization = await project.getOrganization();
   try {
+    if (!isMember(organization, ctx.state.currentUser)) {
+      throw new Error('No eres miembre de esta organización');
+    }
     const {
       name, description, contactInfo, img,
     } = ctx.request.body;
@@ -80,6 +90,15 @@ router.patch('projects.update', '/:id/edit', requireLogIn, async (ctx) => {
 
 router.delete('projects.destroy', '/:id/destroy', requireLogIn, async (ctx) => {
   const project = await ctx.orm.project.findByPk(ctx.params.id);
+  const organization = await project.getOrganization();
+  try {
+    if (!isMember(organization, ctx.state.currentUser)) {
+      throw new Error('No eres miembre de esta organización');
+    }
+  } catch (validationError) {
+    ctx.state.flashMessage.danger = validationError.message;
+    return ctx.redirect(ctx.router.url('projects.index'));
+  }
   await project.destroy();
   return ctx.redirect(ctx.router.url('projects.index'));
 });

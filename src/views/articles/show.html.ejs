@@ -1,8 +1,18 @@
-<div class="content">
-  <a href=<%= indexPath() %> class="button"> Noticias  </a>
-  <h2><%= article.title %></h2>
-  <p>
-    <%= article.content %>
-    - <%= organization.name %> <br>
-  </p>
+<div class="card">
+  <header class="card-header">
+    <div class="card-image is-16x9">
+      <img src="<%= article.image %>">
+    </div>
+    <p class="card-header-title is-centered">
+      <%= article.title %>
+    </p>
+  </header>
+  <div class="card-content">
+    <p>
+      <%= article.content %>
+    </p>
+    <a href=<%= indexPath() %> class="button"> Noticias  </a>
+    <h4 class="title is-4"> De: <%= organization.name%></h4>
+    <a href=<%= organizationPath() %> class="button"> Visitar Organización </a>
+  </div>
 </div>

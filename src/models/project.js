@@ -23,6 +23,9 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
   });
+  project.associate = function(models) {
+    project.belongsTo(models.organization);
+  };
 
   return project;
 };

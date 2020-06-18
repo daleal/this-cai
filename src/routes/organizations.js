@@ -2,7 +2,7 @@ const KoaRouter = require('koa-router');
 
 const { requireLogIn } = require('../middleware/sessions');
 const { requireCAi, requireAdministrator } = require('../middleware/userPermissions');
-// const { or } = require('sequelize');
+const { isMember } = require('../helpers/global');
 
 const router = new KoaRouter();
 
@@ -22,10 +22,7 @@ router.get('organizations.show', '/:id/show', async(ctx) => {
   const projects = await organization.getProjects();
   const events = await organization.getEvents();
   const articles = await organization.getArticles();
-  let member = false;
-  if (ctx.state.currentUser) {
-    member = users.some((user) => ctx.state.currentUser.id === user.id);
-  }
+  const member = await isMember(organization, ctx.state.currentUser);
   await ctx.render('organizations/show', {
     organization,
     users,
@@ -50,8 +47,11 @@ router.post('organizations.addMembers', '/:id/show', async(ctx) => {
   const users = await ctx.orm.user.findAll();
   try {
     const user = users.find((element) => element.email === response.email);
+    if (isMember(organization, user)) {
+      throw new Error('Ya es miembre');
+    }
     organization.addUser(user);
-    ctx.flashMessage.success = 'Miembro agregado';
+    ctx.flashMessage.success = 'Miembre agregade';
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {
       ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
@@ -68,8 +68,11 @@ router.del('organizations.removeMembers', '/:id/show', async(ctx) => {
   const organization = await ctx.orm.organization.findByPk(ctx.params.id);
   const user = await ctx.orm.user.findByPk(response.id);
   try {
+    if (!isMember(organization, user)) {
+      throw new Error('No es miembre');
+    }
     await organization.removeUser(user);
-    ctx.state.flashMessage.success = 'Miembro eliminado';
+    ctx.state.flashMessage.success = 'Miembre eliminade';
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {
       ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);
@@ -108,6 +111,9 @@ router.get('organizations.edit', '/:id/edit', requireLogIn, requireCAi, async (c
 router.patch('organizations.update', '/:id/edit', requireLogIn, requireCAi, async (ctx) => {
   const organization = await ctx.orm.organization.findByPk(ctx.params.id);
   try {
+    if (!isMember(organization, ctx.state.currentUser)) {
+      throw new Error('No eres miembre de esta organización');
+    }
     const { name, description, img } = ctx.request.body;
     await organization.update({ name, description, img });
     return ctx.redirect(ctx.router.url('organizations.index'));

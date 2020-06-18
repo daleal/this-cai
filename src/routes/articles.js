@@ -1,7 +1,7 @@
 const KoaRouter = require('koa-router');
 
 const { requireLogIn } = require('../middleware/sessions');
-/* const { requireCAi } = require('../middleware/userPermissions'); */
+const { isMember } = require('../helpers/global');
 
 const router = new KoaRouter();
 
@@ -22,6 +22,7 @@ router.get('articles.show', '/:id/show', async (ctx) => {
   await ctx.render('articles/show', {
     article,
     organization,
+    organizationPath: () => ctx.router.url('organizations.show', { id: organization.id }),
     indexPath: () => ctx.router.url('articles.index'),
   });
 });
@@ -46,8 +47,12 @@ router.get('articles.new', '/new', requireLogIn, async (ctx) => {
 
 router.post('articles.create', '/new', requireLogIn, async (ctx) => {
   const article = ctx.orm.article.build(ctx.request.body);
+  const organization = await article.getOrganization();
   try {
-    await article.save({ fields: ['title', 'content', 'organizationId'] });
+    if (!isMember(organization, ctx.state.currentUser)) {
+      throw new Error('No eres miembre de esta organización');
+    }
+    await article.save({ fields: ['title', 'content', 'organizationId', 'img'] });
     return ctx.redirect(ctx.router.url('articles.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;
@@ -62,9 +67,13 @@ router.get('articles.edit', '/:id/edit', requireLogIn, async (ctx) => {
 
 router.patch('articles.update', '/:id/edit', requireLogIn, async (ctx) => {
   const article = await ctx.orm.article.findByPk(ctx.params.id);
+  const organization = await article.getOrganization();
   try {
-    const { title, content } = ctx.request.body;
-    await article.update({ title, content });
+    if (!isMember(organization, ctx.state.currentUser)) {
+      throw new Error('No eres miembre de esta organización');
+    }
+    const { title, content, img } = ctx.request.body;
+    await article.update({ title, content, img });
     return ctx.redirect(ctx.router.url('articles.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;
@@ -74,6 +83,15 @@ router.patch('articles.update', '/:id/edit', requireLogIn, async (ctx) => {
 
 router.delete('articles.destroy', '/:id/destroy', requireLogIn, async (ctx) => {
   const article = await ctx.orm.article.findByPk(ctx.params.id);
+  const organization = await article.getOrganization();
+  try {
+    if (!isMember(organization, ctx.state.currentUser)) {
+      throw new Error('No eres miembre de esta organización');
+    }
+  } catch (validationError) {
+    ctx.state.flashMessage.danger = validationError.message;
+    return ctx.redirect(ctx.router.url('articles.index'));
+  }
   await article.destroy();
   return ctx.redirect(ctx.router.url('articles.index'));
 });

@@ -1,9 +1,8 @@
 const KoaRouter = require('koa-router');
 
 const { requireLogIn } = require('../middleware/sessions');
-/* const { requireCAi } = require('../middleware/userPermissions'); */
 
-const { futureDate } = require('../helpers/global');
+const { futureDate, isMember } = require('../helpers/global');
 const { EVENT_DEFAULT_TIME_LEFT, EVENT_CATEGORIES } = require('../constants');
 
 const router = new KoaRouter();
@@ -24,11 +23,13 @@ router.get('events.show', '/:id/show', async (ctx) => {
   const attendees = await event.getUsers();
   const attendeesIds = attendees.map((user) => user.id);
   const organization = await event.getOrganization();
+  const member = await isMember(organization, ctx.state.currentUser);
   await ctx.render('events/show', {
     event,
     organization,
     attendees,
     attendeesIds,
+    member,
     organizationPath: () => ctx.router.url('organizations.show', { id: organization.id }),
     indexPath: () => ctx.router.url('events.index'),
 
@@ -58,9 +59,13 @@ router.get('events.new', '/new', requireLogIn, async (ctx) => {
 
 router.post('events.create', '/new', requireLogIn, async (ctx) => {
   const event = ctx.orm.event.build(ctx.request.body);
+  const organization = await event.getOrganization();
   try {
+    if (!isMember(organization, ctx.state.currentUser)) {
+      throw new Error('No eres miembre de esta organización');
+    }
     ctx.helpers.events.validate(ctx.request.body);
-    await event.save({ fields: ['name', 'dateAndTime', 'category', 'location', 'organizationID'] });
+    await event.save({ fields: ['name', 'dateAndTime', 'category', 'location', 'organizationId', 'img'] });
     return ctx.redirect(ctx.router.url('events.index'));
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {
@@ -113,14 +118,17 @@ router.get('events.edit', '/:id/edit', requireLogIn, async (ctx) => {
 
 router.patch('events.update', '/:id/edit', requireLogIn, async (ctx) => {
   const event = await ctx.orm.event.findByPk(ctx.params.id);
-
+  const organization = await event.getOrganization();
   try {
+    if (!isMember(organization, ctx.state.currentUser)) {
+      throw new Error('No eres miembre de esta organización');
+    }
     ctx.helpers.events.validate(ctx.request.body);
     const {
-      name, dateAndTime, category, location,
+      name, dateAndTime, category, location, img,
     } = ctx.request.body;
     await event.update({
-      name, dateAndTime, category, location,
+      name, dateAndTime, category, location, img,
     });
     return ctx.redirect(ctx.router.url('events.index'));
   } catch (validationErrors) {
