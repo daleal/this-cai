@@ -26,27 +26,64 @@
 
         <div class="card-content is-centered">
           <p><%= lostItem.description %></p>
+          <p>Encontrado en: <%= lostItem.locationFound %></p>
+
           <p>
-            <%= lostItem.taken ? 'Reclamado por alguien' : 'No recuperado' %>
+            <%= lostItem.taken ? `Reclamado por ${userNameHash[lostItem.userId]}` : 'No recuperado' %>
           </p>
         </div>
         <p>
-          <% if (currentUser && currentUser.isCAi) { %>
-          <a class="button" href="<%= editPath(lostItem) %>">Edit</a>
-            <form class="form-to-text button" action="<%= deletePath(lostItem) %>" method="post">
-              <input type="hidden" name="_method" value="delete">
-              <button>Delete</button>
-            </form>
-          <% }; %>
           <% if (!lostItem.taken) {%>
             <form class="form-to-text button" action="<%= claimPath(lostItem) %>" method="post">
               <button>Reclamar</button>
             </form>
-          <%} else if (currentUser && lostItem.userId === currentUser.id) { %>
-            <form class="form-to-text button" action="<%= unclaimPath(lostItem) %>" method="post">
-              <button>¡Ups! No era mío</button>
-            </form>
-          <% } %>
+            <%} else if (currentUser && lostItem.userId === currentUser.id) { %>
+              <form class="form-to-text button" action="<%= unclaimPath(lostItem) %>" method="post">
+                <button>¡Ups! No era mío</button>
+              </form>
+            <% } %>
+
+          <% if (currentUser && currentUser.isCAi) { %>
+            <p class="subtitle is-7 center"> OPCIONES DEL CAI</p>
+            <% if (lostItem.taken) { %>
+              <p class= "center">¡Objeto reclamado! Contacta a quien lo reclamó para que venga a retirarlo a la oficina</p>
+            <% } %>
+            <div class="columns">
+
+              <% if (lostItem.taken) {%>
+                  <div class="column is-4">
+
+                    <form class="form-to-text button" action="<%=mailerPath(lostItem) %>" method="post">
+                      <button>Enviar recordatorio</button>
+
+                    </form>
+                  </div>
+                  <div class="column is-4">
+                    <form class="form-to-text button" action="<%= deletePath(lostItem) %>" method="post">
+                      <input type="hidden" name="_method" value="delete">
+                        <button> <%='Objeto entregado a su dueño'%> </button>
+                    </form>
+                  </div>
+                  <div class="column is-4">
+                    <a class="button" href="<%= editPath(lostItem) %>"> Editar </a>
+                  </div>
+                  <% } else { %>
+                    <div class="column is-6">
+                      <form class="form-to-text button" action="<%= deletePath(lostItem) %>" method="post">
+                        <input type="hidden" name="_method" value="delete">
+                          <button> <%='Eliminar de la lista'%> </button>
+                      </form>
+                    </div>
+                    <div class="column is-6">
+                      <a class="button" href="<%= editPath(lostItem) %>"> Editar </a>
+                    </div>
+                  <% }; %>
+
+
+            </div>
+          <% }; %>
+
+
         </p>
       </div>
     </div>
