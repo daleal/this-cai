@@ -8,6 +8,7 @@ router.get('navbar.metadata', '/metadata', async (ctx) => {
   ctx.body = {
     logoItem: navbarMetadata.logo,
     colorModeItem: navbarMetadata.colorMode,
+    menuItem: navbarMetadata.menu,
     navItems: [
       navbarMetadata.organizations,
       navbarMetadata.projects,

@@ -29,7 +29,7 @@ function NavBar(props) {
 
         {/* Nav Items */}
         {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-        {navItems.map((navItem) => <NavItem {...navItem} />)}
+        {navItems.map((navItem) => <NavItem key={navItem.svg} {...navItem} />)}
       </ul>
     </header>
   );

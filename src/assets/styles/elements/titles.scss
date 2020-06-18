@@ -58,3 +58,12 @@
     font-size: 1.2em;
   }
 }
+
+// Mobile
+@media only screen and (max-width: 600px) {
+  .title,
+  .subtitle {
+    overflow-wrap: break-word;
+    padding: 0 0.8em;
+  }
+}
