@@ -26,6 +26,8 @@ module.exports = (sequelize, DataTypes) => {
   organization.associate = function(models) {
     organization.belongsToMany(models.user, { through: 'organization_members' });
     organization.hasMany(models.project);
+    organization.hasMany(models.article);
+    organization.hasMany(models.event);
   };
 
   return organization;

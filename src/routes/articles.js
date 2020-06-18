@@ -1,7 +1,7 @@
 const KoaRouter = require('koa-router');
 
 const { requireLogIn } = require('../middleware/sessions');
-const { requireCAi } = require('../middleware/userPermissions');
+/* const { requireCAi } = require('../middleware/userPermissions'); */
 
 const router = new KoaRouter();
 
@@ -18,21 +18,36 @@ router.get('articles.index', '/', async (ctx) => {
 
 router.get('articles.show', '/:id/show', async (ctx) => {
   const article = await ctx.orm.article.findByPk(ctx.params.id);
+  const organization = await article.getOrganization();
   await ctx.render('articles/show', {
     article,
+    organization,
     indexPath: () => ctx.router.url('articles.index'),
   });
 });
 
-router.get('articles.new', '/new', requireLogIn, requireCAi, async (ctx) => {
+router.get('articles.new', '/new', requireLogIn, async (ctx) => {
   const article = await ctx.orm.article.build();
-  await ctx.render('articles/new', { article });
+  const user = ctx.state.currentUser;
+  const organizations = await user.getOrganizations();
+  const past = ctx.request.headers.referer;
+  const pos = past.indexOf('organizations/');
+  let source;
+  if (pos !== -1) {
+    const org = parseInt(past.charAt(pos + 14), 10);
+    source = await ctx.orm.organization.findByPk(org);
+  }
+  await ctx.render('articles/new', {
+    article,
+    source,
+    organizations,
+  });
 });
 
-router.post('articles.create', '/new', requireLogIn, requireCAi, async (ctx) => {
+router.post('articles.create', '/new', requireLogIn, async (ctx) => {
   const article = ctx.orm.article.build(ctx.request.body);
   try {
-    await article.save({ fields: ['title', 'content'] });
+    await article.save({ fields: ['title', 'content', 'organizationId'] });
     return ctx.redirect(ctx.router.url('articles.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;
@@ -40,12 +55,12 @@ router.post('articles.create', '/new', requireLogIn, requireCAi, async (ctx) => 
   }
 });
 
-router.get('articles.edit', '/:id/edit', requireLogIn, requireCAi, async (ctx) => {
+router.get('articles.edit', '/:id/edit', requireLogIn, async (ctx) => {
   const article = await ctx.orm.article.findByPk(ctx.params.id);
   await ctx.render('articles/edit', { article });
 });
 
-router.patch('articles.update', '/:id/edit', requireLogIn, requireCAi, async (ctx) => {
+router.patch('articles.update', '/:id/edit', requireLogIn, async (ctx) => {
   const article = await ctx.orm.article.findByPk(ctx.params.id);
   try {
     const { title, content } = ctx.request.body;
@@ -57,7 +72,7 @@ router.patch('articles.update', '/:id/edit', requireLogIn, requireCAi, async (ct
   }
 });
 
-router.delete('articles.destroy', '/:id/destroy', requireLogIn, requireCAi, async (ctx) => {
+router.delete('articles.destroy', '/:id/destroy', requireLogIn, async (ctx) => {
   const article = await ctx.orm.article.findByPk(ctx.params.id);
   await article.destroy();
   return ctx.redirect(ctx.router.url('articles.index'));

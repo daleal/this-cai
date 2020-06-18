@@ -8,6 +8,9 @@
     <%= event.location %><br>
     <%= event.category %>
   </p>
+  <h3>Organizado por:</h3>
+  <h2><%= organization.name %></h2>
+  <a href=<%= organizationPath() %> class="button">Visitar Organización</a>
   <h3> Asistentes </h3>
   <% if (attendees.length) { %>
     <% attendees.forEach((user) => { %>

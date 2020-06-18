@@ -14,6 +14,9 @@
     <a href=<%= indexPath() %> class="button">Todas las Organizaciones</a>
     <% if (projects.length) { %>
       <h4 class="title is-4">Proyectos</h4>
+      <% if (member) { %>
+        <a href=<%= newProjectPath() %> class="button">Nuevo Proyecto</a>
+      <% } %>
       <div class="columns wrap">
         <% projects.forEach((project) => { %>
           <div class="column is-4">
@@ -26,14 +29,16 @@
                   <%= project.name %>
                 </p>
               </header>
+              <div class="card-content is-centered">
+                <a href=<%= projectPath(project) %> class="button">Ver Proyecto</a>
+              </div>
             </div>
           </div>
         <% }); %>
       </div>
     <% } %>
-
+    <h4 class="title is-4">Miembros</h4>
     <% if (users.length) { %>
-      <h4 class="title is-4">Miembros</h4>
       <div class="columns wrap">
         <% users.forEach((user) => { %>
           <div class="column is-3">
@@ -48,11 +53,78 @@
               </header>
               <div class="card-content is-centered">
                 <%= user.email %>
+                <% if (member) { %>
+                  <form class="form-to-text button" method="post">
+                    <input type="hidden" name="_method" value="delete">
+                    <input type="hidden" name="id" value="<%= user.id %>">
+                    <button>Eliminar Miembro</button>
+                  </form>
+                <% } %>
               </div>
             </div>
           </div>
         <% }); %>
       </div>
+    <% } else { %>
+      <p>No hay miembros</p>
+    <% } %>
+    <% if (member) { %>
+      <div class="content">
+        <form method="post">
+          <h5 class= "subtitle is-3"> Agregar un miembro</h5>
+          <input type="text" name="email" id="email" placeholder="Email" required>
+          <input type="submit" value="Agregar miembro">
+        </form>
+      </div>
+      <% } %>
+    <h4 class="title is-4">Eventos</h4>
+    <% if (member) { %>
+      <a href=<%= newEventPath() %> class="button">Nuevo Evento</a>
+    <% } %>
+    <% if (events.length) { %>
+      <div class="columns wrap">
+        <% events.forEach((event) => { %>
+          <div class="column is-4">
+            <div class="card organization-inner-card">
+              <header class="card-header">
+                <p class="card-header-title is-centered">
+                  <%= event.name %>
+                </p>
+              </header>
+              <div class="card-content is-centered">
+                <%= event.dateAndTime %>
+                <a href=<%= eventPath(event) %> class="button">Ver evento</a>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <p>No hay eventos</p>
+    <% } %>
+    <h4 class="title is-4">Noticias</h4>
+    <% if (member) { %>
+      <a href=<%= newArticlePath() %> class="button">Escribir Noticia</a>
+    <% } %>
+    <% if (articles.length) { %>
+      <div class="columns wrap">
+        <% articles.forEach((article) => { %>
+          <div class="column is-4">
+            <div class="card organization-inner-card">
+              <header class="card-header">
+                <p class="card-header-title is-centered">
+                  <%= article.title %>
+                </p>
+              </header>
+              <div class="card-content is-centered">
+                <a href=<%= articlePath(article) %> class="button">Ver noticia</a>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <p>No hay Noticias</p>
     <% } %>
   </div>
 </div>

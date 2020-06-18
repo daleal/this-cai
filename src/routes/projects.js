@@ -1,7 +1,7 @@
 const KoaRouter = require('koa-router');
 
 const { requireLogIn } = require('../middleware/sessions');
-const { requireCAi } = require('../middleware/userPermissions');
+/* const { requireCAi } = require('../middleware/userPermissions'); */
 
 const router = new KoaRouter();
 
@@ -28,15 +28,28 @@ router.get('projects.show', '/:id/show', async (ctx) => {
   });
 });
 
-router.get('projects.new', '/new', requireLogIn, requireCAi, async (ctx) => {
+router.get('projects.new', '/new', requireLogIn, async (ctx) => {
   const project = await ctx.orm.project.build();
-  await ctx.render('projects/new', { project });
+  const user = ctx.state.currentUser;
+  const organizations = await user.getOrganizations();
+  const past = ctx.request.headers.referer;
+  const pos = past.indexOf('organizations/');
+  let source;
+  if (pos !== -1) {
+    const org = parseInt(past.charAt(pos + 14), 10);
+    source = await ctx.orm.organization.findByPk(org);
+  }
+  await ctx.render('projects/new', {
+    project,
+    source,
+    organizations,
+  });
 });
 
-router.post('projects.create', '/new', requireLogIn, requireCAi, async (ctx) => {
+router.post('projects.create', '/new', requireLogIn, async (ctx) => {
   const project = await ctx.orm.project.build(ctx.request.body);
   try {
-    await project.save({ fields: ['name', 'description', 'contactInfo', 'img'] });
+    await project.save({ fields: ['name', 'description', 'contactInfo', 'img', 'organizationId'] });
     return ctx.redirect(ctx.router.url('projects.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;
@@ -44,12 +57,12 @@ router.post('projects.create', '/new', requireLogIn, requireCAi, async (ctx) => 
   }
 });
 
-router.get('projects.edit', '/:id/edit', requireLogIn, requireCAi, async (ctx) => {
+router.get('projects.edit', '/:id/edit', requireLogIn, async (ctx) => {
   const project = await ctx.orm.project.findByPk(ctx.params.id);
   await ctx.render('projects/edit', { project });
 });
 
-router.patch('projects.update', '/:id/edit', requireLogIn, requireCAi, async (ctx) => {
+router.patch('projects.update', '/:id/edit', requireLogIn, async (ctx) => {
   const project = await ctx.orm.project.findByPk(ctx.params.id);
   try {
     const {
@@ -65,7 +78,7 @@ router.patch('projects.update', '/:id/edit', requireLogIn, requireCAi, async (ct
   }
 });
 
-router.delete('projects.destroy', '/:id/destroy', requireLogIn, requireCAi, async (ctx) => {
+router.delete('projects.destroy', '/:id/destroy', requireLogIn, async (ctx) => {
   const project = await ctx.orm.project.findByPk(ctx.params.id);
   await project.destroy();
   return ctx.redirect(ctx.router.url('projects.index'));

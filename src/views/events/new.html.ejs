@@ -8,7 +8,19 @@
     <input type="datetime-local" id="dateAndTime" name="dateAndTime" placeholder="Fecha y hora" value="<%= event.dateAndTime.toISOString().replace("Z","") %>" required><br><br>
 
     <input type="text" id="category" name="category" placeholder="Categoría" value="<%= event.category %>" required><br><br>
-
+    <label for="organizationId">Organización</label>
+    <% if (source) { %>
+      <select id = "organizationId" name= "organizationId" value= <%=source.id %> required>
+        <option value = "<%=source.id%>" selected> <%= source.name %> </option>
+    <% } else { %>
+      <select id = "organizationId" name= "organizationId" required>
+    <% } %>
+    <% organizations.forEach((organization) => { %>
+      <% if (source!==organization) { %>
+      <option value = "<%= organization.id %>"> <%= organization.name %> </option>
+      <% } %>
+    <% }); %>
+    </select>
     <input type="submit" value="Submit">
   </form>
 </div>

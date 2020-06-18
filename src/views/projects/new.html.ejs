@@ -11,7 +11,19 @@
       <label for="img">Imagen</label>
       <input type="file" name="img">
     </div>
-
+    <label for="organizationId">Organización</label>
+    <% if (source) { %>
+      <select id = "organizationId" name= "organizationId" value= <%=source.id %> required>
+        <option value = "<%=source.id%>" selected> <%= source.name %> </option>
+    <% } else { %>
+      <select id = "organizationId" name= "organizationId" required>
+    <% } %>
+    <% organizations.forEach((organization) => { %>
+      <% if (source!==organization) { %>
+      <option value = "<%= organization.id %>"> <%= organization.name %> </option>
+      <% } %>
+    <% }); %>
+    </select>
     <br>
 
     <input type="submit" value="Submit">
