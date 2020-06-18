@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     maxStock: DataTypes.INTEGER,
     currentStock: DataTypes.INTEGER,
     img: DataTypes.STRING,
+    maxReservations: DataTypes.INTEGER,
   }, { underscored: true });
 
   // Pre-build hooks

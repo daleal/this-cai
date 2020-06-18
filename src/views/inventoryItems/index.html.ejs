@@ -22,6 +22,7 @@
       <p><%= item.description %></p>
       <p>Unidades existentes: <%= item.maxStock %></p>
       <p>Disponible: <%= item.currentStock %></p>
+      <p>Máximo por persona: <%= item.maxReservations %></p>
     </div>
     <p>
       <% if (currentUser && currentUser.isCAi) { %>

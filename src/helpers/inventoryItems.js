@@ -26,4 +26,16 @@ module.exports = {
     }
   },
 
+  preventHoarding: async (item, user, reservations) => {
+    const userReservations = await reservations.findAll({
+      where: {
+        user_id: user.id,
+        inventory_item_id: item.id,
+      },
+    });
+    if (item.maxReservations <= userReservations.length) {
+      throw new Error(`Ya has realizado ${userReservations.length} reserva(s) de este objeto.`);
+    }
+  },
+
 };

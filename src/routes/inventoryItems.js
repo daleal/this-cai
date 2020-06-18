@@ -29,7 +29,7 @@ router.post('inventoryItems.create', '/new', requireLogIn, requireCAi, async (ct
   const inventoryItem = ctx.orm.inventoryItem.build(ctx.request.body);
   try {
     ctx.helpers.inventoryItems.validate(ctx.request.body);
-    await inventoryItem.save({ fields: ['name', 'description', 'maxStock', 'currentStock', 'img'] });
+    await inventoryItem.save({ fields: ['name', 'description', 'maxStock', 'currentStock', 'img', 'maxReservations'] });
     return ctx.redirect(ctx.router.url('inventoryItems.index'));
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {
@@ -51,10 +51,10 @@ router.patch('inventoryItems.update', '/:id/edit', requireLogIn, requireCAi, asy
   try {
     ctx.helpers.inventoryItems.validate(ctx.request.body);
     const {
-      name, description, maxStock, currentStock, img,
+      name, description, maxStock, currentStock, img, maxReservations,
     } = ctx.request.body;
     await inventoryItem.update({
-      name, description, maxStock, currentStock, img,
+      name, description, maxStock, currentStock, img, maxReservations,
     });
     return ctx.redirect(ctx.router.url('inventoryItems.index'));
   } catch (validationErrors) {
@@ -71,6 +71,11 @@ router.post('inventoryItems.reserve', '/:id/reserve', requireLogIn, async (ctx) 
   try {
     const dueDate = futureDate(INVENTORY_ITEM_RESERVATION_TIME);
     const inventoryItem = await ctx.orm.inventoryItem.findByPk(ctx.params.id);
+
+    await ctx.helpers.inventoryItems.preventHoarding(
+      inventoryItem, ctx.state.currentUser, ctx.orm.reservation,
+    );
+
     ctx.helpers.inventoryItems.consistentDecrement(inventoryItem);
 
     const reservation = await ctx.orm.reservation.create({ dueDate });
