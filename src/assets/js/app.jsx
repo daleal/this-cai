@@ -8,12 +8,19 @@ import EditUserForm from './components/form/EditUserForm';
 import InventoryItemFrom from './components/form/InventoryItemForm';
 import LostItemForm from './components/form/LostItemForm';
 import EventForm from './components/form/EventForm';
+import ParentComment from  './components/comments/ParentComment';
 
 import App from './components/App';
 import NavBar from './components/navbar/NavBar';
 import ChatIndex from './components/chat/ChatIndex';
 import Chat from './components/chat/Chat';
 import AnonymousMessages from './components/chat/AnonymousMessages';
+
+const parentComment = document.getElementById('react-comments');
+
+if (parentComment) {
+  ReactDOM.render(<ParentComment />, parentComment);
+}
 
 const organizationForm = document.getElementById('organization-form');
 
@@ -58,6 +65,7 @@ if (lostItemForm) {
 }
 
 const eventForm = document.getElementById('event-form');
+
 
 if (eventForm) {
   ReactDOM.render(<EventForm />, eventForm);

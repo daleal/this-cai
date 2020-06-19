@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
   event.associate = function(models) {
     event.belongsToMany(models.user, { through: 'event_users' });
     event.belongsTo(models.organization);
+    event.hasMany(models.comment);
   };
 
   return event;

@@ -3,7 +3,7 @@ const KoaRouter = require('koa-router');
 const router = new KoaRouter();
 
 
-router.get('retrieve.entity', '/:entity/:id', async (ctx) => {
+router.get('retrieve.entityy', '/:entity/:id', async (ctx) => {
   let entityName = ctx.params.entity.slice(0, -1);
 
   if (entityName === 'inventory-item') {
@@ -34,4 +34,24 @@ router.get('retrieve.user', '/user', async (ctx) => {
   const user = ctx.state.currentUser;
   ctx.body = user;
 });
+
+router.get('retrieve.comments', '/get/comments/:id', async (ctx) => {
+  const event = await ctx.orm.event.findByPk(ctx.params.id);
+  const comments = await event.getComments();
+  ctx.body = { comments };
+});
+
+router.post('retrieve.postComment', '/post/comments/:id', async (ctx) => {
+  const user = await ctx.state.currentUser;
+  const eventId = ctx.params.id;
+  const { content } = JSON.parse(ctx.request.body);
+  const author = `${user.firstName} ${user.lastName}`;
+  await ctx.orm.comment.create({
+    eventId,
+    userId: user.id,
+    content,
+    author,
+  });
+});
+
 module.exports = router;

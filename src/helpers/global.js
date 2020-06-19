@@ -28,7 +28,7 @@ module.exports = {
         const responseURL = await uploadImage(model.img, publicID);
         model.set('img', responseURL);
       } else {
-        model.set('img', null);
+        model.set('img', model.previous('img'));
       }
     }
   },
