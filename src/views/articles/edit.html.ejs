@@ -1,17 +1,2 @@
-<div class="content">
-  <h1>Editar Noticia</h1>
-  <form method="post" enctype="multipart/form-data">
-    <input type="hidden" name="_method" value="patch">
-
-    <input type="text" id="title" name="title" placeholder="Título" value="<%= article.title %>" required><br><br>
-
-    <textarea type="text" id="content" name="content" placeholder="Contenido" required><%= article.content %></textarea><br><br>
-
-    <div class="field">
-      <label for="img">Imagen</label>
-      <input type="file" name="img">
-    </div>
-    
-    <input type="submit" value="Submit">
-  </form>
+<div class="content" id="article-form">
 </div>

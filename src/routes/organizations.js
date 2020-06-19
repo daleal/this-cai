@@ -1,7 +1,7 @@
 const KoaRouter = require('koa-router');
 
 const { requireLogIn } = require('../middleware/sessions');
-const { requireCAi, requireAdministrator } = require('../middleware/userPermissions');
+const { requireCAi, requireAdministrator, requiereMembership } = require('../middleware/userPermissions');
 const { isMember } = require('../helpers/global');
 
 const router = new KoaRouter();
@@ -41,7 +41,7 @@ router.get('organizations.show', '/:id/show', async(ctx) => {
 });
 
 
-router.post('organizations.addMembers', '/:id/show', async(ctx) => {
+router.post('organizations.addMembers', '/:id/show', requiereMembership, async(ctx) => {
   const response = ctx.request.body;
   const organization = await ctx.orm.organization.findByPk(ctx.params.id);
   const users = await ctx.orm.user.findAll();
@@ -63,7 +63,7 @@ router.post('organizations.addMembers', '/:id/show', async(ctx) => {
 });
 
 
-router.del('organizations.removeMembers', '/:id/show', async(ctx) => {
+router.del('organizations.removeMembers', '/:id/show', requiereMembership, async(ctx) => {
   const response = ctx.request.body;
   const organization = await ctx.orm.organization.findByPk(ctx.params.id);
   const user = await ctx.orm.user.findByPk(response.id);

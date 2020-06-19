@@ -41,6 +41,9 @@ module.exports = {
   },
   isMember: async (organization, user) => {
     if (user) {
+      if (user.isCAi) {
+        return true;
+      }
       const members = await organization.getUsers();
       return members.some((member) => user.id === member.id);
     }

@@ -1,6 +1,8 @@
 const KoaRouter = require('koa-router');
 
 const { requireLogIn } = require('../middleware/sessions');
+const { requiereMembership } = require('../middleware/userPermissions');
+
 const { isMember, hasOrganization } = require('../helpers/global');
 
 const router = new KoaRouter();
@@ -31,17 +33,11 @@ router.get('projects.show', '/:id/show', async (ctx) => {
   });
 });
 
-router.get('projects.new', '/new', requireLogIn, async (ctx) => {
+router.get('projects.new', '/new', requireLogIn, requiereMembership, async (ctx) => {
   const project = await ctx.orm.project.build();
   const user = ctx.state.currentUser;
   const organizations = await user.getOrganizations();
-  const past = ctx.request.headers.referer;
-  const pos = past.indexOf('organizations/');
   let source;
-  if (pos !== -1) {
-    const org = parseInt(past.charAt(pos + 14), 10);
-    source = await ctx.orm.organization.findByPk(org);
-  }
   await ctx.render('projects/new', {
     project,
     source,
@@ -64,12 +60,12 @@ router.post('projects.create', '/new', requireLogIn, async (ctx) => {
   }
 });
 
-router.get('projects.edit', '/:id/edit', requireLogIn, async (ctx) => {
+router.get('projects.edit', '/:id/edit', requireLogIn, requiereMembership, async (ctx) => {
   const project = await ctx.orm.project.findByPk(ctx.params.id);
   await ctx.render('projects/edit', { project });
 });
 
-router.patch('projects.update', '/:id/edit', requireLogIn, async (ctx) => {
+router.patch('projects.update', '/:id/edit', requireLogIn, requiereMembership, async (ctx) => {
   const project = await ctx.orm.project.findByPk(ctx.params.id);
   const organization = await project.getOrganization();
   try {
@@ -77,10 +73,10 @@ router.patch('projects.update', '/:id/edit', requireLogIn, async (ctx) => {
       throw new Error('No eres miembre de esta organización');
     }
     const {
-      name, description, contactInfo, img,
+      name, description, contactInfo, img, organizationId,
     } = ctx.request.body;
     await project.update({
-      name, description, contactInfo, img,
+      name, description, contactInfo, img, organizationId,
     });
     return ctx.redirect(ctx.router.url('projects.index'));
   } catch (validationError) {
@@ -89,7 +85,7 @@ router.patch('projects.update', '/:id/edit', requireLogIn, async (ctx) => {
   }
 });
 
-router.delete('projects.destroy', '/:id/destroy', requireLogIn, async (ctx) => {
+router.delete('projects.destroy', '/:id/destroy', requireLogIn, requiereMembership, async (ctx) => {
   const project = await ctx.orm.project.findByPk(ctx.params.id);
   const organization = await project.getOrganization();
   try {

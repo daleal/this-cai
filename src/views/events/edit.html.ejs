@@ -1,28 +1,2 @@
-<div class="content">
-  <h1>Editar Evento</h1>
-  <form method="post" enctype="multipart/form-data">
-    <input type="hidden" name="_method" value="patch">
-
-    <input type="text" id="name" name="name" placeholder="Nombre" value="<%= event.name %>" required><br><br>
-
-    <input type="text" id="location" name="location" placeholder="Ubicación" value="<%= event.location %>" required><br><br>
-
-    <input type="datetime-local" id="dateAndTime" name="dateAndTime" placeholder="Fecha y hora" value="<%= event.dateAndTime.toISOString().replace("Z","") %>" required><br><br>
-
-    <fieldset>
-      <p>
-        <label>Categoría</label>
-        <select id = "category" name= "category" required>
-          <% eventCategories.forEach((category) => { %>
-            <option value = <%= category %>> <%= category %> </option>
-          <% }); %>
-        </select>
-      </p>
-    </fieldset>
-    <div class="field">
-      <label for="img">Imagen</label>
-      <input type="file" name="img">
-    </div>
-    <input type="submit" value="Submit">
-  </form>
+<div class="content" id="event-form">
 </div>

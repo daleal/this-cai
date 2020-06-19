@@ -17,6 +17,7 @@ router.get('users.show', '/profile', requireLogIn, async (ctx) => {
     organizations,
     eventPath: (event) => ctx.router.url('events.show', { id: event.id }),
     orgPath: (org) => ctx.router.url('organizations.show', { id: org.id }),
+    editPath: ctx.router.url('users.edit'),
   });
 });
 
@@ -58,12 +59,12 @@ router.patch('users.update', '/edit', requireLogIn, async (ctx) => {
   try {
     ctx.helpers.users.validate(ctx.request.body);
     const {
-      email, firstName, lastName, phoneNumber, role, img,
+      email, firstName, lastName, phoneNumber, img,
     } = ctx.request.body;
     await user.update({
-      email, firstName, lastName, phoneNumber, role, img,
+      email, firstName, lastName, phoneNumber, img,
     });
-    return ctx.redirect(ctx.router.url('session.new'));
+    return ctx.redirect(ctx.router.url('users.show'));
   } catch (validationErrors) {
     if (Array.isArray(validationErrors)) {
       ctx.state.flashMessage.danger = validationErrors.map((error) => error.message);

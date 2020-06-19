@@ -1,26 +1,2 @@
-<div class="content">
-  <h1>Nueva Noticia</h1>
-  <form method="post" enctype="multipart/form-data">
-    <input type="text" id="title" name="title" placeholder="Título" value="<%= article.title %>" required><br><br>
-
-    <textarea type="text" id="content" name="content" placeholder="Contenido" required><%= article.content %></textarea><br><br>
-    <label for="organizationId">Organización</label>
-    <% if (source) { %>
-      <select id = "organizationId" name= "organizationId" value= <%=source.id %> required>
-        <option value = "<%=source.id%>" selected> <%= source.name %> </option>
-    <% } else { %>
-      <select id = "organizationId" name= "organizationId" required>
-    <% } %>
-    <% organizations.forEach((organization) => { %>
-      <% if (source!==organization) { %>
-      <option value = "<%= organization.id %>"> <%= organization.name %> </option>
-      <% } %>
-    <% }); %>
-    </select>
-    <div class="field">
-      <label for="img">Imagen</label>
-      <input type="file" name="img">
-    </div>
-    <input type="submit" value="Submit">
-  </form>
+<div class="content" id="article-form">
 </div>

@@ -4,6 +4,7 @@ const { requireLogIn } = require('../middleware/sessions');
 
 const { futureDate, isMember, hasOrganization } = require('../helpers/global');
 const { EVENT_DEFAULT_TIME_LEFT, EVENT_CATEGORIES } = require('../constants');
+const { requiereMembership } = require('../middleware/userPermissions');
 
 const router = new KoaRouter();
 
@@ -39,7 +40,7 @@ router.get('events.show', '/:id/show', async (ctx) => {
   });
 });
 
-router.get('events.new', '/new', requireLogIn, async (ctx) => {
+router.get('events.new', '/new', requireLogIn, requiereMembership, async (ctx) => {
   const startDate = futureDate(EVENT_DEFAULT_TIME_LEFT);
   startDate.setMinutes(0);
   const event = await ctx.orm.event.build({ dateAndTime: startDate });
@@ -60,7 +61,7 @@ router.get('events.new', '/new', requireLogIn, async (ctx) => {
   });
 });
 
-router.post('events.create', '/new', requireLogIn, async (ctx) => {
+router.post('events.create', '/new', requireLogIn, requiereMembership, async (ctx) => {
   const event = ctx.orm.event.build(ctx.request.body);
   const organization = await event.getOrganization();
   try {
@@ -111,7 +112,7 @@ router.del('events.unattend', '/:id/show', async (ctx) => {
 });
 
 
-router.get('events.edit', '/:id/edit', requireLogIn, async (ctx) => {
+router.get('events.edit', '/:id/edit', requireLogIn, requiereMembership, async (ctx) => {
   const event = await ctx.orm.event.findByPk(ctx.params.id);
   await ctx.render('events/edit', {
     event,
@@ -144,7 +145,7 @@ router.patch('events.update', '/:id/edit', requireLogIn, async (ctx) => {
   }
 });
 
-router.delete('events.destroy', '/:id/destroy', requireLogIn, async (ctx) => {
+router.delete('events.destroy', '/:id/destroy', requireLogIn, requiereMembership, async (ctx) => {
   const event = await ctx.orm.event.findByPk(ctx.params.id);
   await event.destroy();
   return ctx.redirect(ctx.router.url('events.index'));
