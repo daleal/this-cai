@@ -17,7 +17,7 @@
       <%= event.location %><br>
       <%= event.category %>
     </p>
-    
+
     <h3 class="title is-3"> Asistentes </h3>
     <% if (attendees.length) { %>
       <% attendees.forEach((user) => { %>
@@ -47,6 +47,7 @@
     <a href=<%= organizationPath() %> class="button">Visitar Organización</a>
   </div>
 </div>
-<div class="content" id="react-comments">
 
-</div>
+<% if (currentUser) { %>
+  <div class="content" id="react-comments"></div>
+<% } %>

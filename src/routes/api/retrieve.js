@@ -1,7 +1,8 @@
 const KoaRouter = require('koa-router');
 
-const router = new KoaRouter();
+const { requireLogIn } = require('../../middleware/sessions');
 
+const router = new KoaRouter();
 
 router.get('retrieve.entityy', '/:entity/:id', async (ctx) => {
   let entityName = ctx.params.entity.slice(0, -1);
@@ -41,7 +42,7 @@ router.get('retrieve.comments', '/get/comments/:id', async (ctx) => {
   ctx.body = { comments };
 });
 
-router.post('retrieve.postComment', '/post/comments/:id', async (ctx) => {
+router.post('retrieve.postComment', '/post/comments/:id', requireLogIn, async (ctx) => {
   const user = await ctx.state.currentUser;
   const eventId = ctx.params.id;
   const { content } = JSON.parse(ctx.request.body);
