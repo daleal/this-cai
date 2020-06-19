@@ -10,13 +10,11 @@ router.get('users.show', '/profile', requireLogIn, async (ctx) => {
   const organizations = await user.getOrganizations();
   const pastEvents = events.filter((event) => ctx.helpers.events.isPast(event));
   const upcomingEvents = events.filter((event) => !ctx.helpers.events.isPast(event));
-  const messages = await user.getMessages();
   await ctx.render('users/show', {
     user,
     pastEvents,
     upcomingEvents,
     organizations,
-    messages,
     eventPath: (event) => ctx.router.url('events.show', { id: event.id }),
     orgPath: (org) => ctx.router.url('organizations.show', { id: org.id }),
   });
