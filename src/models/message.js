@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     opened: DataTypes.BOOLEAN,
     responded: DataTypes.BOOLEAN,
+    caiMessage: DataTypes.BOOLEAN,
   }, { underscored: true });
 
   message.associate = function(models) {

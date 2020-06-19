@@ -2,31 +2,47 @@ const KoaRouter = require('koa-router');
 
 const { requireLogIn } = require('../middleware/sessions');
 
+const { requireCAi } = require('../middleware/userPermissions');
+
 const router = new KoaRouter();
 
 const messageResponseMail = require('../mailers/messageResponseMail');
 
 router.get('messages.index', '/', requireLogIn, async (ctx) => {
-  const personal = await ctx.orm.message.findAll({ where: { userId: ctx.state.currentUser.id } });
   if (ctx.state.currentUser.isCAi) {
-    const messages = await ctx.orm.message.findAll();
-    await ctx.render('messages/index', {
-      messages,
-      personal,
-      newPath: () => ctx.router.url('messages.new'),
-      showPath: (message) => ctx.router.url('messages.show', { id: message.id }),
-      editPath: (message) => ctx.router.url('messages.edit', { id: message.id }),
-      deletePath: (message) => ctx.router.url('messages.destroy', { id: message.id }),
-    });
+    await ctx.render('messages/index');
   } else {
-    await ctx.render('messages/index', {
-      personal,
-      newPath: () => ctx.router.url('messages.new'),
-      showPath: (message) => ctx.router.url('messages.show', { id: message.id }),
-      editPath: (message) => ctx.router.url('messages.edit', { id: message.id }),
-      deletePath: (message) => ctx.router.url('messages.destroy', { id: message.id }),
-    });
+    // Fix routing, failing for some reason
+    return ctx.redirect(`/messages/chat/${ctx.state.currentUser.id}`);
   }
+});
+
+router.get('messages.anonymous', '/chat/anonymous', requireLogIn, requireCAi, async (ctx) => {
+  await ctx.render('messages/anonymous');
+});
+
+router.get('messages.chat', '/chat/:id', requireLogIn, async (ctx) => {
+  const { id } = ctx.params;
+  if (!ctx.state.currentUser.isCAi && (ctx.state.currentUser.id.toString() !== id)) {
+    ctx.state.flashMessage.warning = 'No tienes permisos para acceder a esa página!';
+    return ctx.redirect('/');
+  }
+  if (ctx.state.currentUser.isCAi && (ctx.state.currentUser.id.toString() === id)) {
+    ctx.state.flashMessage.warning = 'No puedes entrar a tu propio chat!';
+    return ctx.redirect('/');
+  }
+
+  const user = await ctx.orm.user.findByPk(id);
+
+  const userName = ctx.state.currentUser.isCAi
+    ? `${user.firstName} ${user.lastName}`
+    : 'CAi';
+
+  await ctx.render('messages/chat', {
+    isCAi: ctx.state.currentUser.isCAi,
+    chatWith: id,
+    userName,
+  });
 });
 
 router.get('messages.show', '/:id/show', async (ctx) => {

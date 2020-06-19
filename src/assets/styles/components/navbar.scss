@@ -11,6 +11,12 @@
   transition: width var(--fast-transition-speed) ease;
 }
 
+.navbar-placeholder {
+  z-index: 5;
+  position: fixed;
+  background-color: var(--navbar-background-color);
+}
+
 .navbar-nav {
   list-style: none;
   padding: 0;
@@ -181,7 +187,8 @@
 
 // Mobile
 @media only screen and (max-width: 600px) {
-  .navbar {
+  .navbar,
+  .navbar-placeholder {
     bottom: 0;
     width: 100vw;
     height: 5rem;
@@ -241,6 +248,12 @@
         left: 0px;
       }
     }
+  }
+
+  .navbar-placeholder {
+    top: 0;
+    width: 5rem;
+    height: 100vh;
   }
 
   .mobile-navbar-modal {

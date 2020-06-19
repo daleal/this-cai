@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+
 import NavBarComponent from './components/NavBar';
 import MobileNavBarComponent from './components/MobileNavBar';
+
 import navbarService from '../../services/navbar';
 
 export default class NavBar extends Component {
