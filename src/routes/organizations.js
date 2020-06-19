@@ -47,7 +47,7 @@ router.post('organizations.addMembers', '/:id/show', async(ctx) => {
   const users = await ctx.orm.user.findAll();
   try {
     const user = users.find((element) => element.email === response.email);
-    if (isMember(organization, user)) {
+    if (await isMember(organization, user)) {
       throw new Error('Ya es miembre');
     }
     organization.addUser(user);
@@ -68,7 +68,7 @@ router.del('organizations.removeMembers', '/:id/show', async(ctx) => {
   const organization = await ctx.orm.organization.findByPk(ctx.params.id);
   const user = await ctx.orm.user.findByPk(response.id);
   try {
-    if (!isMember(organization, user)) {
+    if (!await isMember(organization, user)) {
       throw new Error('No es miembre');
     }
     await organization.removeUser(user);
@@ -111,7 +111,7 @@ router.get('organizations.edit', '/:id/edit', requireLogIn, requireCAi, async (c
 router.patch('organizations.update', '/:id/edit', requireLogIn, requireCAi, async (ctx) => {
   const organization = await ctx.orm.organization.findByPk(ctx.params.id);
   try {
-    if (!isMember(organization, ctx.state.currentUser)) {
+    if (!await isMember(organization, ctx.state.currentUser)) {
       throw new Error('No eres miembre de esta organización');
     }
     const { name, description, img } = ctx.request.body;

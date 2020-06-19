@@ -1,37 +1,49 @@
 <div class="card">
-  <p>
   <a href=<%=indexPath()%> class="button"> Eventos </a>
-  </p>
-  <h2><%= event.name %></h2>
-  <p>
-    <%= event.dateAndTime %><br>
-    <%= event.location %><br>
-    <%= event.category %>
-  </p>
-  <h3>Organizado por:</h3>
-  <h2><%= organization.name %></h2>
-  <a href=<%= organizationPath() %> class="button">Visitar Organización</a>
-  <h3> Asistentes </h3>
-  <% if (attendees.length) { %>
-    <% attendees.forEach((user) => { %>
-      <%= `${user.firstName} ${user.lastName}`%>
-      <br>
-    <% }); %>
-  <% } else { %>
-    No hay ningún asistente de momento :(
-  <% } %>
-  <% if  (event.dateAndTime > new Date()) { %>
-    <% if (!currentUser || !attendeesIds.includes(currentUser.id)) { %>
-    <form class="form-to-text button" method="post">
-      <button>Asistir</button>
-    </form>
-    <% } else {%>
-      <form class="form-to-text button" method="post">
-        <input type="hidden" name="_method" value="delete">
-        <button>Ya no asistiré</button>
-      </form>
+  <header class="card-header">
+    <div class="card-image is-16x9">
+      <img src="<%= event.image %>">
+    </div>
+    <p class="card-header-title is-centered">
+      <%= event.name %>
+    </p>
+  </header>
+  <div class="card-content">
+    <p>
+      <%= event.location %>
+    </p>
+    <p>
+      <%= event.dateAndTime %><br>
+      <%= event.location %><br>
+      <%= event.category %>
+    </p>
+    
+    <h3 class="title is-3"> Asistentes </h3>
+    <% if (attendees.length) { %>
+      <% attendees.forEach((user) => { %>
+        <%= `${user.firstName} ${user.lastName}`%>
+        <br>
+      <% }); %>
+    <% } else { %>
+      No hay ningún asistente de momento :(
     <% } %>
-  <% } else { %>
-    <h2>¡Muy tarde! Este evento ya ocurrió</h2>
-  <% } %>
+    <% if  (event.dateAndTime > new Date()) { %>
+      <% if (!currentUser || !attendeesIds.includes(currentUser.id)) { %>
+      <form class="form-to-text button" method="post">
+        <button>Asistir</button>
+      </form>
+      <% } else {%>
+        <form class="form-to-text button" method="post">
+          <input type="hidden" name="_method" value="delete">
+          <button>Ya no asistiré</button>
+        </form>
+      <% } %>
+    <% } else { %>
+      <h2>¡Muy tarde! Este evento ya ocurrió</h2>
+    <% } %>
+    <a href=<%= editPath() %> class="button"> Editar Evento</a>
+    <h4 class="title is-4">Organizado por:</h4>
+    <h5 class="title is-5"><%= organization.name %></h5>
+    <a href=<%= organizationPath() %> class="button">Visitar Organización</a>
+  </div>
 </div>

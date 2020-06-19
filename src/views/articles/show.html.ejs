@@ -1,4 +1,5 @@
 <div class="card">
+  <a href=<%= indexPath() %> class="button"> Todas las Noticias  </a>
   <header class="card-header">
     <div class="card-image is-16x9">
       <img src="<%= article.image %>">
@@ -11,7 +12,7 @@
     <p>
       <%= article.content %>
     </p>
-    <a href=<%= indexPath() %> class="button"> Noticias  </a>
+    <a href=<%= editPath() %> class="button"> Editar Noticia</a>
     <h4 class="title is-4"> De: <%= organization.name%></h4>
     <a href=<%= organizationPath() %> class="button"> Visitar Organización </a>
   </div>

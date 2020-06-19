@@ -46,5 +46,12 @@ module.exports = {
     }
     return false;
   },
+  hasOrganization: async (user) => {
+    if (user) {
+      const organizations = await user.getOrganizations();
+      return organizations.length > 0;
+    }
+    return false;
+  },
   assetPath: (path) => (process.env.NODE_ENV !== 'development' && manifest && manifest[path]) || `/assets/${path}`,
 };

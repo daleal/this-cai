@@ -1,14 +1,17 @@
 const KoaRouter = require('koa-router');
 
 const { requireLogIn } = require('../middleware/sessions');
-const { isMember } = require('../helpers/global');
+const { isMember, hasOrganization } = require('../helpers/global');
 
 const router = new KoaRouter();
 
 router.get('articles.index', '/', async (ctx) => {
   const articles = await ctx.orm.article.findAll();
+  const member = await hasOrganization(ctx.state.currentUser);
   await ctx.render('articles/index', {
+    member,
     articles,
+    hasOrganization,
     newPath: () => ctx.router.url('articles.new'),
     showPath: (article) => ctx.router.url('articles.show', { id: article.id }),
     editPath: (article) => ctx.router.url('articles.edit', { id: article.id }),
@@ -19,11 +22,14 @@ router.get('articles.index', '/', async (ctx) => {
 router.get('articles.show', '/:id/show', async (ctx) => {
   const article = await ctx.orm.article.findByPk(ctx.params.id);
   const organization = await article.getOrganization();
+  const member = await isMember(organization, ctx.state.currentUser);
   await ctx.render('articles/show', {
     article,
+    member,
     organization,
     organizationPath: () => ctx.router.url('organizations.show', { id: organization.id }),
     indexPath: () => ctx.router.url('articles.index'),
+    editPath: () => ctx.router.url('articles.edit', { id: article.id }),
   });
 });
 
@@ -49,7 +55,7 @@ router.post('articles.create', '/new', requireLogIn, async (ctx) => {
   const article = ctx.orm.article.build(ctx.request.body);
   const organization = await article.getOrganization();
   try {
-    if (!isMember(organization, ctx.state.currentUser)) {
+    if (!await isMember(organization, ctx.state.currentUser)) {
       throw new Error('No eres miembre de esta organización');
     }
     await article.save({ fields: ['title', 'content', 'organizationId', 'img'] });
@@ -69,7 +75,7 @@ router.patch('articles.update', '/:id/edit', requireLogIn, async (ctx) => {
   const article = await ctx.orm.article.findByPk(ctx.params.id);
   const organization = await article.getOrganization();
   try {
-    if (!isMember(organization, ctx.state.currentUser)) {
+    if (!await isMember(organization, ctx.state.currentUser)) {
       throw new Error('No eres miembre de esta organización');
     }
     const { title, content, img } = ctx.request.body;
@@ -85,7 +91,7 @@ router.delete('articles.destroy', '/:id/destroy', requireLogIn, async (ctx) => {
   const article = await ctx.orm.article.findByPk(ctx.params.id);
   const organization = await article.getOrganization();
   try {
-    if (!isMember(organization, ctx.state.currentUser)) {
+    if (!await isMember(organization, ctx.state.currentUser)) {
       throw new Error('No eres miembre de esta organización');
     }
   } catch (validationError) {

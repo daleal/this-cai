@@ -1,19 +1,21 @@
-<p>
-<a href= <%= indexPath() %> class="button"> Proyectos </a>
-</p>
-
-  <h2><%= project.name %></h2>
-  <p>
-    <%= project.description %><br>
+<div class="card">
+  <a href=<%= indexPath() %> class="button"> Todas los Proyectos  </a>
+  <header class="card-header">
+    <div class="card-image is-16x9">
+      <img src="<%= project.image %>">
+    </div>
+    <p class="card-header-title is-centered">
+      <%= project.name %>
+    </p>
+  </header>
+  <div class="card-content">
+    <p>
+      <%= project.description %>
+    </p>
     Contacto: <%= project.contactInfo %>
-  </p>
-  <img src=<%= project.image %> alt="">
-  <div>
-    <h3>Un proyecto de:</h3>
-    <a href="<%= organizationPath%>">
-      <h4>
-        <%= organization.name %>
-      </h4>
+    <h3 class="title is-3">Un proyecto de:</h3>
+    <a href="<%= organizationPath %>" class="button">
+      <%= organization.name %>
     </a>
   </div>
 </div>

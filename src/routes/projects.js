@@ -1,16 +1,17 @@
 const KoaRouter = require('koa-router');
 
 const { requireLogIn } = require('../middleware/sessions');
-const { isMember } = require('../helpers/global');
+const { isMember, hasOrganization } = require('../helpers/global');
 
 const router = new KoaRouter();
 
 
 router.get('projects.index', '/', async (ctx) => {
   const projects = await ctx.orm.project.findAll();
-
+  const member = await hasOrganization(ctx.state.currentUser);
   await ctx.render('projects/index', {
     projects,
+    member,
     newPath: () => ctx.router.url('projects.new'),
     showPath: (project) => ctx.router.url('projects.show', { id: project.id }),
   });
@@ -52,7 +53,7 @@ router.post('projects.create', '/new', requireLogIn, async (ctx) => {
   const project = await ctx.orm.project.build(ctx.request.body);
   const organization = await project.getOrganization();
   try {
-    if (!isMember(organization, ctx.state.currentUser)) {
+    if (!await isMember(organization, ctx.state.currentUser)) {
       throw new Error('No eres miembre de esta organización');
     }
     await project.save({ fields: ['name', 'description', 'contactInfo', 'img', 'organizationId'] });
@@ -72,7 +73,7 @@ router.patch('projects.update', '/:id/edit', requireLogIn, async (ctx) => {
   const project = await ctx.orm.project.findByPk(ctx.params.id);
   const organization = await project.getOrganization();
   try {
-    if (!isMember(organization, ctx.state.currentUser)) {
+    if (!await isMember(organization, ctx.state.currentUser)) {
       throw new Error('No eres miembre de esta organización');
     }
     const {
