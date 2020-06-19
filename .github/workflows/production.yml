@@ -14,6 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Reset database
+        run: heroku pg:reset --app=${{ secrets.PRODUCTION_APP_NAME }} --confirm=${{ secrets.PRODUCTION_APP_NAME }}
+
       - name: Log in to Heroku Container Registry
         run: heroku container:login
 
@@ -25,3 +28,6 @@ jobs:
 
       - name: Migrate the database
         run: heroku run -a ${{ secrets.PRODUCTION_APP_NAME }} sequelize db:migrate
+
+      - name: Seed the database
+        run: heroku run -a ${{ secrets.PRODUCTION_APP_NAME }} sequelize db:seed:all
