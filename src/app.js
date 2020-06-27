@@ -14,6 +14,7 @@ const routes = require('./routes');
 const helpers = require('./helpers');
 const orm = require('./models');
 const currentUser = require('./middleware/currentUser');
+const currentAPIUser = require('./middleware/api/currentUser');
 
 const { SESSION_DURATION } = require('./constants');
 
@@ -76,6 +77,7 @@ app.use(session({
 
 // Load current user to the app state if there is one
 app.use(currentUser);
+app.use(currentAPIUser);
 
 // flash messages support
 app.use(koaFlashMessage);
