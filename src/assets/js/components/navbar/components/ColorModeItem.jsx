@@ -16,8 +16,8 @@ function switchColor(setText) {
 }
 
 function ColorModeItem(props) {
-  const { svg, linkText } = props;
-  const [text, setText] = useState(linkText);
+  const { svg } = props;
+  const [text, setText] = useState(colorsService.getButtonText());
 
   return (
     <li className="nav-item">
@@ -34,7 +34,6 @@ function ColorModeItem(props) {
 
 ColorModeItem.propTypes = {
   svg: PropTypes.string.isRequired,
-  linkText: PropTypes.string.isRequired,
 };
 
 export default hot(module)(ColorModeItem);

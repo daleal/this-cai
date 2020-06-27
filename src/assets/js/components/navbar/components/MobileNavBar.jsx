@@ -23,7 +23,7 @@ function toggleModal(setActive) {
 function NavBar(props) {
   const {
     logoItem: { svg: logoSvg, text: logoText },
-    colorModeItem: { svg: colorModeSvg, text: colorModeText },
+    colorModeItem: { svg: colorModeSvg },
     menuItem: { svg: menuSvg, text: menuText },
     navItems,
   } = props;
@@ -40,7 +40,7 @@ function NavBar(props) {
         />
 
         {/* Color Shifter */}
-        <ColorModeItem svg={colorModeSvg} linkText={colorModeText} />
+        <ColorModeItem svg={colorModeSvg} />
 
         {/* Menu Item */}
         <MenuItem
