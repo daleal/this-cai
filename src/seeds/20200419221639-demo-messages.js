@@ -4,8 +4,10 @@ module.exports = {
   up: (queryInterface) => queryInterface.bulkInsert('messages', [{
     content: '¿Donde hay paletas?',
     email: null,
-    user_id: 2,
+    user_id: 3,
     cai_message: false,
+    opened: false,
+    responded: false,
     created_at: new Date(),
     updated_at: new Date(),
   }, {
@@ -13,6 +15,8 @@ module.exports = {
     email: 'pszapata@uc.cl',
     user_id: null,
     cai_message: false,
+    opened: false,
+    responded: false,
     created_at: new Date(),
     updated_at: new Date(),
   }, {
@@ -20,13 +24,17 @@ module.exports = {
     email: 'mrramirez2@uc.cl',
     user_id: null,
     cai_message: false,
+    opened: false,
+    responded: false,
     created_at: new Date(),
     updated_at: new Date(),
   }, {
     content: 'Se rompio la red de una de las mesas de tenis de mesa',
     email: null,
-    user_id: 2,
+    user_id: 4,
     cai_message: false,
+    opened: false,
+    responded: false,
     created_at: new Date(),
     updated_at: new Date(),
   }, {
@@ -34,6 +42,8 @@ module.exports = {
     email: null,
     user_id: 5,
     cai_message: false,
+    opened: false,
+    responded: false,
     created_at: new Date(),
     updated_at: new Date(),
   }], {}),

@@ -4,14 +4,14 @@ module.exports = {
   up: (queryInterface) => queryInterface.bulkInsert('reservations', [{
     returned: false,
     due_date: new Date(),
-    user_id: 2,
+    user_id: 3,
     inventory_item_id: 2,
     created_at: new Date(),
     updated_at: new Date(),
   }, {
     returned: true,
     due_date: new Date(),
-    user_id: 2,
+    user_id: 4,
     inventory_item_id: 3,
     created_at: new Date(),
     updated_at: new Date(),
