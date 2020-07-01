@@ -12,6 +12,7 @@ function DumbSelect(props) {
     value,
     error,
     optionsArray,
+    onBlur,
   } = props;
   return (
     <React.Fragment>
@@ -20,12 +21,12 @@ function DumbSelect(props) {
       name={name}
       value={value}
       onChange={onChange}
-      className={className}
-      style= {error && {border: "solid 3px red"}}
+      onBlur={onBlur}
+      className={error ? "form-input-error" : "form-input"}
       >
       {optionsArray.map(option => <option value={option.id}> {option.name} </option>)}
     </select>
-    { error && <p>{ error }</p>}
+    { error && <p className= "error-text">{ error }</p>}
     </React.Fragment>
 
   );
@@ -39,6 +40,7 @@ DumbSelect.propTypes = {
   className: PropTypes.string,
   value: PropTypes.any,
   onChange: PropTypes.func.isRequired,
+  onBlur: PropTypes.func.isRequired,
   optionsArray: PropTypes.array,
 
 };

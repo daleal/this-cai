@@ -21,6 +21,7 @@ export default class ProjectForm extends Component {
     };
     this.changeHandler = this.changeHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
+    this.blurHandler = this.blurHandler.bind(this);
     this.fetchEntity = this.fetchEntity.bind(this);
     this.fetchOrganizationList = this.fetchOrganizationList.bind(this);
 
@@ -51,7 +52,6 @@ export default class ProjectForm extends Component {
     const post = await getEntity(entity, id);
     post.organizationId = post.userOrganizations.length ? post.userOrganizations[0] : null;
     this.setState({project: post})
-    // console.log(post)
   }
 
   changeHandler(event) {
@@ -60,8 +60,15 @@ export default class ProjectForm extends Component {
     this.setState({ project })
   }
 
+  blurHandler(event) {
+    const partialErrors = this.state.errors;
+    const name = event.target.name;
+    const value = event.target.value;
+    partialErrors[name] = value ? '' : "¡Debes llenar este campo!" ;
+    this.setState({errors: partialErrors}) ;
+  }
+
   submitHandler(event) {
-    // console.log(this.state)
     const project = this.state.project;
     let partialErrors = {};
     let failed = false;
@@ -104,6 +111,7 @@ export default class ProjectForm extends Component {
           placeholder="Nombre"
           value={name}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           error={errors.name}
           required
           className = "input"
@@ -114,6 +122,7 @@ export default class ProjectForm extends Component {
           placeholder="Infor de contacto"
           value={contactInfo}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           error={errors.contactInfo}
           required
           className = "input"
@@ -125,6 +134,7 @@ export default class ProjectForm extends Component {
           placeholder="Descripción"
           value={description}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           error={errors.description}
           className = "textarea"
           />
@@ -133,6 +143,7 @@ export default class ProjectForm extends Component {
           name="organizationId"
           value={organizationId}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           className="select"
           error={errors.organizationId}
           optionsArray={userOrganizations}

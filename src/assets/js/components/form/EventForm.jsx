@@ -30,6 +30,7 @@ export default class EventForm extends Component {
     };
     this.changeHandler = this.changeHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
+    this.blurHandler = this.blurHandler.bind(this);
     this.fetchEntity = this.fetchEntity.bind(this);
     this.fetchOrganizationList = this.fetchOrganizationList.bind(this);
 
@@ -59,10 +60,8 @@ export default class EventForm extends Component {
   async fetchEntity(entity, id) {
     const post = await getEntity(entity, id);
     post.organizationId = post.userOrganizations.length ? post.userOrganizations[0] : null;
-    // console.log(post.dateAndTime)
     post.dateAndTime = post.dateAndTime.replace("Z","");
     this.setState({event: post})
-    // console.log(post)
   }
 
   changeHandler(e) {
@@ -71,8 +70,15 @@ export default class EventForm extends Component {
     this.setState({ event })
   }
 
+  blurHandler(event) {
+    const partialErrors = this.state.errors;
+    const name = event.target.name;
+    const value = event.target.value;
+    partialErrors[name] = value ? '' : "¡Debes llenar este campo!" ;
+    this.setState({errors: partialErrors}) ;
+  }
+
   submitHandler(e) {
-    // console.log(this.state)
     const event = this.state.event;
     let partialErrors = {};
     let failed = false;
@@ -116,6 +122,7 @@ export default class EventForm extends Component {
           placeholder="Nombre"
           value={name}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           error={errors.name}
           required
           className = "input"
@@ -126,6 +133,7 @@ export default class EventForm extends Component {
           placeholder="Ubicación donde el evento tendrá lugar"
           value={location}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           error={errors.location}
           required
           className = "input"
@@ -137,6 +145,7 @@ export default class EventForm extends Component {
           placeholder="Ubicación donde el evento tendrá lugar"
           value={dateAndTime}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           error={errors.dateAndTime}
           required
           className = "input"
@@ -146,6 +155,7 @@ export default class EventForm extends Component {
           name="category"
           value={category}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           className="select"
           error={errors.category}
           optionsArray={MAPPED_CATEGORIES}
@@ -156,6 +166,7 @@ export default class EventForm extends Component {
           name="organizationId"
           value={organizationId}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           className="select"
           error={errors.organizationId}
           optionsArray={userOrganizations}

@@ -19,6 +19,7 @@ export default class EditUserForm extends Component {
       errors: {},
     };
     this.changeHandler = this.changeHandler.bind(this);
+    this.blurHandler = this.blurHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
     this.fetchEntity = this.fetchEntity.bind(this);
 
@@ -40,6 +41,28 @@ export default class EditUserForm extends Component {
     console.log(this.state)
   }
 
+  blurHandler(event) {
+    const partialErrors = this.state.errors;
+    const name = event.target.name;
+    const value = event.target.value;
+    partialErrors[name] = value ? '' : "¡Debes llenar este campo!" ;
+
+    const user = this.state.user;
+    if (name === "phoneNumber") {
+      if (!(PHONE_NUMBER_REGEX.test(user.phoneNumber))) {
+        partialErrors["phoneNumber"] = "Formato incorrecto. Ejemplo: +56912345678";
+      }
+    }
+
+    if (name === "email") {
+      if (!(EMAIL_REGEX.test(user.email))) {
+        partialErrors["email"] = 'Dirección de Correo inválida';
+      }
+    }
+
+    this.setState({errors: partialErrors}) ;
+  }
+
   submitHandler(event) {
     let partialErrors = {};
     let failed = false;
@@ -49,7 +72,6 @@ export default class EditUserForm extends Component {
       failed = true;
     }
     if (!(EMAIL_REGEX.test(user.email))) {
-      // console.log("BAD EMAIL", EMAIL_REGEX)
       partialErrors.email = 'Dirección de Correo inválida';
       failed = true;
     }
@@ -88,6 +110,7 @@ export default class EditUserForm extends Component {
           placeholder="Email"
           value={email}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           error={errors.email}
           required
           className = "input"
@@ -99,6 +122,7 @@ export default class EditUserForm extends Component {
           placeholder="Primer Nombre"
           value={firstName}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           error={errors.firstName}
           required
           className = "input"
@@ -110,6 +134,7 @@ export default class EditUserForm extends Component {
           placeholder="Apellido"
           value={lastName}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           error={errors.lastName}
           required
           className = "input"
@@ -121,6 +146,7 @@ export default class EditUserForm extends Component {
           placeholder="N° de telefono ej: +56984554785"
           value={phoneNumber}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           error={errors.phoneNumber}
           required
           className = "input"

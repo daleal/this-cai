@@ -18,6 +18,8 @@ export default class SignInForm extends Component {
     };
     this.changeHandler = this.changeHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
+    this.blurHandler = this.blurHandler.bind(this);
+
 
   }
 
@@ -26,6 +28,28 @@ export default class SignInForm extends Component {
     const { user } = this.state;
     user[event.target.name] = event.target.value;
     this.setState({ user })
+  }
+
+  blurHandler(event) {
+    const partialErrors = this.state.errors;
+    const name = event.target.name;
+    const value = event.target.value;
+    partialErrors[name] = value ? '' : "¡Debes llenar este campo!" ;
+
+    const user = this.state.user;
+    if (name === "phoneNumber") {
+      if (!(PHONE_NUMBER_REGEX.test(user.phoneNumber))) {
+        partialErrors["phoneNumber"] = "Formato incorrecto. Ejemplo: +56912345678";
+      }
+    }
+
+    if (name === "email") {
+      if (!(EMAIL_REGEX.test(user.email))) {
+        partialErrors["email"] = 'Dirección de Correo inválida';
+      }
+    }
+
+    this.setState({errors: partialErrors}) ;
   }
 
   submitHandler(event) {
@@ -37,7 +61,6 @@ export default class SignInForm extends Component {
       failed = true;
     }
     if (!(EMAIL_REGEX.test(user.email))) {
-      // console.log("BAD EMAIL", EMAIL_REGEX)
       partialErrors.email = 'Dirección de Correo inválida';
       failed = true;
     }
@@ -75,6 +98,7 @@ export default class SignInForm extends Component {
           placeholder="Email"
           value={email}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           error={errors.email}
           required
           className = "input"
@@ -86,6 +110,7 @@ export default class SignInForm extends Component {
           placeholder="Primer Nombre"
           value={firstName}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           error={errors.firstName}
           required
           className = "input"
@@ -97,6 +122,7 @@ export default class SignInForm extends Component {
           placeholder="Apellido"
           value={lastName}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           error={errors.lastName}
           required
           className = "input"
@@ -108,6 +134,7 @@ export default class SignInForm extends Component {
           placeholder="N° de telefono ej: +56984554785"
           value={phoneNumber}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           error={errors.phoneNumber}
           required
           className = "input"
@@ -119,6 +146,7 @@ export default class SignInForm extends Component {
           placeholder="Contraseña"
           value={password}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           error={errors.password}
           required
           className = "input"

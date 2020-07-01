@@ -13,6 +13,7 @@ function DumbTextArea(props) {
     className,
     value,
     error,
+    onBlur,
   } = props;
   return (
     <React.Fragment>
@@ -23,10 +24,10 @@ function DumbTextArea(props) {
       placeholder={placeholder}
       value={value}
       onChange={onChange}
-      className={className}
-      style= {error && {border: "solid 3px red"}}
+      onBlur={onBlur}
+      className={error ? "form-input-error" : "form-input"}
       />
-      { error && <p>{ error }</p>}
+      { error && <p className ="error-text">{ error }</p>}
       </React.Fragment>
 
   );
@@ -43,6 +44,7 @@ DumbTextArea.propTypes = {
   className: PropTypes.string,
   value: PropTypes.any,
   onChange: PropTypes.func.isRequired,
+  onBlur: PropTypes.func.isRequired,
 
 };
 

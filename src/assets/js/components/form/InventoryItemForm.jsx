@@ -23,6 +23,7 @@ export default class InventoryItemForm extends Component {
     };
     this.changeHandler = this.changeHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
+    this.blurHandler = this.blurHandler.bind(this);
     this.fetchEntity = this.fetchEntity.bind(this);
     this.fetchOrganizationList = this.fetchOrganizationList.bind(this);
 
@@ -31,7 +32,6 @@ export default class InventoryItemForm extends Component {
   componentDidMount() {
     const pathArray = window.location.pathname.split("/");
     const [entity, id, action] = pathArray.slice(pathArray.length - 3);
-    // console.log("!", pathArray)
     if (action === "edit") {
       this.setState({edit: true});
       this.fetchEntity(entity, id);
@@ -54,13 +54,30 @@ export default class InventoryItemForm extends Component {
     const post = await getEntity(entity, id);
     post.organizationId = post.userOrganizations.length ? post.userOrganizations[0] : null;
     this.setState({inventoryItem: post})
-    // console.log(post)
   }
 
   changeHandler(event) {
     const { inventoryItem } = this.state;
     inventoryItem[event.target.name] = event.target.value;
     this.setState({ inventoryItem })
+  }
+
+  blurHandler(event) {
+    const partialErrors = this.state.errors;
+    const name = event.target.name;
+    const value = event.target.value;
+    partialErrors[name] = value ? '' : "¡Debes llenar este campo!" ;
+
+    if (name === "currentStock" || name === "maxStock") {
+      const inventoryItem = this.state.inventoryItem;
+      if (Number(inventoryItem.maxStock) < 0 || Number(inventoryItem.currentStock) < 0 || Number(inventoryItem.maxStock) < Number(inventoryItem.currentStock))  {
+        partialErrors["maxStock"] = partialErrors["currentStock"] = "Valores de Stock inválidos";
+      }
+      else {
+        partialErrors["maxStock"] = partialErrors["currentStock"] = "";
+      }
+    }
+    this.setState({errors: partialErrors}) ;
   }
 
   submitHandler(event) {
@@ -75,7 +92,7 @@ export default class InventoryItemForm extends Component {
         failed = true
       }
     }
-    if (inventoryItem.maxStock < 0 || inventoryItem.currentStock < 0 || inventoryItem.maxStock < inventoryItem.currentStock) {
+    if (Number(inventoryItem.maxStock) < 0 || Number(inventoryItem.currentStock) < 0 || Number(inventoryItem.maxStock) < Number(inventoryItem.currentStock)) {
       partialErrors.maxStock = partialErrors.currentStock = "Valores de Stock inválidos";
       failed = true;
     }
@@ -110,6 +127,7 @@ export default class InventoryItemForm extends Component {
           placeholder="Nombre"
           value={name}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           error={errors.name}
           required
           className = "input"
@@ -122,6 +140,7 @@ export default class InventoryItemForm extends Component {
           placeholder="Descripción"
           value={description}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           error={errors.description}
           className = "textarea"
           />
@@ -133,6 +152,7 @@ export default class InventoryItemForm extends Component {
             placeholder="Unidades Existentes"
             value={maxStock}
             onChange={this.changeHandler}
+            onBlur= {this.blurHandler}
             error={errors.maxStock}
             required
             className = "input"
@@ -145,6 +165,7 @@ export default class InventoryItemForm extends Component {
             placeholder="Unidades Disponibles"
             value={currentStock}
             onChange={this.changeHandler}
+            onBlur= {this.blurHandler}
             error={errors.currentStock}
             required
             className = "input"
@@ -157,13 +178,14 @@ export default class InventoryItemForm extends Component {
             placeholder="Máximo de reservas"
             value={maxReservations}
             onChange={this.changeHandler}
+            onBlur= {this.blurHandler}
             error={errors.maxReservations}
             required
             className = "input"
           />
 
-          <div class="field">
-            <label for="img">Imagen</label>
+          <div className="field">
+            <label htmlFor="img">Imagen</label>
             <input type="file" name="img"/>
           </div>
 

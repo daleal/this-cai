@@ -10,8 +10,8 @@ module.exports = {
     if (requestBody.description === '') {
       errors.push(new Error('Descripción inválida'));
     }
-    if (requestBody.maxStock < 0 || requestBody.currentStock < 0
-       || requestBody.maxStock < requestBody.currentStock) {
+    if (Number(requestBody.maxStock) < 0 || Number(requestBody.currentStock) < 0
+       || Number(requestBody.maxStock) < Number(requestBody.currentStock)) {
       errors.push(new Error('Valores de stock inválidos'));
     }
     if (errors.length > 0) {
@@ -19,7 +19,7 @@ module.exports = {
     }
   },
   consistentDecrement: (item) => {
-    if (item.currentStock > 0) {
+    if (Number(item.currentStock) > 0) {
       item.decrement('currentStock', { by: 1 });
     } else {
       throw new Error('Stock agotado');
@@ -33,7 +33,7 @@ module.exports = {
         inventory_item_id: item.id,
       },
     });
-    if (item.maxReservations <= userReservations.length) {
+    if (Number(item.maxReservations) <= userReservations.length) {
       throw new Error(`Ya has realizado ${userReservations.length} reserva(s) de este objeto.`);
     }
   },

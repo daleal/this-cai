@@ -20,6 +20,7 @@ export default class OrganizationForm extends Component {
     };
     this.changeHandler = this.changeHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
+    this.blurHandler = this.blurHandler.bind(this);
     this.fetchEntity = this.fetchEntity.bind(this);
     this.fetchOrganizationList = this.fetchOrganizationList.bind(this);
 
@@ -58,6 +59,13 @@ export default class OrganizationForm extends Component {
     this.setState({ organization })
   }
 
+  blurHandler(event) {
+    const partialErrors = this.state.errors;
+    const name = event.target.name;
+    const value = event.target.value;
+    partialErrors[name] = value ? '' : "¡Debes llenar este campo!" ;
+    this.setState({errors: partialErrors}) ;
+  }
   submitHandler(event) {
 
     const organization = this.state.organization;
@@ -67,7 +75,6 @@ export default class OrganizationForm extends Component {
     for (let input in organization) {
       let value = organization[input];
       if (!value && input !== "img" && input !== "organizationId") {
-        // console.log(input, value)
         partialErrors[input] = "¡Debes llenar este campo!";
         failed = true
       }
@@ -103,6 +110,7 @@ export default class OrganizationForm extends Component {
           placeholder="Nombre"
           value={name}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           error={errors.name}
           required
           className = "input"
@@ -114,6 +122,7 @@ export default class OrganizationForm extends Component {
           placeholder="Descripción"
           value={description}
           onChange={this.changeHandler}
+          onBlur={this.blurHandler}
           error={errors.description}
           className = "textarea"
           />

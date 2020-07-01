@@ -20,6 +20,7 @@ export default class ArticleForm extends Component {
     };
     this.changeHandler = this.changeHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
+    this.blurHandler = this.blurHandler.bind(this);
     this.fetchEntity = this.fetchEntity.bind(this);
     this.fetchOrganizationList = this.fetchOrganizationList.bind(this);
 
@@ -50,13 +51,20 @@ export default class ArticleForm extends Component {
     const post = await getEntity(entity, id);
     post.organizationId = post.userOrganizations.length ? post.userOrganizations[0] : null;
     this.setState({article: post})
-    // console.log(post)
   }
 
   changeHandler(event) {
     const { article } = this.state;
     article[event.target.name] = event.target.value;
     this.setState({ article })
+  }
+
+  blurHandler(event) {
+    const partialErrors = this.state.errors;
+    const name = event.target.name;
+    const value = event.target.value;
+    partialErrors[name] = value ? '' : "¡Debes llenar este campo!" ;
+    this.setState({errors: partialErrors}) ;
   }
 
   submitHandler(event) {
@@ -102,6 +110,7 @@ export default class ArticleForm extends Component {
           placeholder="Título"
           value={title}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           error={errors.title}
           required
           className = "input"
@@ -114,6 +123,7 @@ export default class ArticleForm extends Component {
           placeholder="Contenido"
           value={content}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           error={errors.content}
           className = "textarea"
           />
@@ -122,6 +132,7 @@ export default class ArticleForm extends Component {
           name="organizationId"
           value={organizationId}
           onChange={this.changeHandler}
+          onBlur= {this.blurHandler}
           className="select"
           error={errors.organizationId}
           optionsArray={userOrganizations}
