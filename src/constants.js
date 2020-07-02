@@ -25,9 +25,14 @@ const INVENTORY_ITEM_RESERVATION_TIME = 2; // In days
 
 // Event stuff
 const EVENT_DEFAULT_TIME_LEFT = 30; // In days
+const EVENT_CATEGORIES = ['Recreación', 'Inclusión', 'Académico', 'Política', 'Deportes', 'Orientación'];
 
 // Placeholders
 const LANDSCAPE_PLACEHOLDER_IMAGE = 'landscape-placeholder-image.jpg';
+const QUESTION_MARK_IMAGE = 'question-mark.png';
+
+// JSON Web Token
+const JWT_DURATION = parseInt(process.env.JWT_DURATION || 3600, 10); // in seconds
 
 module.exports = {
   EMAIL_REGEX,
@@ -38,5 +43,8 @@ module.exports = {
   USER_ROLE_PRIVILEGES,
   INVENTORY_ITEM_RESERVATION_TIME,
   LANDSCAPE_PLACEHOLDER_IMAGE,
+  QUESTION_MARK_IMAGE,
   EVENT_DEFAULT_TIME_LEFT,
+  EVENT_CATEGORIES,
+  JWT_DURATION,
 };

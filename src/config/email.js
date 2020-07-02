@@ -15,6 +15,6 @@ module.exports = {
   },
   // defaults to be passed to nodemailer's emails
   defaults: {
-    from: 'fharellano@uc.cl',
+    from: process.env.EMAIL_FROM,
   },
 };

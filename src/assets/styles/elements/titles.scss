@@ -1,5 +1,6 @@
 .title {
   font-size: 2.3em;
+  line-height: 1em;
   font-weight: bold;
   margin: 0.5em 0 0.8em 0;
 
@@ -56,5 +57,14 @@
 
   &.is-6 {
     font-size: 1.2em;
+  }
+}
+
+// Mobile
+@media only screen and (max-width: 600px) {
+  .title,
+  .subtitle {
+    overflow-wrap: break-word;
+    padding: 0 0.8em;
   }
 }

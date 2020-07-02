@@ -23,9 +23,8 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
   });
-
   project.associate = function(models) {
-    project.hasMany(models.event);
+    project.belongsTo(models.organization);
   };
 
   return project;

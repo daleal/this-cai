@@ -1,10 +1,9 @@
 <h1 class="title is-1 center">Noticias</h1>
 
-<% if (currentUser && currentUser.isCAi) { %>
+<% if (currentUser && member) { %>
   <p>
     <a href=<%= newPath() %> class="button">Nueva Noticia</a>
   </p>
-  <br>
 <% }; %>
 
 <div class="columns wrap">
@@ -12,16 +11,16 @@
     <div class="column is-4">
       <div class="card">
         <header class="card-header">
+          <div class="card-image">
+            <img src="<%= article.image %>">
+          </div>
           <p class="card-header-title is-centered">
             <%= article.title %>
           </p>
         </header>
         <div class="card-content is-centered">
-          <p>
-            <%= article.content %>
-          </p>
           <a class="button" href="<%= showPath(article) %>">
-            Más información
+            Leer más
           </a>
         </div>
       </div>

@@ -28,7 +28,7 @@ module.exports = {
         const responseURL = await uploadImage(model.img, publicID);
         model.set('img', responseURL);
       } else {
-        model.set('img', null);
+        model.set('img', model.previous('img'));
       }
     }
   },
@@ -36,7 +36,25 @@ module.exports = {
     const date = new Date();
     date.setDate(date.getDate() + days);
     date.setSeconds(0);
+    date.setMilliseconds(0);
     return date;
+  },
+  isMember: async (organization, user) => {
+    if (user) {
+      if (user.isCAi) {
+        return true;
+      }
+      const members = await organization.getUsers();
+      return members.some((member) => user.id === member.id);
+    }
+    return false;
+  },
+  hasOrganization: async (user) => {
+    if (user) {
+      const organizations = await user.getOrganizations();
+      return organizations.length > 0;
+    }
+    return false;
   },
   assetPath: (path) => (process.env.NODE_ENV !== 'development' && manifest && manifest[path]) || `/assets/${path}`,
 };

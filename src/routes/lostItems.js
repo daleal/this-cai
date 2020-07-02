@@ -2,18 +2,23 @@ const KoaRouter = require('koa-router');
 
 const { requireLogIn } = require('../middleware/sessions');
 const { requireCAi } = require('../middleware/userPermissions');
+const pickupMail = require('../mailers/pickupMail');
 
 const router = new KoaRouter();
 
 router.get('lostItems.index', '/', async (ctx) => {
   const lostItems = await ctx.orm.lostItem.findAll();
+  const users = await ctx.orm.user.findAll();
+  const userNameHash = ctx.helpers.lostItems.userIdToName(users);
   await ctx.render('lostItems/index', {
     lostItems,
+    userNameHash,
     newPath: () => ctx.router.url('lostItems.new'),
     editPath: (item) => ctx.router.url('lostItems.edit', { id: item.id }),
     deletePath: (item) => ctx.router.url('lostItems.destroy', { id: item.id }),
     claimPath: (item) => ctx.router.url('lostItems.claim', { id: item.id }),
     unclaimPath: (item) => ctx.router.url('lostItems.unclaim', { id: item.id }),
+    mailerPath: (item) => ctx.router.url('lostItems.mailer', { id: item.id }),
 
   });
 });
@@ -27,7 +32,7 @@ router.get('lostItems.new', '/new', requireLogIn, requireCAi, async (ctx) => {
 router.post('lostItems.create', '/new', requireLogIn, requireCAi, async (ctx) => {
   const lostItem = await ctx.orm.lostItem.build(ctx.request.body);
   try {
-    await lostItem.save({ fields: ['description', 'taken', 'img'] });
+    await lostItem.save({ fields: ['description', 'taken', 'img', 'locationFound'] });
     return ctx.redirect(ctx.router.url('lostItems.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;
@@ -76,12 +81,25 @@ router.get('lostItems.edit', '/:id/edit', requireLogIn, requireCAi, async (ctx) 
 router.patch('lostItems.update', '/:id/edit', requireLogIn, requireCAi, async (ctx) => {
   const lostItem = await ctx.orm.lostItem.findByPk(ctx.params.id);
   try {
-    const { description, img } = ctx.request.body;
-    await lostItem.update({ description, img });
+    const { description, img, locationFound } = ctx.request.body;
+    await lostItem.update({ description, img, locationFound });
     return ctx.redirect(ctx.router.url('lostItems.index'));
   } catch (validationError) {
     ctx.state.flashMessage.danger = validationError.message;
     await ctx.render('lostItems/edit', { lostItem });
+  }
+});
+
+router.post('lostItems.mailer', '/:id/mail', requireLogIn, requireCAi, async (ctx) => {
+  try {
+    const lostItem = await ctx.orm.lostItem.findByPk(ctx.params.id);
+    const user = await ctx.orm.user.findByPk(lostItem.userId);
+    await pickupMail(ctx, { lostItem, user }, user.email);
+    ctx.state.flashMessage.success = 'Correo enviado';
+    return ctx.redirect(ctx.router.url('lostItems.index'));
+  } catch (sendingErrors) {
+    ctx.state.flashMessage.danger = sendingErrors.message;
+    return ctx.redirect(ctx.router.url('lostItems.index'));
   }
 });
 
@@ -90,5 +108,6 @@ router.delete('lostItems.destroy', '/:id/destroy', requireLogIn, requireCAi, asy
   await lostItem.destroy();
   return ctx.redirect(ctx.router.url('lostItems.index'));
 });
+
 
 module.exports = router;

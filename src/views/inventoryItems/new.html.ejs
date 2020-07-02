@@ -1,4 +1,4 @@
-<div class="content">
+<div class="content" id="inventoryitem-form">
   <h1>Nuevo Item de Inventario</h1>
   <form method="post" enctype="multipart/form-data">
     <input type="text" id="name" name="name" placeholder="Nombre" value="<%= inventoryItem.name %>" required><br><br>
@@ -6,6 +6,8 @@
     <input type="number" id="maxStock" name="maxStock" placeholder="Unidades existentes" value="<%= inventoryItem.maxStock %>" required><br><br>
 
     <input type="number" id="currentStock" name="currentStock" placeholder="Disponible" value="<%= inventoryItem.currentStock %>" required><br><br>
+
+    <input type="number" id="maxReservations" name="maxReservations" placeholder="Máximo de reservas por persona" value="<%= inventoryItem.maxReservations %>" required><br><br>
 
     <textarea type="text" id="description" name="description" placeholder="Descripción" required><%= inventoryItem.description %></textarea><br><br>
 

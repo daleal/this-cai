@@ -4,40 +4,43 @@
   <p>
     <a href=<%= newPath() %> class="button">Nuevo Objeto de Inventario</a>
   </p>
-  <br>
 <% }; %>
-<% inventoryItems.forEach((item) => { %>
-  <div class="card">
-    <header class="card-header">
-      <div class="card-image is-16x9">
-        <img src="<%= item.image %>">
+
+<div class="columns wrap">
+  <% inventoryItems.forEach((item) => { %>
+    <div class="column is-4">
+      <div class="card">
+        <header class="card-header">
+          <div class="card-image is-16x9">
+            <img src="<%= item.image %>">
+          </div>
+
+          <p class="card-header-title is-centered">
+            <%= item.name %>
+          </p>
+        </header>
+
+        <div class="card-content is-centered">
+          <p><%= item.description %></p>
+          <p>Unidades existentes: <%= item.maxStock %></p>
+          <p>Disponible: <%= item.currentStock %></p>
+          <p>Máximo por persona: <%= item.maxReservations %></p>
+          <% if (currentUser && currentUser.isCAi) { %>
+            <a class="button" href="<%= editPath(item) %>">Editar</a>
+            <form class="form-to-text button" action="<%= deletePath(item) %>" method="post">
+              <input type="hidden" name="_method" value="delete">
+              <button>Delete</button>
+            </form>
+          <% }; %>
+          <form
+            class="form-to-text button <%= item.currentStock > 0 || 'is-disabled' %>"
+            action="<%= reservePath(item) %>"
+            method="post"
+          >
+            <button>Reservar</button>
+          </form>
+        </div>
       </div>
-
-      <p class="card-header-title is-centered">
-        <%= item.name %>
-      </p>
-    </header>
-
-    <div class="card-content is-centered">
-      <p><%= item.description %></p>
-      <p>Unidades existentes: <%= item.maxStock %></p>
-      <p>Disponible: <%= item.currentStock %></p>
     </div>
-    <p>
-      <% if (currentUser && currentUser.isCAi) { %>
-        <a class="button" href="<%= editPath(item) %>">Editar</a>
-        <form class="form-to-text button" action="<%= deletePath(item) %>" method="post">
-          <input type="hidden" name="_method" value="delete">
-          <button>Delete</button>
-        </form>
-      <% }; %>
-      <form class="form-to-text button" action="<%= reservePath(item) %>" method="post">
-        <% if (item.currentStock > 0) { %>
-          <button>Reservar</button>
-        <% } else { %>
-          <button disabled>Reservar</button>
-        <% } %>
-      </form>
-    </p>
-  </div>
-<% }); %>
+  <% }); %>
+</div>

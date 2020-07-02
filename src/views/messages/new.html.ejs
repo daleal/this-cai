@@ -1,19 +1,19 @@
 <div class="content">
   <h1>Nuevo Mensaje</h1>
   <% if (!currentUser) {%>
-  <form method="post">
-    <input type="text" id="email" name="email" placeholder="Email" value="<%= message.email %>" required><br><br>
+    <form method="post">
+      <input type="text" id="email" name="email" placeholder="Email" value="<%= message.email %>" required><br><br>
 
-    <textarea type="text" id="content" name="content" placeholder="Mensaje" required><%= message.content %></textarea><br><br>
+      <textarea type="text" id="content" name="content" placeholder="Mensaje" required><%= message.content %></textarea><br><br>
 
-    <input type="submit" value="Submit">
-  </form>
+      <input type="submit" value="Submit">
+    </form>
   <% } else { %>
     <form method="post">
       <input type="text" id="email" name="email" placeholder="Email" value="<%= currentUser.email %>" readonly><br><br>
-      
+
       <textarea type="text" id="content" name="content" placeholder="Mensaje" required><%= message.content %></textarea><br><br>
-      
+
       <input type="submit" value="Submit">
   </form>
   <% } %>

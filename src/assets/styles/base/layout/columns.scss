@@ -46,3 +46,22 @@ $column-number: 12;
     }
   }
 }
+
+
+// Mobile
+@media only screen and (max-width: 600px) {
+  .columns {
+    margin: auto;
+    display: block;
+  }
+
+  .column {
+    padding: 0;
+
+    @for $i from 0 through $column-number {
+      &.is-#{$i} {
+        width: 100%;
+      }
+    }
+  }
+}

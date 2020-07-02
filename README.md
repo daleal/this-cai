@@ -7,13 +7,13 @@ WebApp location: [https://this-cai.herokuapp.com/](https://this-cai.herokuapp.co
 ## Credentials
 
 - Administrator:
-  - Email: `fharellano@uc.cl`
+  - Email: `farellano@uc.cl`
   - Password: `password`
 - CAi:
-  - Email: `ebrzovic@uc.cl`
+  - Email: `ebrzovi@uc.cl`
   - Password: `password`
 - Normal User:
-  - Email: `jeschuwirth@uc.cl`
+  - Email: `jeshuwirth@uc.cl`
   - Password: `password`
 
 ## Requirements

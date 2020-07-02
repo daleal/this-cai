@@ -29,3 +29,12 @@ body {
     outline: 1px dotted ButtonText;
   }
 }
+
+
+// Mobile
+@media only screen and (max-width: 600px) {
+  // Kind of hacky
+  .card-content > .columns > .column > .card {
+    margin: 0.8em 0;
+  }
+}

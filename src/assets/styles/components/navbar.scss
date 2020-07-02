@@ -11,6 +11,12 @@
   transition: width var(--fast-transition-speed) ease;
 }
 
+.navbar-placeholder {
+  z-index: 5;
+  position: fixed;
+  background-color: var(--navbar-background-color);
+}
+
 .navbar-nav {
   list-style: none;
   padding: 0;
@@ -59,6 +65,22 @@
   }
 }
 
+.nav-link-image {
+  position: relative;
+
+  .nav-link-notification {
+    position: absolute;
+    height: 25px;
+    width: 25px;
+    top: -10px;
+    right: 5px;
+    text-align:center;
+    border-radius: 50%;
+    background: var(--accent-1);
+    color: var(--soft-color);
+  }
+}
+
 .nav-link {
   display: flex;
   align-items: center;
@@ -67,6 +89,11 @@
   text-decoration: none;
   filter: grayscale(100%) opacity(0.7);
   transition: var(--fast-transition-speed);
+
+  &.modal-link {
+    filter: grayscale(0%) opacity(1);
+    color: var(--soft-color);
+  }
 
   &:hover {
     filter: grayscale(0%) opacity(1);
@@ -107,9 +134,61 @@
   transition: var(--fast-transition-speed);
 }
 
+.mobile-navbar-modal {
+  position: absolute;
+  z-index: 10;
+  bottom: 5rem;
+  right: 0;
+  width: 80vw;
+  overflow-y: auto;
+  height: calc(100vh - 5rem);
+  background-color: var(--navbar-background-color);
+  border-left: 3px solid var(--accent-1);
+  padding-top: 2em;
+
+  transform-origin: 0% 0%;
+  transform: translate(100%, 0);
+
+  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+
+  &.is-active {
+    transform: none;
+  }
+}
+
+.modal-item {
+  width: 100%;
+}
+
+.modal-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.mobile-navbar-modal-overlay {
+  visibility: hidden;
+  position: absolute;
+  z-index: 9;
+  bottom: 5rem;
+  right: 0;
+  width: 100vw;
+  height: calc(100vh - 5rem);
+
+  // display: none;
+  transition: background-color 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+
+  &.is-active {
+    visibility: visible;
+    touch-action: none;
+    background-color: rgba(0,0,0,0.6);
+  }
+}
+
+
 // Mobile
 @media only screen and (max-width: 600px) {
-  .navbar {
+  .navbar,
+  .navbar-placeholder {
     bottom: 0;
     width: 100vw;
     height: 5rem;
@@ -123,7 +202,8 @@
     display: none;
   }
 
-  .nav-link {
+  .nav-link:not(.modal-link) {
+    filter: grayscale(0%) opacity(1);
     justify-content: center;
 
     svg {
@@ -131,13 +211,17 @@
     }
   }
 
-  .link-text {
+  .link-text:not(.modal-text) {
     display: none;
   }
 
   .main-container {
     margin-left: 0;
-    margin-bottom: 5em;
+    margin-bottom: 5.8em;
+  }
+
+  .mobile-navbar-modal {
+    display: block;
   }
 }
 
@@ -164,5 +248,15 @@
         left: 0px;
       }
     }
+  }
+
+  .navbar-placeholder {
+    top: 0;
+    width: 5rem;
+    height: 100vh;
+  }
+
+  .mobile-navbar-modal {
+    display: none;
   }
 }

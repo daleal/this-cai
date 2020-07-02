@@ -1,43 +1,7 @@
-<div class="content">
-  <h1>Mensajes</h1>
+<h1 class="title is-1 center">Chats</h1>
 
-  <p>
-    <a href="<%= newPath() %>" class="button"> Nuevo Mensaje </a>
-  </p>
-
-  <h2>Enviados por ti:</h2>
-  <% personal.forEach((message) => { %>
-    <h3><%= message.email %></h2>
-    <p>
-      <%= message.content %><br>
-      <%= message.createdAt %>
-    </p>
-    <p>
-      <a href="<%= showPath(message) %>" class="button"> Abrir </a>
-    </p>
-
-    <% }); %>
-    <% if (currentUser.isCAi) { //for Cai only %>
-      <h2>Mensajes enviados al CAi</h2>
-    <% messages.forEach((message) => { %>
-      <h3><%= message.email %></h2>
-      <p>
-        <%= message.content %><br>
-        <%= message.createdAt %>
-        <% if (message.opened) { %>
-          <br>
-          - Leido
-        <% }; %>
-      </p>
-      <p>
-        <a href="<%= showPath(message) %>" class="button"> Abrir </a>
-      </p>
-      <p>
-        <form class="form-to-text button" action="<%= deletePath(message) %>" method="post">
-          <input type="hidden" name="_method" value="delete">
-          <button> Eliminar </button>
-        </form>
-      </p>
-    <% }); %>
-    <% } %>
+<div class="subtitle center">
+  Encuentra todos los mensajes de los alumnos de ingeniería aquí!
 </div>
+
+<div id="chat-index"></div>
