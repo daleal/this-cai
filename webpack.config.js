@@ -10,6 +10,7 @@ module.exports = {
   entry: {
     app: ['./js/index.js', './js/app.jsx'],
     head: ['./head/index.js'],
+    docs: ['./js/docs.js'],
   },
   output: {
     publicPath: '/assets/',

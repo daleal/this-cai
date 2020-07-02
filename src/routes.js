@@ -1,5 +1,7 @@
 const KoaRouter = require('koa-router');
 
+const docs = require('./routes/docs');
+
 const index = require('./routes/index');
 const users = require('./routes/users');
 const session = require('./routes/session');
@@ -16,6 +18,8 @@ const api = require('./routes/api');
 
 
 const router = new KoaRouter();
+
+router.use('/docs', docs.routes());
 
 router.use('/', index.routes());
 router.use('/session', session.routes());
