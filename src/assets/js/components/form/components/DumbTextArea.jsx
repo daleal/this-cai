@@ -10,38 +10,39 @@ function DumbTextArea(props) {
     type,
     placeholder,
     onChange,
-    className,
     value,
     error,
     onBlur,
   } = props;
   return (
-    <React.Fragment>
-    <textarea
-      type={type}
-      id={name}
-      name={name}
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
-      onBlur={onBlur}
-      className={error ? "form-input-error" : "form-input"}
-      />
-      { error && <p className ="error-text">{ error }</p>}
-      </React.Fragment>
-
+    <>
+      <div className={`card is-round input-card ${error ? 'error' : ''}`}>
+        <textarea
+          type={type}
+          id={name}
+          name={name}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          className="form-input textarea"
+        />
+      </div>
+      {error && <p className="input-error-text">{ error }</p>}
+    </>
   );
 }
 
 DumbTextArea.defaultProps = {
-  type: "text",
-  className: "",
-}
+  type: 'text',
+  placeholder: '',
+  error: false,
+};
 DumbTextArea.propTypes = {
   name: PropTypes.string.isRequired,
+  error: PropTypes.bool,
   type: PropTypes.string,
   placeholder: PropTypes.string,
-  className: PropTypes.string,
   value: PropTypes.any,
   onChange: PropTypes.func.isRequired,
   onBlur: PropTypes.func.isRequired,

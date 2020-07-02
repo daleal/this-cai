@@ -79,12 +79,12 @@ app.use(session({
   maxAge: 1000 * SESSION_DURATION,
 }, app));
 
+// flash messages support
+app.use(koaFlashMessage);
+
 // Load current user to the app state if there is one
 app.use(currentUser);
 app.use(currentAPIUser);
-
-// flash messages support
-app.use(koaFlashMessage);
 
 // parse request body
 app.use(koaBody({

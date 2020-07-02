@@ -30,6 +30,25 @@ body {
   }
 }
 
+input.button {
+  font-size: 100%;
+  font-family: inherit;
+  line-height: inherit;
+  border: 0;
+  overflow: visible;
+  text-transform: none;
+  -webkit-appearance: button;
+
+  &::-moz-focus-inner {
+    border-style: none;
+    padding: 0;
+  }
+
+  &:-moz-focusring {
+    outline: 1px dotted ButtonText;
+  }
+}
+
 
 // Mobile
 @media only screen and (max-width: 600px) {
