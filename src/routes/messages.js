@@ -100,6 +100,7 @@ router.post('messages.create', '/new', async (ctx) => {
       await message.save();
       ctx.redirect(ctx.router.url('messages.index'));
     } else {
+      ctx.state.flashMessage.success = 'Mensaje anonimo enviado';
       ctx.redirect('/');
     }
   } catch (validationErrors) {
