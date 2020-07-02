@@ -139,6 +139,4 @@ router.post('api.messages.send', '/chat/:id/send', requireLogIn, async (ctx) => 
   }
 });
 
-router.get('');
-
 module.exports = router;

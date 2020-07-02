@@ -7,6 +7,7 @@ const koaStatic = require('koa-static');
 const render = require('koa-ejs');
 const session = require('koa-session');
 const override = require('koa-override-method');
+const cors = require('@koa/cors');
 const cloudinary = require('cloudinary').v2;
 const assets = require('./assets');
 const mailer = require('./mailers');
@@ -29,6 +30,9 @@ if (!process.env.CLOUDINARY_URL) {
 
 // App constructor
 const app = new Koa();
+
+// Set up CORS
+app.use(cors());
 
 const developmentMode = app.env === 'development';
 
