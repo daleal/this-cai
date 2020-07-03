@@ -73,17 +73,19 @@ export default class ParentComment extends Component {
         <form
         onSubmit={this.submitHandler}
         >
+        <div className ="card is-round chat-message-card anonymous-message-card">
         <textarea
           type="text"
           id="content"
           name="content"
-          placeholder="comentario"
+          placeholder="Comentar!"
           value={inputContent}
           onChange={this.changeHandler}
           readOnly= {false}
+          className="form-input card-content"
           />
-
-          <input type="submit" value="Submit"/>
+          </div>
+          <input className="form-to-text button form-button" type="submit" value="Comentar"/>
         </form>
       </div>
       )
