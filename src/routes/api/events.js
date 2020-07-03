@@ -8,13 +8,25 @@ const router = new KoaRouter();
 
 router.get('api.events.index', '/', async (ctx) => {
   const events = await ctx.orm.event.findAll();
-  ctx.body = events;
+  ctx.body = events.map(((event) => ({
+    id: event.id,
+    name: event.name,
+    dateAndTime: event.dateAndTime,
+    category: event.category,
+    location: event.location,
+  })));
 });
 
 router.get('api.events.show', '/:id', async (ctx) => {
   const event = await ctx.orm.event.findByPk(ctx.params.id);
   if (event) {
-    ctx.body = event;
+    ctx.body = {
+      id: event.id,
+      name: event.name,
+      dateAndTime: event.dateAndTime,
+      category: event.category,
+      location: event.location,
+    };
   } else {
     ctx.status = 404;
     ctx.body = {

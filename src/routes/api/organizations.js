@@ -8,13 +8,21 @@ const router = new KoaRouter();
 
 router.get('api.organizations.index', '/', async(ctx) => {
   const organizations = await ctx.orm.organization.findAll();
-  ctx.body = organizations;
+  ctx.body = organizations.map(((organization) => ({
+    id: organization.id,
+    name: organization.name,
+    description: organization.description,
+  })));
 });
 
 router.get('api.organizations.show', '/:id', async(ctx) => {
   const organization = await ctx.orm.organization.findByPk(ctx.params.id);
   if (organization) {
-    ctx.body = organization;
+    ctx.body = {
+      id: organization.id,
+      name: organization.name,
+      description: organization.description,
+    };
   } else {
     ctx.status = 404;
     ctx.body = {

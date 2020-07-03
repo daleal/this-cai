@@ -8,13 +8,21 @@ const router = new KoaRouter();
 
 router.get('api.articles.index', '/', async (ctx) => {
   const articles = await ctx.orm.article.findAll();
-  ctx.body = articles;
+  ctx.body = articles.map(((article) => ({
+    id: article.id,
+    title: article.title,
+    content: article.content,
+  })));
 });
 
 router.get('api.articles.show', '/:id', async (ctx) => {
   const article = await ctx.orm.article.findByPk(ctx.params.id);
   if (article) {
-    ctx.body = article;
+    ctx.body = {
+      id: article.id,
+      title: article.title,
+      content: article.content,
+    };
   } else {
     ctx.status = 404;
     ctx.body = {

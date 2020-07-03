@@ -594,8 +594,8 @@
 
     "/api/events": {
       "get": {
-        "summary": "Get articles",
-        "description": "Endpoint for obtaining all the articles.",
+        "summary": "Get events",
+        "description": "Endpoint for obtaining all the events.",
         "tags": ["Events"],
         "responses": {
           "200": {
@@ -605,7 +605,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Article"
+                    "$ref": "#/components/schemas/Event"
                   }
                 }
               }
@@ -617,15 +617,15 @@
         }
       },
       "post": {
-        "summary": "Create an article",
-        "description": "Endpoint for creating an article.",
+        "summary": "Create an event",
+        "description": "Endpoint for creating an event.",
         "tags": ["Events"],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MetaArticle"
+                "$ref": "#/components/schemas/MetaEvent"
               }
             }
           }
@@ -919,9 +919,6 @@
           },
           "lastName": {
             "type": "string"
-          },
-          "image": {
-            "type": "string"
           }
         }
       },
@@ -961,9 +958,6 @@
           },
           "description": {
             "type": "string"
-          },
-          "image": {
-            "type": "string"
           }
         }
       },
@@ -988,9 +982,6 @@
             "type": "string"
           },
           "content": {
-            "type": "string"
-          },
-          "image": {
             "type": "string"
           }
         }
@@ -1025,9 +1016,6 @@
             "type": "string"
           },
           "location": {
-            "type": "string"
-          },
-          "image": {
             "type": "string"
           }
         }
