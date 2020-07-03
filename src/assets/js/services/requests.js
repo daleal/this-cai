@@ -41,7 +41,7 @@ async function getWeather(date) {
   const { year, month, day } = parseISODate(date);
   let key = await fetch('/api/retrieve/apiKey');
   key = await key.json();
-  const query = `https://thingproxy.freeboard.io/fetch/http://api.weatherapi.com/v1/forecast.json?key=${key.WEATHER_KEY}&q=santiago&dt=${year}-${month}-${day}&days=1`;
+  const query = `https://cors-anywhere.herokuapp.com/http://api.weatherapi.com/v1/forecast.json?key=${key.WEATHER_KEY}&q=santiago&dt=${year}-${month}-${day}&days=1`;
   try {
     let weather = await fetch(query);
     weather = await weather.json();
