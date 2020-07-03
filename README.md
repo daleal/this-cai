@@ -4,6 +4,8 @@ Repository for the IIC2513 project of `this` group.
 
 WebApp location: [https://this-cai.herokuapp.com/](https://this-cai.herokuapp.com/)
 
+Documentation can be found inside the `docs` folder, in a file named `documentation.md`.
+
 ## Credentials
 
 - Administrator:

@@ -63,7 +63,13 @@ export default class ParentComment extends Component {
       <div>
         <h1> COMENTARIOS </h1>
         {(comments.map((c) =>
-           <h3> {c.author}: {c.content} </h3>))}
+          <div className= "card is-round" >
+            <div className = "card-content">
+            <h4 className= "card-header"> {c.author}</h4>
+            {c.content}
+            </div>
+          </div>
+        ))}
         <form
         onSubmit={this.submitHandler}
         >
