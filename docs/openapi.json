@@ -1,0 +1,1045 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "This CAi",
+    "version": "0.1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Development server"
+    },
+    {
+      "url": "https://this-cai-staging.herokuapp.com",
+      "description": "Staging server"
+    },
+    {
+      "url": "https://this-cai.herokuapp.com",
+      "description": "Production server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "Endpoints for authenticating"
+    },
+    {
+      "name": "Chats",
+      "description": "Endpoints for interacting with the Chats"
+    },
+    {
+      "name": "Organizations",
+      "description": "Endpoints for interacting with the Organizations"
+    },
+    {
+      "name": "Articles",
+      "description": "Endpoints for interacting with the Articles"
+    },
+    {
+      "name": "Events",
+      "description": "Endpoints for interacting with the Events"
+    }
+  ],
+  "paths": {
+    "/api/auth/login": {
+      "post": {
+        "summary": "Get JSON Web Token",
+        "description": "Endpoint for obtaining a JSON Web Token to use within the project's API.",
+        "tags": ["Authentication"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string"
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/AuthenticationError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerConflict"
+          }
+        }
+      }
+    },
+    "/api/chats": {
+      "get": {
+        "summary": "Get chats",
+        "description": "Endpoint for obtaining all the conversations between a CAI member and other members.",
+        "tags": ["Chats"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Chat"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/PermissionError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerConflict"
+          }
+        },
+        "security": [
+          {
+            "JSONWebTokenAuth": []
+          }
+        ]
+      }
+    },
+    "/api/chats/anonymous": {
+      "get": {
+        "summary": "Get anonymous messages",
+        "description": "Endpoint for obtaining all the anonymous messages received by the CAI.",
+        "tags": ["Chats"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnonymousMessage"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/PermissionError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerConflict"
+          }
+        },
+        "security": [
+          {
+            "JSONWebTokenAuth": []
+          }
+        ]
+      }
+    },
+    "/api/chats/{id}": {
+      "get": {
+        "summary": "Get messages from chat",
+        "description": "Endpoint for obtaining all the messages from a specific chat.",
+        "tags": ["Chats"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Id of the chat to retrieve."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Message"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/PermissionError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerConflict"
+          }
+        },
+        "security": [
+          {
+            "JSONWebTokenAuth": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Send message",
+        "description": "Endpoint for sending a message to a specific chat.",
+        "tags": ["Chats"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Id of the chat to retrieve."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "$ref": "#/components/responses/PermissionError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerConflict"
+          }
+        },
+        "security": [
+          {
+            "JSONWebTokenAuth": []
+          }
+        ]
+      }
+    },
+    "/api/organizations": {
+      "get": {
+        "summary": "Get organizations",
+        "description": "Endpoint for obtaining all the organizations.",
+        "tags": ["Organizations"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Organization"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerConflict"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create an organization",
+        "description": "Endpoint for creating an organization.",
+        "tags": ["Organizations"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MetaOrganization"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "$ref": "#/components/responses/PermissionError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerConflict"
+          }
+        },
+        "security": [
+          {
+            "JSONWebTokenAuth": []
+          }
+        ]
+      }
+    },
+    "/api/organizations/{id}": {
+      "get": {
+        "summary": "Get organization",
+        "description": "Endpoint for obtaining a specific organization.",
+        "tags": ["Organizations"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Id of the organization to retrieve."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Organization"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/GenericNotFound"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Modify an organization",
+        "description": "Endpoint for modifying an organization.",
+        "tags": ["Organizations"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Id of the organization to modify."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MetaOrganization"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "$ref": "#/components/responses/PermissionError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerConflict"
+          }
+        },
+        "security": [
+          {
+            "JSONWebTokenAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete an organization",
+        "description": "Endpoint for deleting an organization.",
+        "tags": ["Organizations"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Id of the organization to delete."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "$ref": "#/components/responses/PermissionError"
+          },
+          "404": {
+            "$ref": "#/components/responses/GenericNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerConflict"
+          }
+        },
+        "security": [
+          {
+            "JSONWebTokenAuth": []
+          }
+        ]
+      }
+    },
+    "/api/articles": {
+      "get": {
+        "summary": "Get articles",
+        "description": "Endpoint for obtaining all the articles.",
+        "tags": ["Articles"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Article"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerConflict"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create an article",
+        "description": "Endpoint for creating an article.",
+        "tags": ["Articles"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MetaArticle"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "$ref": "#/components/responses/PermissionError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerConflict"
+          }
+        },
+        "security": [
+          {
+            "JSONWebTokenAuth": []
+          }
+        ]
+      }
+    },
+    "/api/articles/{id}": {
+      "get": {
+        "summary": "Get article",
+        "description": "Endpoint for obtaining a specific article.",
+        "tags": ["Articles"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Id of the article to retrieve."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Article"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/GenericNotFound"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Modify an article",
+        "description": "Endpoint for modifying an article.",
+        "tags": ["Articles"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Id of the article to modify."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MetaArticle"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "$ref": "#/components/responses/PermissionError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerConflict"
+          }
+        },
+        "security": [
+          {
+            "JSONWebTokenAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete an article",
+        "description": "Endpoint for deleting an article.",
+        "tags": ["Articles"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Id of the article to delete."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "$ref": "#/components/responses/PermissionError"
+          },
+          "404": {
+            "$ref": "#/components/responses/GenericNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerConflict"
+          }
+        },
+        "security": [
+          {
+            "JSONWebTokenAuth": []
+          }
+        ]
+      }
+    },
+
+
+    "/api/events": {
+      "get": {
+        "summary": "Get events",
+        "description": "Endpoint for obtaining all the events.",
+        "tags": ["Events"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Event"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerConflict"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create an event",
+        "description": "Endpoint for creating an event.",
+        "tags": ["Events"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MetaEvent"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "$ref": "#/components/responses/PermissionError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerConflict"
+          }
+        },
+        "security": [
+          {
+            "JSONWebTokenAuth": []
+          }
+        ]
+      }
+    },
+    "/api/events/{id}": {
+      "get": {
+        "summary": "Get event",
+        "description": "Endpoint for obtaining a specific event.",
+        "tags": ["Events"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Id of the event to retrieve."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/GenericNotFound"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Modify an event",
+        "description": "Endpoint for modifying an event.",
+        "tags": ["Events"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Id of the event to modify."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MetaEvent"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "$ref": "#/components/responses/PermissionError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerConflict"
+          }
+        },
+        "security": [
+          {
+            "JSONWebTokenAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete an event",
+        "description": "Endpoint for deleting an event.",
+        "tags": ["Events"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Id of the event to delete."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "$ref": "#/components/responses/PermissionError"
+          },
+          "404": {
+            "$ref": "#/components/responses/GenericNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerConflict"
+          }
+        },
+        "security": [
+          {
+            "JSONWebTokenAuth": []
+          }
+        ]
+      }
+    },
+    "/api/events/{id}/attendance": {
+      "post": {
+        "summary": "Attend an event",
+        "description": "Endpoint for declaring attendance to an event.",
+        "tags": ["Events"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Id of the event to attend."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "$ref": "#/components/responses/PermissionError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerConflict"
+          }
+        },
+        "security": [
+          {
+            "JSONWebTokenAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Unattend an event",
+        "description": "Endpoint for undeclaring attendance to an event.",
+        "tags": ["Events"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Id of the event to unattend."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "$ref": "#/components/responses/PermissionError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerConflict"
+          }
+        },
+        "security": [
+          {
+            "JSONWebTokenAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "JSONWebTokenAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "responses": {
+      "AuthenticationError": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "enum": [
+                    "Login is required"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "PermissionError": {
+        "description": "Forbidden",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "enum": [
+                    "Special permission is required",
+                    "Error accessing the resource"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "ServerConflict": {
+        "description": "Conflict",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "GenericNotFound": {
+        "description": "Not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Chat": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        }
+      },
+      "Message": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "content": {
+            "type": "string"
+          },
+          "caiMessage": {
+            "type": "boolean"
+          }
+        }
+      },
+      "AnonymousMessage": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      },
+      "Organization": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "MetaOrganization": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "Article": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      },
+      "MetaArticle": {
+        "type": "object",
+        "properties": {
+          "organizationId": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      },
+      "Event": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "dateAndTime": {
+            "type": "date-time"
+          },
+          "category": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          }
+        }
+      },
+      "MetaEvent": {
+        "type": "object",
+        "properties": {
+          "organizationId": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "dateAndTime": {
+            "type": "date-time"
+          },
+          "category": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -2,18 +2,20 @@
 <% Object.entries(flashMessage.messages).forEach(([type, message]) => { %>
   <% if (message) { %>
     <% // Don't render empty messages %>
-    <div class="flash-message is-<%= type %>">
-      <!-- <button class="delete"></button> -->
-      <% if (Array.isArray(message)) { %>
-        <% message.forEach((messageElement, index) => { %>
-          <%= messageElement %>
-          <% if (index != message.length - 1) { %>
-            <br><br>
-          <% } %>
-        <% }) %>
-      <% } else { %>
-        <%= message %>
-      <% } %>
+    <div class="flash-container">
+      <div class="flash-message is-<%= type %>">
+        <!-- <button class="delete"></button> -->
+        <% if (Array.isArray(message)) { %>
+          <% message.forEach((messageElement, index) => { %>
+            <%= messageElement %>
+            <% if (index != message.length - 1) { %>
+              <br><br>
+            <% } %>
+          <% }) %>
+        <% } else { %>
+          <%= message %>
+        <% } %>
+      </div>
     </div>
   <% } %>
 <% }); %>

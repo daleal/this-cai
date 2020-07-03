@@ -42,6 +42,10 @@ router.get('retrieve.comments', '/get/comments/:id', async (ctx) => {
   ctx.body = { comments };
 });
 
+router.get('retrieve.apiKey', '/apiKey', async (ctx) => {
+  ctx.body = { WEATHER_KEY: process.env.WEATHER_KEY };
+});
+
 router.post('retrieve.postComment', '/post/comments/:id', requireLogIn, async (ctx) => {
   const user = await ctx.state.currentUser;
   const eventId = ctx.params.id;

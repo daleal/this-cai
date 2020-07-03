@@ -4,6 +4,10 @@ Repository for the IIC2513 project of `this` group.
 
 WebApp location: [https://this-cai.herokuapp.com/](https://this-cai.herokuapp.com/)
 
+
+You can also find a Vue frontend application that uses our API interface at [https://that-cai.herokuapp.com/](https://that-cai.herokuapp.com/) (repo at [https://github.com/daleal/that-cai](https://github.com/daleal/that-cai))
+
+
 ## Credentials
 
 - Administrator:

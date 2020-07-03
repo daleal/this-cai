@@ -7,6 +7,7 @@ const koaStatic = require('koa-static');
 const render = require('koa-ejs');
 const session = require('koa-session');
 const override = require('koa-override-method');
+const cors = require('@koa/cors');
 const cloudinary = require('cloudinary').v2;
 const assets = require('./assets');
 const mailer = require('./mailers');
@@ -29,6 +30,9 @@ if (!process.env.CLOUDINARY_URL) {
 
 // App constructor
 const app = new Koa();
+
+// Set up CORS
+app.use(cors());
 
 const developmentMode = app.env === 'development';
 
@@ -75,12 +79,12 @@ app.use(session({
   maxAge: 1000 * SESSION_DURATION,
 }, app));
 
+// flash messages support
+app.use(koaFlashMessage);
+
 // Load current user to the app state if there is one
 app.use(currentUser);
 app.use(currentAPIUser);
-
-// flash messages support
-app.use(koaFlashMessage);
 
 // parse request body
 app.use(koaBody({

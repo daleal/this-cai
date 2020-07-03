@@ -69,13 +69,13 @@
       <p>No hay miembros</p>
     <% } %>
     <% if (member) { %>
-      <div class="content">
-        <form method="post">
-          <h5 class= "subtitle is-3"> Agregar un miembro</h5>
-          <input type="text" name="email" id="email" placeholder="Email" required>
-          <input type="submit" value="Agregar miembro">
-        </form>
-      </div>
+      <h3 class="subtitle is-3">Agregar un miembro</h3>
+      <form method="post">
+        <div class="card is-round input-card alt-color">
+          <input class="form-input" type="text" name="email" id="email" placeholder="Email" required>
+        </div>
+        <input class="form-to-text button form-button" type="submit" value="Agregar miembro">
+      </form>
       <% } %>
     <h4 class="title is-4">Eventos</h4>
     <% if (member) { %>

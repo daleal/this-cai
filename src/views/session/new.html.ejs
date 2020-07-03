@@ -1,15 +1,16 @@
-<div class="content">
-  <h1>Iniciar sesión</h1>
-  <form method="post">
-    <input type="email" id="email" name="email" placeholder="Email" value="<%= user.email %>" required><br><br>
+<h1 class="title is-1 center">Iniciar sesión</h1>
+<form method="post">
+  <div class="card is-round input-card">
+    <input class="form-input" type="email" id="email" name="email" placeholder="Email" value="<%= user.email %>" required>
+  </div>
 
-    <input type="password" id="password" name="password" placeholder="Contraseña" value="<%= user.password %>" required><br><br>
+  <div class="card is-round input-card">
+    <input class="form-input" type="password" id="password" name="password" placeholder="Contraseña" value="<%= user.password %>" required>
+  </div>
 
-    <input type="submit" value="Submit">
-  </form>
+  <input class="form-to-text button form-button" type="submit" value="Submit">
+</form>
 
-  <br>
-
-  No tienes cuenta? <a href="<%= newUserPath %>">Crea una cuenta!</a>
-
-</div>
+<p class="form-extra-content">
+  No tienes cuenta? <a class="link" href="<%= newUserPath %>">Crea una cuenta!</a>
+</p>

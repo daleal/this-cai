@@ -16,27 +16,29 @@ function DumbInput(props) {
     onBlur,
   } = props;
   return (
-    <React.Fragment>
-    <input
-      type={type}
-      id={name}
-      name={name}
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
-      onBlur={onBlur}
-      className={error ? "form-input-error" : "form-input"}
-      />
-    { error && <p className= "error-text">{ error }</p>}
-    </React.Fragment>
+    <>
+      <div className={`card is-round input-card ${error ? 'error' : ''}`}>
+        <input
+          type={type}
+          id={name}
+          name={name}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          className="form-input"
+        />
+      </div>
+      {error && <p className="input-error-text">{ error }</p>}
+    </>
 
   );
 }
 
 DumbInput.defaultProps = {
-  type: "text",
-  className: "",
-}
+  type: 'text',
+  className: '',
+};
 DumbInput.propTypes = {
   name: PropTypes.string.isRequired,
   type: PropTypes.string,

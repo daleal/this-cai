@@ -37,6 +37,7 @@
     "webpack-manifest-plugin": "^2.2.0"
   },
   "dependencies": {
+    "@koa/cors": "^3.1.0",
     "bcrypt": "^5.0.0",
     "cloudinary": "^1.21.0",
     "core-js": "^3.6.4",
@@ -59,7 +60,8 @@
     "react-dom": "^16.13.0",
     "react-hot-loader": "^4.12.16",
     "sequelize": "^5.21.5",
-    "sequelize-cli": "^5.5.1"
+    "sequelize-cli": "^5.5.1",
+    "swagger-ui": "^3.27.0"
   },
   "engines": {
     "node": "^12.16.0",

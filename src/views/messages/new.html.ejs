@@ -1,20 +1,26 @@
-<div class="content">
-  <h1>Nuevo Mensaje</h1>
-  <% if (!currentUser) {%>
-    <form method="post">
-      <input type="text" id="email" name="email" placeholder="Email" value="<%= message.email %>" required><br><br>
+<h1 class="title is-1 center">Nuevo Mensaje</h1>
+<% if (!currentUser) {%>
+  <form method="post">
+    <div class="card is-round input-card">
+      <input class="form-input" type="text" id="email" name="email" placeholder="Email" value="<%= message.email %>" required>
+    </div>
 
-      <textarea type="text" id="content" name="content" placeholder="Mensaje" required><%= message.content %></textarea><br><br>
+    <div class="card is-round input-card">
+      <textarea class="form-input textarea" type="text" id="content" name="content" placeholder="Mensaje" required><%= message.content %></textarea>
+    </div>
 
-      <input type="submit" value="Submit">
-    </form>
-  <% } else { %>
-    <form method="post">
-      <input type="text" id="email" name="email" placeholder="Email" value="<%= currentUser.email %>" readonly><br><br>
-
-      <textarea type="text" id="content" name="content" placeholder="Mensaje" required><%= message.content %></textarea><br><br>
-
-      <input type="submit" value="Submit">
+    <input class="form-to-text button form-button" type="submit" value="Submit">
   </form>
-  <% } %>
-</div>
+<% } else { %>
+  <form method="post">
+    <div class="card is-round input-card">
+      <input class="form-input" type="text" id="email" name="email" placeholder="Email" value="<%= currentUser.email %>" readonly>
+    </div>
+
+    <div class="card is-round input-card">
+      <textarea class="form-input textarea" type="text" id="content" name="content" placeholder="Mensaje" required><%= message.content %></textarea><br><br>
+    </div>
+
+    <input class="form-to-text button form-button" type="submit" value="Submit">
+</form>
+<% } %>

@@ -1,33 +1,44 @@
-<div class="content">
-  <a href=<%= indexPath() %> class="button"> Mensajes </a>
-  <% if (!user) {  // Generic message with no origin user %>
-    <h2><%= message.email %> [no user]</h2>
-    <p>
-      <%= message.content %><br>
-      <%= message.createdAt %>
-    </p>
+<% if (!user) {  // Generic message with no origin user %>
+  <h4 class="title is-4 center">Mail de respuesta: <%= message.email %> [anónimo]</h4>
+  <div class="card is-round">
+    <div class="card-content is-centered">
+      <h5 class="subtitle is-5 center"><%= message.content %></h5>
+      <p>
+        <%= message.createdAt %>
+      </p>
+    </div>
+  </div>
+<% } else { %>
+  <h4 class="title is-4 center">Usuario: <%= user.firstName %> <%= user.lastName %></h4>
+  <div class="card is-round">
+    <div class="card-content is-centered">
+      <h5 class="subtitle is-5 center"><%= message.content %></h5>
+      <h6 class="subtitle is-6 center"><%= user.email %></h6>
+      <p>
+        <%= message.createdAt %>
+      </p>
+    </div>
+  </div>
+<% } %>
+
+<% if (currentUser.isCAi) { %>
+  <h3 class="title is-3">Responder</h3>
+
+  <% if (message.responded) { %>
+    <h6 class="subtitle is-6">
+      (Este mensaje ya fue respondido. Se enviará un mail
+      a <%= message.email %> con el contenido de la respuesta)
+    </h6>
   <% } else { %>
-    <h2>User: <%= user.firstName %> <%= user.lastName %></h2>
-    <p>
-      <%= message.content %><br>
-      <%= user.email %><br>
-      <%= message.createdAt %>
-    </p>
+    <h6 class="subtitle is-6">
+      (Este mensaje no ha sido respondido). Se enviará un mail
+      a <%= message.email %> con el contenido de la respuesta)
+    </h6>
   <% } %>
-  <% if (currentUser.isCAi) { %>
-    <% if (message.responded) { %>
-      <div>
-        <h1> Este mensaje ya ha sido respondido </h1>
-      </div>
-    <% } else { %>
-      <div>
-        <h1> Este mensaje no ha sido respondido </h1>
-      </div>
-    <% } %>
-    <form method="post">
-      <label for="response">Respuesta:</label><br>
-      <input type="text" id="response" name="response">
-      <input type="submit" value="Enviar">
-    </form>
-  <% } %>
-</div>
+  <form method="post">
+    <div class="card is-round input-card">
+      <textarea class="form-input textarea" type="text" id="response" name="response" placeholder="Respuesta" required></textarea>
+    </div>
+    <input class="form-to-text button form-button" type="submit" value="Enviar">
+  </form>
+<% } %>

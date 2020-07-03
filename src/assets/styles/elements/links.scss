@@ -1,0 +1,8 @@
+.link {
+  color: var(--accent-2);
+
+  &:visited,
+  &:active {
+    color: var(--accent-1);
+  }
+}
