@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import DumbInput from './components/DumbInput';
 import DumbTextArea from './components/DumbTextArea';
 import DumbSelect from './components/DumbSelect';
-import { getEntity, getOrganizationList } from '../../services/requests';
+import { getEntity, getOrganizationList, getWeather } from '../../services/requests';
 import { EVENT_CATEGORIES } from '../../constants';
 
 const MAPPED_CATEGORIES = [];
@@ -27,11 +27,14 @@ export default class EventForm extends Component {
         userOrganizations: [],
       },
       errors: {},
+      loading: false,
+      weather: { error: true },
     };
     this.changeHandler = this.changeHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
     this.blurHandler = this.blurHandler.bind(this);
     this.fetchEntity = this.fetchEntity.bind(this);
+    this.fetchWeather = this.fetchWeather.bind(this);
     this.fetchOrganizationList = this.fetchOrganizationList.bind(this);
   }
 
@@ -62,6 +65,17 @@ export default class EventForm extends Component {
     this.setState({ event: post });
   }
 
+  async fetchWeather(event) {
+    const date = event.target.value;
+    if (!date) return;
+    this.setState({ loading: true });
+    const response = await getWeather(date);
+    this.setState({
+      loading: false,
+      weather: response,
+    });
+  }
+
   changeHandler(e) {
     const { event } = this.state;
     event[e.target.name] = e.target.value;
@@ -74,6 +88,9 @@ export default class EventForm extends Component {
     const { value } = event.target;
     partialErrors[name] = value ? '' : '¡Debes llenar este campo!';
     this.setState({ errors: partialErrors });
+    if (name === "dateAndTime") {
+      this.fetchWeather(event);
+    }
   }
 
   submitHandler(e) {
@@ -105,7 +122,7 @@ export default class EventForm extends Component {
         name, location, dateAndTime, category, userOrganizations, organizationId,
       },
       edit,
-      mapped,
+      weather,
     } = this.state;
     return (
       <div>
@@ -142,7 +159,7 @@ export default class EventForm extends Component {
           <DumbInput
             type="datetime-local"
             name="dateAndTime"
-            placeholder="Ubicación donde el evento tendrá lugar"
+            placeholder=""
             value={dateAndTime}
             onChange={this.changeHandler}
             onBlur={this.blurHandler}
@@ -150,7 +167,12 @@ export default class EventForm extends Component {
             required
             className="input"
           />
-
+          <div className ="form-extra-content">
+            {weather.error ? null : <h3 className="subtitle"> Pronóstico del clima: </h3>}
+            {weather.error ? (<p className= "subtitle is-6"> No hay información sobre el clima </p>):
+            (<h4 className="subtitle is-6"> Max: {weather.max} °C  Min: {weather.min}°C </h4>)}
+            {weather.error ? null : (<img src= {weather.condition.icon}/> )}
+          </div>
           <DumbSelect
             name="category"
             value={category}
